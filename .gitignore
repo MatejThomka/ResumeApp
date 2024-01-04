@@ -1,5 +1,6 @@
 # IntelliJ IDEA
 .idea/
+HELP.md
 
 # Compiled class file
 *.class
@@ -17,16 +18,26 @@ mvnw.cmd
 mvn_wrapper_output/
 
 # Docker
+docker-compose.yaml
 docker-compose.yml
+docker-compose.override.yaml
 docker-compose.override.yml
 docker-compose.debug.yml
+docker-compose.debug.yaml
 docker-compose.test.yml
+docker-compose.test.yaml
 docker-compose.prod.yml
+docker-compose.prod.yaml
 docker-compose.stage.yml
+docker-compose.stage.yaml
 docker-compose.ci.yml
+docker-compose.ci.yaml
 docker-compose.override.ci.yml
+docker-compose.override.ci.yaml
 docker/docker-compose.yml
+docker/docker-compose.yaml
 docker/*.override.yml
+docker/*.override.yaml
 
 # Local Docker images
 docker-images/
