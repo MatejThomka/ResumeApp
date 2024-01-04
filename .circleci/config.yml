@@ -1,0 +1,60 @@
+version: 2.1
+
+jobs:
+
+  compile-project:
+    docker:
+      - image: cimg/openjdk:21.0.0
+    steps:
+      - checkout
+      - run:
+          name: "Compile project"
+          command: "mvn compile"
+
+  test-compatibility:
+    docker:
+      - image: cimg/openjdk:21.0.0
+    steps:
+      - checkout
+      - run:
+          name: "Check test compatibility"
+          command: "mvn test-compile"
+
+  tests:
+    docker:
+      - image: cimg/openjdk:21.0.0
+    steps:
+      - checkout
+      - run:
+          name: "Run tests"
+          command: "mvn test"
+
+  code-quality:
+    docker:
+      - image: cimg/openjdk:21.0.0
+    steps:
+      - checkout
+      - run:
+          name: "Run code quality checks"
+          command: "mvn clean verify"
+
+  code-smells:
+    docker:
+      - image: cimg/openjdk:21.0.0
+    steps:
+      - checkout
+      - run:
+          name: "Check for code smells"
+          command: "mvn pmd:check"
+      - store_artifacts:
+          path: target/pmd.xml
+          destination: pmd-artifacts
+
+workflows:
+  project-workflow:
+       jobs:
+        - compile-project
+        - test-compatibility
+        - tests
+        - code-quality
+        - code-smells
