@@ -19,26 +19,51 @@ public class PersonalDetailsServiceImpl implements PersonalDetailsService {
   private final PersonalDetailsRepository personalDetailsRepository;
 
   @Override
-  public PersonalDetailsDTO createPersonalDetails(User user, PersonalDetails personalDetails) {
-    return null;
+  public PersonalDetailsDTO showPersonalDetails(String email) throws ResumeAppException {
+
+    PersonalDetails personalDetails;
+    User user;
+
+    user = userCheck(email);
+    personalDetails = personalDetailsRepository.findByUser(user).orElseThrow(() -> new DetailsNotFoundException("Details not found!"));
+
+    if (personalDetails.isDriverLicense()) {
+      return PersonalDetailsDTO.builder()
+          .dateOfBirth(personalDetails.getDateOfBirth())
+          .placeOfBirth(personalDetails.getPlaceOfBirth())
+          .gender(personalDetails.getGender())
+          .drivingGroup(personalDetails.getDrivingGroups())
+          .build();
+    } else {
+      return PersonalDetailsDTO.builder()
+          .dateOfBirth(personalDetails.getDateOfBirth())
+          .placeOfBirth(personalDetails.getPlaceOfBirth())
+          .gender(personalDetails.getGender())
+          .build();
+    }
   }
 
   @Override
-  public PersonalDetailsDTO updatePersonalDetails(User user, PersonalDetails personalDetails) {
-    return null;
+  public void createPersonalDetails(String email,
+                                    PersonalDetails personalDetails) throws ResumeAppException {
+    PersonalDetails newPersonalDetails = new PersonalDetails();
+    User user;
+
+    user = userCheck(email);
+    newPersonalDetails.setUser(user);
+    newPersonalDetails.setDateOfBirth(personalDetails.getDateOfBirth());
+    newPersonalDetails.setPlaceOfBirth(personalDetails.getPlaceOfBirth());
+    newPersonalDetails.setGender(personalDetails.getGender());
+
+    if (personalDetails.isDriverLicense()) {
+      newPersonalDetails.setDriverLicense(true);
+      newPersonalDetails.setDrivingGroups(personalDetails.getDrivingGroups());
+    }
+
+    personalDetailsRepository.save(newPersonalDetails);
   }
 
-  @Override
-  public void deletePersonalDetails(User user) {
-
-  }
-
-  @Override
-  public PersonalDetailsDTO showPersonalDetails(User user) throws ResumeAppException {
-
-    userRepository.findByEmail(user.getEmail()).orElseThrow(() -> new UserNotFoundException("User not found!"));
-    personalDetailsRepository.findByUser(user).orElseThrow(() -> new DetailsNotFoundException("Details not found!"));
-
-    return null;
+  private User userCheck(String email) throws UserNotFoundException {
+    return userRepository.findByEmail(email).orElseThrow(() -> new UserNotFoundException("User not found!"));
   }
 }
