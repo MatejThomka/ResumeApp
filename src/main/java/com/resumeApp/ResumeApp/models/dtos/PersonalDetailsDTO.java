@@ -1,6 +1,8 @@
 package com.resumeApp.ResumeApp.models.dtos;
 
+import com.resumeApp.ResumeApp.models.enums.DrivingGroups;
 import com.resumeApp.ResumeApp.models.enums.Gender;
+import java.util.List;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -21,4 +23,5 @@ public class PersonalDetailsDTO {
   String placeOfBirth;
   boolean driverLicense;
   Gender gender;
+  List<DrivingGroups> drivingGroup;
 }
