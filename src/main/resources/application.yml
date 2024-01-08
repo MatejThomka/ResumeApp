@@ -31,9 +31,7 @@ spring:
     password: ${DB_PASSWORD}
     locations: classpath:db.migration
   jpa:
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.MySQLDialect
+    open-in-view: false
   docker:
     compose:
       enabled: false
