@@ -9,10 +9,6 @@
 
 
 # First step
-FROM openjdk:11-jre-slim
-
-RUN apt-get update && apt-get install -y docker.io
-
 FROM maven:3.8.5-openjdk-17 as build
 WORKDIR /ResumeApp
 COPY . .
