@@ -1,14 +1,16 @@
 package com.resumeApp.ResumeApp.models;
 
+import com.resumeApp.ResumeApp.models.enums.Roles;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToOne;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.FieldDefaults;
 
@@ -16,7 +18,8 @@ import lombok.experimental.FieldDefaults;
 @Entity
 @Getter
 @Setter
-@RequiredArgsConstructor
+@NoArgsConstructor
+@AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class User {
 
@@ -30,6 +33,7 @@ public class User {
   String password;
   String phoneNumber;
   String address;
+  Roles role;
 
   @OneToOne
   PersonalDetails personalDetails;
