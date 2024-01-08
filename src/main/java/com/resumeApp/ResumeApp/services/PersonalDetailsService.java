@@ -7,8 +7,6 @@ import com.resumeApp.ResumeApp.models.dtos.PersonalDetailsDTO;
 
 public interface PersonalDetailsService {
 
-  PersonalDetailsDTO createPersonalDetails(User user, PersonalDetails personalDetails);
-  PersonalDetailsDTO updatePersonalDetails(User user, PersonalDetails personalDetails);
-  void deletePersonalDetails(User user);
-  PersonalDetailsDTO showPersonalDetails(User user) throws ResumeAppException;
+  PersonalDetailsDTO showPersonalDetails(String email) throws ResumeAppException;
+  void createPersonalDetails(String email, PersonalDetails personalDetails) throws ResumeAppException;
 }
