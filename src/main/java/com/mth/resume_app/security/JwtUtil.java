@@ -3,7 +3,6 @@ package com.mth.resume_app.security;
 import com.mth.resume_app.exceptions.AuthException;
 import com.mth.resume_app.exceptions.ResumeAppException;
 import com.mth.resume_app.models.User;
-import com.mth.resume_app.models.enums.Roles;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtParser;
@@ -119,10 +118,6 @@ public class JwtUtil {
           return null;
       }
 
-  }
-
-  private Roles getRoles(Claims claims) {
-    return (Roles) claims.get("roles");
   }
 
   public void jwtBlackList() {
