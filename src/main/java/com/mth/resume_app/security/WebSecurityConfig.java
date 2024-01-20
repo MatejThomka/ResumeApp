@@ -31,12 +31,14 @@ public class WebSecurityConfig {
   @Bean
   public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
     httpSecurity
-        .csrf(csrf -> csrf.ignoringRequestMatchers("/auth/**"))
+        .csrf(csrf -> csrf.ignoringRequestMatchers("/api/auth/**"))
         .authorizeHttpRequests((request) -> request
-            .requestMatchers("auth/**").permitAll()
-            .requestMatchers("/api/resume/**").hasRole("USER")
+            .requestMatchers("/api/auth/**").permitAll()
+            .requestMatchers("/api/resume/**").hasAnyRole("USER", "ADMIN", "COMPANY")
             .anyRequest().authenticated()
         );
+
+    httpSecurity.addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class);
 
     return httpSecurity.build();
   }
