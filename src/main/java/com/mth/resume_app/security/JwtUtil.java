@@ -25,12 +25,14 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 @Slf4j
 public class JwtUtil {
 
-  private final String secret = "67566B59703373367638792F423F4528482B4D6251655468576D5A7134743777";
+
+  private final String secret;
   private final JwtParser jwtParser;
   private final List<String> blackList = new ArrayList<>();
   private volatile boolean isCleaningTokens = false;
 
   public JwtUtil() {
+    secret = System.getenv("SECKEY");
     this.jwtParser = Jwts.parser().setSigningKey(secret);
   }
 
