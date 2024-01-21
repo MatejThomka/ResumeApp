@@ -3,6 +3,7 @@ package com.mth.resume_app.security;
 import com.mth.resume_app.exceptions.AuthException;
 import com.mth.resume_app.exceptions.ResumeAppException;
 import com.mth.resume_app.models.User;
+import com.mth.resume_app.config.AppConfig;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtParser;
@@ -31,8 +32,8 @@ public class JwtUtil {
   private final List<String> blackList = new ArrayList<>();
   private volatile boolean isCleaningTokens = false;
 
-  public JwtUtil() {
-    secret = System.getenv("SECKEY");
+  public JwtUtil(AppConfig appConfig) {
+    this.secret = appConfig.getSeckey();
     this.jwtParser = Jwts.parser().setSigningKey(secret);
   }
 
