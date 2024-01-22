@@ -1,9 +1,11 @@
 package com.mth.resume_app.services;
 
+import com.mth.resume_app.exceptions.EmailException;
 import com.mth.resume_app.exceptions.PasswordException;
 import com.mth.resume_app.exceptions.ResumeAppException;
 import com.mth.resume_app.exceptions.UserNotFoundException;
 import com.mth.resume_app.models.User;
+import com.mth.resume_app.models.dtos.EmailDTO;
 import com.mth.resume_app.models.dtos.PasswordDTO;
 import com.mth.resume_app.models.dtos.UserDTO;
 import com.mth.resume_app.repositories.UserRepository;
@@ -88,20 +90,72 @@ public class UserServiceImpl implements UserService {
         User user = findUser();
 
         if (!passwordEncoder.matches(passwordDTO.getCurrentPassword(),
-                user.getPassword())) {
+                user.getPassword()))
             throw new PasswordException("Incorrect current password!");
-        }
 
-        if (!Objects.equals(passwordDTO.getPassword(),
-                passwordDTO.getConfirmPassword())) {
-            throw new PasswordException("Password didn't match!");
-        }
+
+        if (!Objects.equals(passwordDTO.getNewPassword(),
+                passwordDTO.getConfirmNewPassword()))
+            throw new PasswordException("Passwords don't match!");
+
 
         user.setPassword(passwordEncoder
-                .encode(passwordDTO.getPassword())
+                .encode(passwordDTO.getNewPassword())
         );
 
         userRepository.save(user);
+    }
+
+    /**
+     * Changes the email of the currently authenticated user based on the provided EmailDTO. It retrieves
+     * the currently authenticated user, checks if the new email matches the confirmation email, and then
+     * updates and saves the new email to the repository.
+     *
+     * @param emailDTO The EmailDTO containing the new email and confirmation email.
+     * @throws ResumeAppException If an error occurs during email change, such as mismatched emails.
+     */
+    @Override
+    public void emailChange(EmailDTO emailDTO) throws ResumeAppException {
+
+        User user = findUser();
+
+        if (Objects.equals(user.getEmail(),
+                emailDTO.getEmail()))
+            throw new EmailException("You are already using this email!");
+
+        if (!Objects.equals(emailDTO.getEmail(),
+                emailDTO.getConfirmEmail()))
+            throw new EmailException("Emails don't match!");
+
+        user.setEmail(emailDTO.getEmail());
+
+        userRepository.save(user);
+    }
+
+    /**
+     * Deletes the account of the currently authenticated user based on the provided email and
+     * password information. It retrieves the currently authenticated user, checks if the provided
+     * email matches the user's email, validates the correctness of the provided password, and then
+     * deletes the user account from the repository.
+     *
+     * @param email       The email of the currently authenticated user for verification.
+     * @param passwordDTO The PasswordDTO containing the current password for verification.
+     * @throws ResumeAppException If an error occurs during account deletion, such as incorrect email or password.
+     */
+    @Override
+    public void deleteAccount(String email, PasswordDTO passwordDTO) throws ResumeAppException {
+
+        User user = findUser();
+
+        if (!Objects.equals(email,
+                user.getEmail()))
+            throw new EmailException("Email is incorrect!");
+
+        if (!passwordEncoder.matches(passwordDTO.getCurrentPassword(),
+                user.getPassword()))
+            throw new PasswordException("Password is incorrect!");
+
+        userRepository.delete(user);
     }
 
     /**
@@ -115,7 +169,7 @@ public class UserServiceImpl implements UserService {
     private User findUser() throws ResumeAppException {
         return userRepository.findByEmail(jwtUtil
                 .getEmail())
-                .orElseThrow(() -> new UserNotFoundException("User not found")
+                .orElseThrow(() -> new UserNotFoundException("User not found!")
                 );
     }
 
