@@ -1,7 +1,7 @@
 package com.mth.resume_app.controllers;
 
 import com.mth.resume_app.exceptions.ResumeAppException;
-import com.mth.resume_app.models.User;
+import com.mth.resume_app.models.dtos.PasswordDTO;
 import com.mth.resume_app.models.dtos.UserDTO;
 import com.mth.resume_app.services.UserService;
 import lombok.RequiredArgsConstructor;
