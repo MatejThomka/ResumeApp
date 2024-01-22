@@ -12,7 +12,7 @@ import lombok.experimental.FieldDefaults;
 public class PasswordDTO {
 
     String currentPassword;
-    String password;
-    String confirmPassword;
+    String newPassword;
+    String confirmNewPassword;
 
 }
