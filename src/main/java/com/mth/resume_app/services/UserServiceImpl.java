@@ -55,5 +55,33 @@ public class UserServiceImpl implements UserService {
                 .build();
     }
 
+    @Override
+    public void passwordChange(PasswordDTO passwordDTO) throws ResumeAppException {
+
+        User user = findUser();
+
+        if (!passwordEncoder.matches(passwordDTO.getCurrentPassword(),
+                user.getPassword())) {
+            throw new PasswordException("Incorrect current password!");
+        }
+
+        if (!Objects.equals(passwordDTO.getPassword(),
+                passwordDTO.getConfirmPassword())) {
+            throw new PasswordException("Password didn't match!");
+        }
+
+        user.setPassword(passwordEncoder
+                .encode(passwordDTO.getPassword())
+        );
+
+        userRepository.save(user);
+    }
+
+    private User findUser() throws ResumeAppException {
+        return userRepository.findByEmail(jwtUtil
+                .getEmail())
+                .orElseThrow(() -> new UserNotFoundException("User not found")
+                );
+    }
 
 }
