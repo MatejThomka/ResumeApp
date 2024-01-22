@@ -35,15 +35,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDTO updateCredentials(User user) throws ResumeAppException {
-        User updatedUser;
+    public UserDTO updateCredentials(UserDTO userDTO) throws ResumeAppException {
 
         User updatedUser = findUser();
 
-        if (user.getName() != null) updatedUser.setName(user.getName());
-        if (user.getLastname() != null) updatedUser.setLastname(user.getLastname());
-        if (user.getAddress() != null) updatedUser.setAddress(user.getAddress());
-        if (user.getPhoneNumber() != null) updatedUser.setPhoneNumber(user.getPhoneNumber());
+        if (userDTO.getName() != null) updatedUser.setName(userDTO.getName());
+        if (userDTO.getLastname() != null) updatedUser.setLastname(userDTO.getLastname());
+        if (userDTO.getAddress() != null) updatedUser.setAddress(userDTO.getAddress());
+        if (userDTO.getPhoneNumber() != null) updatedUser.setPhoneNumber(userDTO.getPhoneNumber());
 
         userRepository.save(updatedUser);
 
