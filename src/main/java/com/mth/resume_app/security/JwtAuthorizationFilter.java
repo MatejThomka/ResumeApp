@@ -54,11 +54,15 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
         String role = claims.get("roles", String.class);
 
-        List<GrantedAuthority> authorities = Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + role));
+        List<GrantedAuthority> authorities = Collections.
+                singletonList(new SimpleGrantedAuthority("ROLE_" + role));
 
-        Authentication authentication = new UsernamePasswordAuthenticationToken(email, "", authorities);
+        Authentication authentication = new UsernamePasswordAuthenticationToken(email,
+                null,
+                authorities);
 
-        SecurityContextHolder.getContext().setAuthentication(authentication);
+        SecurityContextHolder.getContext()
+                .setAuthentication(authentication);
       }
     } catch (Exception e) {
       errorDetails.put("message", "Authentication Error");

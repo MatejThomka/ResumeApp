@@ -38,12 +38,16 @@ public class JwtUtil {
   }
 
   public String createToken(User user) {
+
     Claims claims = Jwts.claims().setSubject(user.getEmail());
+
     claims.put("name", user.getName());
     claims.put("lastname", user.getLastname());
     claims.put("roles", user.getRole());
+
     Date tokenCreateTime = new Date();
-      Date tokenValidity = new Date(tokenCreateTime.getTime() + TimeUnit.MINUTES.toMillis(60 * 60 * 1000));
+    Date tokenValidity = new Date(tokenCreateTime.getTime() + TimeUnit.MINUTES.toMillis(60 * 60 * 1000));
+
     return Jwts.builder()
         .setClaims(claims)
         .setExpiration(tokenValidity)
@@ -60,15 +64,21 @@ public class JwtUtil {
   public Claims resolveClaims(HttpServletRequest request) {
     try {
       String token = resolveToken(request);
+
       if (token != null) {
         return parseJwtClaims(token);
       }
+
       return null;
     } catch (ExpiredJwtException e) {
+
       request.setAttribute("Expired!", e.getMessage());
+
       throw e;
     } catch (Exception e) {
+
       request.setAttribute("Invalid!", e.getMessage());
+
       throw e;
     }
   }
@@ -109,19 +119,28 @@ public class JwtUtil {
           request = ((ServletRequestAttributes) RequestContextHolder
                   .currentRequestAttributes())
                   .getRequest();
+
           Claims claims = resolveClaims(request);
+
           if (claims != null) {
               return claims.getSubject();
           }
+
           return null;
       } catch (ExpiredJwtException e) {
-          assert request != null;
-          request.setAttribute("Expired!", e.getMessage());
-          return null;
+
+        assert request != null;
+
+        request.setAttribute("Expired!", e.getMessage());
+
+        return null;
       } catch (Exception e) {
-          assert request != null;
-          request.setAttribute("Invalid!", e.getMessage());
-          return null;
+
+        assert request != null;
+
+        request.setAttribute("Invalid!", e.getMessage());
+
+        return null;
       }
 
   }
