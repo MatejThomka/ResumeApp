@@ -29,13 +29,13 @@ public class UserController {
         return new ResponseEntity<>(userDTO, HttpStatus.OK);
     }
 
-    @PatchMapping("/update")
-    public ResponseEntity<?> updateCredentials(@RequestBody User user) {
+    @PatchMapping("/update-credentials")
+    public ResponseEntity<?> updateCredentials(@RequestBody UserDTO userDTO) {
 
-        UserDTO userDTO;
+        UserDTO updatedUserDTO;
 
         try {
-            userDTO = userService.updateCredentials(user);
+            updatedUserDTO = userService.updateCredentials(userDTO);
         } catch (ResumeAppException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
