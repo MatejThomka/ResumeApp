@@ -1,7 +1,9 @@
 package com.mth.resume_app.config;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.FieldDefaults;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
@@ -9,11 +11,12 @@ import org.springframework.context.annotation.Configuration;
 @Getter
 @Configuration
 @ConfigurationProperties(prefix = "myapp")
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class AppConfig {
 
-    private String seckey;
-    private String dbUsername;
-    private String dbPassword;
-    private String dbUrl;
+    String seckey;
+    String dbUsername;
+    String dbPassword;
+    String dbUrl;
 
 }
