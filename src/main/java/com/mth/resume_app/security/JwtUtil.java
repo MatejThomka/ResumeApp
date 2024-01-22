@@ -81,7 +81,7 @@ public class JwtUtil {
     if (bearerToken != null && bearerToken.startsWith(PREFIX)) {
       return bearerToken.substring(PREFIX.length());
     }
-    log.debug(bearerToken);
+
     return null;
   }
 
@@ -104,8 +104,11 @@ public class JwtUtil {
   public String getEmail() {
 
       HttpServletRequest request = null;
+
       try {
-          request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
+          request = ((ServletRequestAttributes) RequestContextHolder
+                  .currentRequestAttributes())
+                  .getRequest();
           Claims claims = resolveClaims(request);
           if (claims != null) {
               return claims.getSubject();
@@ -126,7 +129,9 @@ public class JwtUtil {
   public void jwtBlackList() {
 
     try {
-      HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
+      HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder
+              .currentRequestAttributes())
+              .getRequest();
 
       String token = resolveToken(request);
 
