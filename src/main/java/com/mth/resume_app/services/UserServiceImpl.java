@@ -22,9 +22,8 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
     @Override
     public UserDTO credentials() throws ResumeAppException {
-        User user;
 
-        user = userRepository.findByEmail(jwtUtil.getEmail()).orElseThrow(() -> new UserNotFoundException("User not found!"));
+        User user = findUser();
 
         return UserDTO.builder()
                 .name(user.getName())
@@ -39,7 +38,7 @@ public class UserServiceImpl implements UserService {
     public UserDTO updateCredentials(User user) throws ResumeAppException {
         User updatedUser;
 
-        updatedUser = userRepository.findByEmail(jwtUtil.getEmail()).orElseThrow(() -> new UserNotFoundException("User not found"));
+        User updatedUser = findUser();
 
         if (user.getName() != null) updatedUser.setName(user.getName());
         if (user.getLastname() != null) updatedUser.setLastname(user.getLastname());
