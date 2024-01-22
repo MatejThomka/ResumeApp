@@ -40,6 +40,18 @@ public class UserController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
 
-        return new ResponseEntity<>(userDTO, HttpStatus.OK);
+        return new ResponseEntity<>(updatedUserDTO, HttpStatus.OK);
+    }
+
+    @PatchMapping("/password-change")
+    public ResponseEntity<?> passwordChange(@RequestBody PasswordDTO passwordDTO) {
+
+        try {
+            userService.passwordChange(passwordDTO);
+        } catch (ResumeAppException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+
+        return new ResponseEntity<>("Password change!", HttpStatus.OK);
     }
 }
