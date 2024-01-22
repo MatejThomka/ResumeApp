@@ -18,6 +18,16 @@ public class PersonalDetailsServiceImpl implements PersonalDetailsService {
   private final UserRepository userRepository;
   private final PersonalDetailsRepository personalDetailsRepository;
 
+  /**
+   * Retrieves and returns personal details for the user with the specified email. It checks for
+   * the existence of the user and their associated personal details. If the user or details are
+   * not found, respective exceptions are thrown. The method constructs a PersonalDetailsDTO based
+   * on the presence or absence of a driver's license in the user's personal details and returns it.
+   *
+   * @param email The email of the user for whom personal details are to be retrieved.
+   * @return A PersonalDetailsDTO containing the user's personal information.
+   * @throws ResumeAppException If the user or personal details are not found.
+   */
   @Override
   public PersonalDetailsDTO showPersonalDetails(String email) throws ResumeAppException {
 
@@ -43,6 +53,15 @@ public class PersonalDetailsServiceImpl implements PersonalDetailsService {
     }
   }
 
+  /**
+   * Creates and saves personal details for the user with the specified email. It first checks
+   * for the existence of the user, and if found, creates a new PersonalDetails entity based on
+   * the provided data. The method then saves the new personal details to the repository.
+   *
+   * @param email           The email of the user for whom personal details are to be created.
+   * @param personalDetails The PersonalDetails object containing the user's personal information.
+   * @throws ResumeAppException If the user is not found or an error occurs during personal details creation.
+   */
   @Override
   public void createPersonalDetails(String email,
                                     PersonalDetails personalDetails) throws ResumeAppException {
