@@ -19,6 +19,7 @@ public class UserServiceImpl implements UserService {
 
     private final JwtUtil jwtUtil;
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
     @Override
     public UserDTO credentials() throws ResumeAppException {
         User user;
