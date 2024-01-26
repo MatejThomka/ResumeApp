@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -78,5 +79,18 @@ public class UserController {
         }
 
         return new ResponseEntity<>("User deleted successfully!", HttpStatus.OK);
+    }
+
+    @GetMapping("/all-users")
+    public ResponseEntity<?> showAllUser() {
+        List<UserDTO> userDTOList;
+
+        try {
+            userDTOList = userService.showAllUsers();
+        } catch (ResumeAppException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.UNAUTHORIZED);
+        }
+
+        return new ResponseEntity<>(userDTOList, HttpStatus.OK);
     }
 }
