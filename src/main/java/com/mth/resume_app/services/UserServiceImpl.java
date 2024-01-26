@@ -1,19 +1,20 @@
 package com.mth.resume_app.services;
 
-import com.mth.resume_app.exceptions.EmailException;
-import com.mth.resume_app.exceptions.PasswordException;
-import com.mth.resume_app.exceptions.ResumeAppException;
-import com.mth.resume_app.exceptions.UserNotFoundException;
+import com.mth.resume_app.exceptions.*;
 import com.mth.resume_app.models.User;
 import com.mth.resume_app.models.dtos.EmailDTO;
 import com.mth.resume_app.models.dtos.PasswordDTO;
 import com.mth.resume_app.models.dtos.UserDTO;
+import com.mth.resume_app.models.enums.Roles;
 import com.mth.resume_app.repositories.UserRepository;
 import com.mth.resume_app.security.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -159,6 +160,32 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
+     * Retrieves and returns a list of UserDTOs representing all users in the system. It fetches
+     * the list of users from the repository and converts each user to a UserDTO. If there are no
+     * users, a UserNotFoundException is thrown. Additionally, only users with the 'ADMIN' role are
+     * authorized to access this information; otherwise, an AuthException is thrown.
+     *
+     * @return A List of UserDTOs representing all users in the system.
+     * @throws ResumeAppException If there are no users or if the operation is unauthorized.
+     */
+    @Override
+    public List<UserDTO> showAllUsers() throws ResumeAppException {
+        List<User> userList = userRepository.findAll();
+
+        if (userList.isEmpty()) {
+           throw new UserNotFoundException("There is not any users!");
+        }
+
+        if (findUser().getRole() != Roles.ADMIN) {
+            throw new AuthException("Unauthorized!");
+        }
+
+        return userList.stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
+    }
+
+    /**
      * Finds and retrieves the currently authenticated user based on the email stored in the JSON
      * Web Token (JWT) obtained from the JwtUtil. It uses the email from the JWT to look up the user
      * in the repository. If the user is not found, a UserNotFoundException is thrown.
@@ -171,6 +198,24 @@ public class UserServiceImpl implements UserService {
                 .getEmail())
                 .orElseThrow(() -> new UserNotFoundException("User not found!")
                 );
+    }
+
+    /**
+     * Converts a User entity to a UserDTO for simplified representation. It takes a User object
+     * and creates a UserDTO containing selected user attributes such as 'name,' 'lastname,' 'email,'
+     * 'phoneNumber,' and 'address.'
+     *
+     * @param user The User entity to be converted.
+     * @return A UserDTO containing selected user attributes.
+     */
+    private UserDTO convertToDTO(User user) {
+        return UserDTO.builder()
+                .name(user.getName())
+                .lastname(user.getLastname())
+                .email(user.getEmail())
+                .phoneNumber(user.getPhoneNumber())
+                .address(user.getAddress())
+                .build();
     }
 
 }
