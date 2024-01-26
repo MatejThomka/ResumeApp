@@ -1,6 +1,10 @@
 package com.mth.resume_app.services;
 
-import com.mth.resume_app.exceptions.*;
+import com.mth.resume_app.exceptions.ResumeAppException;
+import com.mth.resume_app.exceptions.PasswordException;
+import com.mth.resume_app.exceptions.EmailException;
+import com.mth.resume_app.exceptions.UserNotFoundException;
+import com.mth.resume_app.exceptions.AuthException;
 import com.mth.resume_app.models.User;
 import com.mth.resume_app.models.dtos.EmailDTO;
 import com.mth.resume_app.models.dtos.PasswordDTO;
@@ -11,7 +15,6 @@ import com.mth.resume_app.security.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
