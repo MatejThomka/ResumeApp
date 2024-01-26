@@ -5,6 +5,8 @@ import com.mth.resume_app.models.dtos.EmailDTO;
 import com.mth.resume_app.models.dtos.PasswordDTO;
 import com.mth.resume_app.models.dtos.UserDTO;
 
+import java.util.List;
+
 public interface UserService {
 
     UserDTO credentials() throws ResumeAppException;
@@ -12,4 +14,5 @@ public interface UserService {
     void passwordChange(PasswordDTO passwordDTO) throws ResumeAppException;
     void emailChange(EmailDTO emailDTO) throws ResumeAppException;
     void deleteAccount(String email, PasswordDTO passwordDTO) throws ResumeAppException;
+    List<UserDTO> showAllUsers() throws ResumeAppException;
 }
