@@ -20,6 +20,7 @@ public class WebSecurityConfig {
 
   private final CustomUserDetailsService userDetailsService;
   private final JwtAuthorizationFilter jwtAuthorizationFilter;
+  private final CustomAccessDeniedHandler customAccessDeniedHandler;
 
   @Bean
   public AuthenticationManager authenticationManager(HttpSecurity httpSecurity,
@@ -37,11 +38,13 @@ public class WebSecurityConfig {
     httpSecurity
         .csrf(csrf -> csrf.ignoringRequestMatchers("/api/**"))
             .authorizeHttpRequests((request) -> request
-                .requestMatchers("/api/auth/**").permitAll()
-                .requestMatchers("/api/resume/**").hasAnyRole("USER", "ADMIN", "COMPANY")
-                .requestMatchers("/api/user/**").hasAnyRole("USER", "ADMIN", "COMPANY")
-                .anyRequest().authenticated()
-        );
+                    .requestMatchers("/api/auth/**").permitAll()
+                    .requestMatchers("/api/resume/**").hasAnyRole("USER", "ADMIN", "COMPANY")
+                    .requestMatchers("/api/user/all-users").hasAnyRole("ADMIN", "COMPANY")
+                    .requestMatchers("/api/user/**").hasAnyRole("USER", "ADMIN", "COMPANY")
+                    .anyRequest().authenticated()
+        )
+            .exceptionHandling(handling -> handling.accessDeniedHandler(customAccessDeniedHandler));
 
     httpSecurity.addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class);
 
