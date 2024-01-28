@@ -27,10 +27,10 @@ public class PersonalDetails {
   Integer id;
   String dateOfBirth;
   String placeOfBirth;
-  boolean driverLicense;
   Gender gender;
+  boolean drivingLicence;
 
-  @ElementCollection(targetClass = DrivingGroups.class)
+  @ElementCollection(targetClass = DrivingGroups.class, fetch = FetchType.EAGER)
   @Enumerated(EnumType.STRING)
   List<DrivingGroups> drivingGroups;
 
