@@ -2,14 +2,8 @@ package com.mth.resume_app.models;
 
 import com.mth.resume_app.models.enums.DrivingGroups;
 import com.mth.resume_app.models.enums.Gender;
-import jakarta.persistence.ElementCollection;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.*;
+
 import java.util.List;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -33,10 +27,10 @@ public class PersonalDetails {
   Integer id;
   String dateOfBirth;
   String placeOfBirth;
-  boolean driverLicense;
   Gender gender;
+  boolean drivingLicence;
 
-  @ElementCollection(targetClass = DrivingGroups.class)
+  @ElementCollection(targetClass = DrivingGroups.class, fetch = FetchType.EAGER)
   @Enumerated(EnumType.STRING)
   List<DrivingGroups> drivingGroups;
 

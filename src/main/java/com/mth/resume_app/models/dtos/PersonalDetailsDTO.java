@@ -21,7 +21,7 @@ public class PersonalDetailsDTO {
 
   String dateOfBirth;
   String placeOfBirth;
-  boolean driverLicense;
   Gender gender;
-  List<DrivingGroups> drivingGroup;
+  boolean drivingLicence;
+  List<DrivingGroups> drivingGroups;
 }

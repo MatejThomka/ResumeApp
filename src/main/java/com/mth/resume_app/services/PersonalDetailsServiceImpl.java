@@ -1,13 +1,12 @@
 package com.mth.resume_app.services;
 
-import com.mth.resume_app.exceptions.DetailsNotFoundException;
+import com.mth.resume_app.exceptions.DetailsException;
 import com.mth.resume_app.exceptions.ResumeAppException;
-import com.mth.resume_app.exceptions.UserNotFoundException;
 import com.mth.resume_app.models.PersonalDetails;
 import com.mth.resume_app.models.User;
 import com.mth.resume_app.models.dtos.PersonalDetailsDTO;
 import com.mth.resume_app.repositories.PersonalDetailsRepository;
-import com.mth.resume_app.repositories.UserRepository;
+import com.mth.resume_app.security.UserExtraction;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -15,8 +14,8 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class PersonalDetailsServiceImpl implements PersonalDetailsService {
 
-  private final UserRepository userRepository;
-  private final PersonalDetailsRepository personalDetailsRepository;
+  private final PersonalDetailsRepository detailsRepository;
+  private final UserExtraction extraction;
 
   /**
    * Retrieves and returns personal details for the user with the specified email. It checks for
@@ -24,65 +23,97 @@ public class PersonalDetailsServiceImpl implements PersonalDetailsService {
    * not found, respective exceptions are thrown. The method constructs a PersonalDetailsDTO based
    * on the presence or absence of a driver's license in the user's personal details and returns it.
    *
-   * @param email The email of the user for whom personal details are to be retrieved.
    * @return A PersonalDetailsDTO containing the user's personal information.
    * @throws ResumeAppException If the user or personal details are not found.
    */
   @Override
-  public PersonalDetailsDTO showPersonalDetails(String email) throws ResumeAppException {
+  public PersonalDetailsDTO showPersonalDetails() throws ResumeAppException {
 
-    PersonalDetails personalDetails;
-    User user;
+    User user = extraction.findUserByAuthorization();
+    PersonalDetails personalDetails = detailsRepository
+            .findByUser(user)
+            .orElseThrow(() -> new DetailsException("Details not found!"));
 
-    user = userCheck(email);
-    personalDetails = personalDetailsRepository.findByUser(user).orElseThrow(() -> new DetailsNotFoundException("Details not found!"));
-
-    if (personalDetails.isDriverLicense()) {
-      return PersonalDetailsDTO.builder()
-          .dateOfBirth(personalDetails.getDateOfBirth())
-          .placeOfBirth(personalDetails.getPlaceOfBirth())
-          .gender(personalDetails.getGender())
-          .drivingGroup(personalDetails.getDrivingGroups())
-          .build();
-    } else {
-      return PersonalDetailsDTO.builder()
-          .dateOfBirth(personalDetails.getDateOfBirth())
-          .placeOfBirth(personalDetails.getPlaceOfBirth())
-          .gender(personalDetails.getGender())
-          .build();
-    }
+      return buildByDrivingLicence(personalDetails);
   }
 
   /**
-   * Creates and saves personal details for the user with the specified email. It first checks
-   * for the existence of the user, and if found, creates a new PersonalDetails entity based on
-   * the provided data. The method then saves the new personal details to the repository.
+   * Updates or creates and saves personal details for the user with the specified email. It first checks
+   * for the existence of the user, and if found, updates or creates a new PersonalDetails entity based on
+   * the provided data. The method then saves the personal details to the repository.
    *
-   * @param email           The email of the user for whom personal details are to be created.
-   * @param personalDetails The PersonalDetails object containing the user's personal information.
    * @throws ResumeAppException If the user is not found or an error occurs during personal details creation.
    */
   @Override
-  public void createPersonalDetails(String email,
-                                    PersonalDetails personalDetails) throws ResumeAppException {
-    PersonalDetails newPersonalDetails = new PersonalDetails();
-    User user;
+  public PersonalDetailsDTO createUpdatePersonalDetails(PersonalDetailsDTO personalDetailsDTO) throws ResumeAppException {
 
-    user = userCheck(email);
-    newPersonalDetails.setUser(user);
-    newPersonalDetails.setDateOfBirth(personalDetails.getDateOfBirth());
-    newPersonalDetails.setPlaceOfBirth(personalDetails.getPlaceOfBirth());
-    newPersonalDetails.setGender(personalDetails.getGender());
+    User user = extraction.findUserByAuthorization();
 
-    if (personalDetails.isDriverLicense()) {
-      newPersonalDetails.setDriverLicense(true);
-      newPersonalDetails.setDrivingGroups(personalDetails.getDrivingGroups());
-    }
+    PersonalDetails personalDetails = detailsRepository.findByUser(user).orElse(new PersonalDetails());
 
-    personalDetailsRepository.save(newPersonalDetails);
+    personalDetails.setUser(user);
+
+    return savePersonalDetailsDTO(personalDetailsDTO, personalDetails);
   }
 
-  private User userCheck(String email) throws UserNotFoundException {
-    return userRepository.findByEmail(email).orElseThrow(() -> new UserNotFoundException("User not found!"));
+  /**
+   * Updates and saves personal details based on the provided PersonalDetailsDTO.
+   * It takes a PersonalDetailsDTO and an existing PersonalDetails entity, updates its attributes
+   * such as 'dateOfBirth,' 'placeOfBirth,' 'gender,' 'drivingLicence,' and 'drivingGroups,'
+   * and then saves the changes to the repository. The method returns a PersonalDetailsDTO
+   * representation of the updated details.
+   *
+   * @param detailsDTO The PersonalDetailsDTO containing the updated personal details.
+   * @param details    The existing PersonalDetails entity to be updated.
+   * @return A PersonalDetailsDTO representing the updated personal details.
+   */
+  private PersonalDetailsDTO savePersonalDetailsDTO(PersonalDetailsDTO detailsDTO,
+                                                    PersonalDetails details) {
+    details.setDateOfBirth(detailsDTO.getDateOfBirth());
+    details.setPlaceOfBirth(detailsDTO.getPlaceOfBirth());
+    details.setGender(detailsDTO.getGender());
+
+    if (detailsDTO.isDrivingLicence()) {
+      details.setDrivingLicence(true);
+      details.setDrivingGroups(detailsDTO.getDrivingGroups());
+    } else {
+      details.setDrivingLicence(false);
+      details.setDrivingGroups(null);
+    }
+
+    detailsRepository.save(details);
+
+    System.out.println(details.isDrivingLicence());
+
+    return buildByDrivingLicence(details);
+  }
+
+  /**
+   * Builds and returns a PersonalDetailsDTO representation based on the provided PersonalDetails entity.
+   * The method checks whether the provided entity has a driving license and constructs a PersonalDetailsDTO
+   * accordingly, including attributes such as 'dateOfBirth,' 'placeOfBirth,' 'drivingLicence,' 'gender,'
+   * and 'drivingGroups' if applicable.
+   *
+   * @param details The PersonalDetails entity to be converted to a PersonalDetailsDTO.
+   * @return A PersonalDetailsDTO representation based on the provided entity's driving license status.
+   */
+  private PersonalDetailsDTO buildByDrivingLicence(PersonalDetails details) {
+
+    if (details.isDrivingLicence()) {
+      return PersonalDetailsDTO.builder()
+              .dateOfBirth(details.getDateOfBirth())
+              .placeOfBirth(details.getPlaceOfBirth())
+              .drivingLicence(details.isDrivingLicence())
+              .gender(details.getGender())
+              .drivingGroups(details.getDrivingGroups())
+              .build();
+    } else {
+      return PersonalDetailsDTO.builder()
+              .dateOfBirth(details.getDateOfBirth())
+              .placeOfBirth(details.getPlaceOfBirth())
+              .drivingLicence(details.isDrivingLicence())
+              .gender(details.getGender())
+              .build();
+    }
   }
 }
