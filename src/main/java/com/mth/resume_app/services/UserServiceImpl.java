@@ -1,6 +1,10 @@
 package com.mth.resume_app.services;
 
-import com.mth.resume_app.exceptions.*;
+import com.mth.resume_app.exceptions.UserException;
+import com.mth.resume_app.exceptions.ResumeAppException;
+import com.mth.resume_app.exceptions.PasswordException;
+import com.mth.resume_app.exceptions.EmailException;
+import com.mth.resume_app.exceptions.AuthException;
 import com.mth.resume_app.models.User;
 import com.mth.resume_app.models.dtos.EmailDTO;
 import com.mth.resume_app.models.dtos.PasswordDTO;
