@@ -1,13 +1,12 @@
 package com.mth.resume_app.services;
 
-import com.mth.resume_app.exceptions.DetailsNotFoundException;
+import com.mth.resume_app.exceptions.DetailsException;
 import com.mth.resume_app.exceptions.ResumeAppException;
-import com.mth.resume_app.exceptions.UserNotFoundException;
 import com.mth.resume_app.models.PersonalDetails;
 import com.mth.resume_app.models.User;
 import com.mth.resume_app.models.dtos.PersonalDetailsDTO;
 import com.mth.resume_app.repositories.PersonalDetailsRepository;
-import com.mth.resume_app.repositories.UserRepository;
+import com.mth.resume_app.security.UserExtraction;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
