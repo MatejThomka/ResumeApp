@@ -14,8 +14,8 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class PersonalDetailsServiceImpl implements PersonalDetailsService {
 
-  private final UserRepository userRepository;
-  private final PersonalDetailsRepository personalDetailsRepository;
+  private final PersonalDetailsRepository detailsRepository;
+  private final UserExtraction extraction;
 
   /**
    * Retrieves and returns personal details for the user with the specified email. It checks for
