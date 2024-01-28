@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/resume")
-public class ResumeController {
+@RequestMapping("/api/personal-details")
+public class PersonalDetailsController {
 
   private final PersonalDetailsService personalDetailsService;
 
