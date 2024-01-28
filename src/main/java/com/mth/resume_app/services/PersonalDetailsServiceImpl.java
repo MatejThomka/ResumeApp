@@ -23,18 +23,35 @@ public class PersonalDetailsServiceImpl implements PersonalDetailsService {
    * not found, respective exceptions are thrown. The method constructs a PersonalDetailsDTO based
    * on the presence or absence of a driver's license in the user's personal details and returns it.
    *
-   * @param email The email of the user for whom personal details are to be retrieved.
    * @return A PersonalDetailsDTO containing the user's personal information.
    * @throws ResumeAppException If the user or personal details are not found.
    */
   @Override
-  public PersonalDetailsDTO showPersonalDetails(String email) throws ResumeAppException {
+  public PersonalDetailsDTO showPersonalDetails() throws ResumeAppException {
 
-    PersonalDetails personalDetails;
-    User user;
+    User user = extraction.findUserByAuthorization();
+    PersonalDetails personalDetails = detailsRepository
+            .findByUser(user)
+            .orElseThrow(() -> new DetailsException("Details not found!"));
 
-    user = userCheck(email);
-    personalDetails = personalDetailsRepository.findByUser(user).orElseThrow(() -> new DetailsNotFoundException("Details not found!"));
+      return buildByDrivingLicence(personalDetails);
+  }
+
+  /**
+   * Updates or creates and saves personal details for the user with the specified email. It first checks
+   * for the existence of the user, and if found, updates or creates a new PersonalDetails entity based on
+   * the provided data. The method then saves the personal details to the repository.
+   *
+   * @throws ResumeAppException If the user is not found or an error occurs during personal details creation.
+   */
+  @Override
+  public PersonalDetailsDTO createUpdatePersonalDetails(PersonalDetailsDTO personalDetailsDTO) throws ResumeAppException {
+
+    User user = extraction.findUserByAuthorization();
+
+    PersonalDetails personalDetails = detailsRepository.findByUser(user).orElse(new PersonalDetails());
+
+    personalDetails.setUser(user);
 
     if (personalDetails.isDriverLicense()) {
       return PersonalDetailsDTO.builder()
