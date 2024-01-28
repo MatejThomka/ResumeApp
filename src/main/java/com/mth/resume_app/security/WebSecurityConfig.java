@@ -39,9 +39,9 @@ public class WebSecurityConfig {
         .csrf(csrf -> csrf.ignoringRequestMatchers("/api/**"))
             .authorizeHttpRequests((request) -> request
                     .requestMatchers("/api/auth/**").permitAll()
-                    .requestMatchers("/api/resume/**").hasAnyRole("USER", "ADMIN", "COMPANY")
                     .requestMatchers("/api/user/all-users").hasAnyRole("ADMIN", "COMPANY")
                     .requestMatchers("/api/user/**").hasAnyRole("USER", "ADMIN", "COMPANY")
+                    .requestMatchers("/api/personal-details/**").hasAnyRole("USER", "ADMIN", "COMPANY")
                     .anyRequest().authenticated()
         )
             .exceptionHandling(handling -> handling.accessDeniedHandler(customAccessDeniedHandler));
