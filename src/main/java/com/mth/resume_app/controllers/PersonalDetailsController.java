@@ -1,18 +1,12 @@
 package com.mth.resume_app.controllers;
 
 import com.mth.resume_app.exceptions.ResumeAppException;
-import com.mth.resume_app.models.PersonalDetails;
 import com.mth.resume_app.models.dtos.PersonalDetailsDTO;
 import com.mth.resume_app.services.PersonalDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
