@@ -53,52 +53,67 @@ public class PersonalDetailsServiceImpl implements PersonalDetailsService {
 
     personalDetails.setUser(user);
 
-    if (personalDetails.isDriverLicense()) {
-      return PersonalDetailsDTO.builder()
-          .dateOfBirth(personalDetails.getDateOfBirth())
-          .placeOfBirth(personalDetails.getPlaceOfBirth())
-          .gender(personalDetails.getGender())
-          .drivingGroup(personalDetails.getDrivingGroups())
-          .build();
-    } else {
-      return PersonalDetailsDTO.builder()
-          .dateOfBirth(personalDetails.getDateOfBirth())
-          .placeOfBirth(personalDetails.getPlaceOfBirth())
-          .gender(personalDetails.getGender())
-          .build();
-    }
+    return savePersonalDetailsDTO(personalDetailsDTO, personalDetails);
   }
 
   /**
-   * Creates and saves personal details for the user with the specified email. It first checks
-   * for the existence of the user, and if found, creates a new PersonalDetails entity based on
-   * the provided data. The method then saves the new personal details to the repository.
+   * Updates and saves personal details based on the provided PersonalDetailsDTO.
+   * It takes a PersonalDetailsDTO and an existing PersonalDetails entity, updates its attributes
+   * such as 'dateOfBirth,' 'placeOfBirth,' 'gender,' 'drivingLicence,' and 'drivingGroups,'
+   * and then saves the changes to the repository. The method returns a PersonalDetailsDTO
+   * representation of the updated details.
    *
-   * @param email           The email of the user for whom personal details are to be created.
-   * @param personalDetails The PersonalDetails object containing the user's personal information.
-   * @throws ResumeAppException If the user is not found or an error occurs during personal details creation.
+   * @param detailsDTO The PersonalDetailsDTO containing the updated personal details.
+   * @param details    The existing PersonalDetails entity to be updated.
+   * @return A PersonalDetailsDTO representing the updated personal details.
    */
-  @Override
-  public void createPersonalDetails(String email,
-                                    PersonalDetails personalDetails) throws ResumeAppException {
-    PersonalDetails newPersonalDetails = new PersonalDetails();
-    User user;
+  private PersonalDetailsDTO savePersonalDetailsDTO(PersonalDetailsDTO detailsDTO,
+                                                    PersonalDetails details) {
+    details.setDateOfBirth(detailsDTO.getDateOfBirth());
+    details.setPlaceOfBirth(detailsDTO.getPlaceOfBirth());
+    details.setGender(detailsDTO.getGender());
 
-    user = userCheck(email);
-    newPersonalDetails.setUser(user);
-    newPersonalDetails.setDateOfBirth(personalDetails.getDateOfBirth());
-    newPersonalDetails.setPlaceOfBirth(personalDetails.getPlaceOfBirth());
-    newPersonalDetails.setGender(personalDetails.getGender());
-
-    if (personalDetails.isDriverLicense()) {
-      newPersonalDetails.setDriverLicense(true);
-      newPersonalDetails.setDrivingGroups(personalDetails.getDrivingGroups());
+    if (detailsDTO.isDrivingLicence()) {
+      details.setDrivingLicence(true);
+      details.setDrivingGroups(detailsDTO.getDrivingGroups());
+    } else {
+      details.setDrivingLicence(false);
+      details.setDrivingGroups(null);
     }
 
-    personalDetailsRepository.save(newPersonalDetails);
+    detailsRepository.save(details);
+
+    System.out.println(details.isDrivingLicence());
+
+    return buildByDrivingLicence(details);
   }
 
-  private User userCheck(String email) throws UserNotFoundException {
-    return userRepository.findByEmail(email).orElseThrow(() -> new UserNotFoundException("User not found!"));
+  /**
+   * Builds and returns a PersonalDetailsDTO representation based on the provided PersonalDetails entity.
+   * The method checks whether the provided entity has a driving license and constructs a PersonalDetailsDTO
+   * accordingly, including attributes such as 'dateOfBirth,' 'placeOfBirth,' 'drivingLicence,' 'gender,'
+   * and 'drivingGroups' if applicable.
+   *
+   * @param details The PersonalDetails entity to be converted to a PersonalDetailsDTO.
+   * @return A PersonalDetailsDTO representation based on the provided entity's driving license status.
+   */
+  private PersonalDetailsDTO buildByDrivingLicence(PersonalDetails details) {
+
+    if (details.isDrivingLicence()) {
+      return PersonalDetailsDTO.builder()
+              .dateOfBirth(details.getDateOfBirth())
+              .placeOfBirth(details.getPlaceOfBirth())
+              .drivingLicence(details.isDrivingLicence())
+              .gender(details.getGender())
+              .drivingGroups(details.getDrivingGroups())
+              .build();
+    } else {
+      return PersonalDetailsDTO.builder()
+              .dateOfBirth(details.getDateOfBirth())
+              .placeOfBirth(details.getPlaceOfBirth())
+              .drivingLicence(details.isDrivingLicence())
+              .gender(details.getGender())
+              .build();
+    }
   }
 }
