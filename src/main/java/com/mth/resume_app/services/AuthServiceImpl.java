@@ -1,8 +1,7 @@
 package com.mth.resume_app.services;
 
 import com.mth.resume_app.exceptions.ResumeAppException;
-import com.mth.resume_app.exceptions.UserAlreadyExistsException;
-import com.mth.resume_app.exceptions.UserNotFoundException;
+import com.mth.resume_app.exceptions.UserException;
 import com.mth.resume_app.models.User;
 import com.mth.resume_app.models.dtos.AuthenticationDTO;
 import com.mth.resume_app.models.dtos.LoginDTO;
