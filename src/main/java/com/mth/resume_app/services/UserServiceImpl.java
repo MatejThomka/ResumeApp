@@ -1,17 +1,13 @@
 package com.mth.resume_app.services;
 
-import com.mth.resume_app.exceptions.ResumeAppException;
-import com.mth.resume_app.exceptions.PasswordException;
-import com.mth.resume_app.exceptions.EmailException;
-import com.mth.resume_app.exceptions.UserNotFoundException;
-import com.mth.resume_app.exceptions.AuthException;
+import com.mth.resume_app.exceptions.*;
 import com.mth.resume_app.models.User;
 import com.mth.resume_app.models.dtos.EmailDTO;
 import com.mth.resume_app.models.dtos.PasswordDTO;
 import com.mth.resume_app.models.dtos.UserDTO;
 import com.mth.resume_app.models.enums.Roles;
 import com.mth.resume_app.repositories.UserRepository;
-import com.mth.resume_app.security.JwtUtil;
+import com.mth.resume_app.security.UserExtraction;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -23,9 +19,9 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
-    private final JwtUtil jwtUtil;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final UserExtraction extraction;
 
     /**
      * Retrieves and returns user credentials, such as name, lastname, email, phone number, and address,
@@ -37,7 +33,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDTO credentials() throws ResumeAppException {
 
-        User user = findUser();
+        User user = extraction.findUserByAuthorization();
 
         return UserDTO.builder()
                 .name(user.getName())
@@ -61,7 +57,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDTO updateCredentials(UserDTO userDTO) throws ResumeAppException {
 
-        User updatedUser = findUser();
+        User updatedUser = extraction.findUserByAuthorization();
 
         if (userDTO.getName() != null) updatedUser.setName(userDTO.getName());
         if (userDTO.getLastname() != null) updatedUser.setLastname(userDTO.getLastname());
@@ -91,7 +87,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void passwordChange(PasswordDTO passwordDTO) throws ResumeAppException {
 
-        User user = findUser();
+        User user = extraction.findUserByAuthorization();
 
         if (!passwordEncoder.matches(passwordDTO.getCurrentPassword(),
                 user.getPassword()))
@@ -121,7 +117,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void emailChange(EmailDTO emailDTO) throws ResumeAppException {
 
-        User user = findUser();
+        User user = extraction.findUserByAuthorization();
 
         if (Objects.equals(user.getEmail(),
                 emailDTO.getEmail()))
@@ -149,7 +145,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void deleteAccount(String email, PasswordDTO passwordDTO) throws ResumeAppException {
 
-        User user = findUser();
+        User user = extraction.findUserByAuthorization();
 
         if (!Objects.equals(email,
                 user.getEmail()))
@@ -176,31 +172,16 @@ public class UserServiceImpl implements UserService {
         List<User> userList = userRepository.findAll();
 
         if (userList.isEmpty()) {
-           throw new UserNotFoundException("There is not any users!");
+           throw new UserException("There is not any users!");
         }
 
-        if (findUser().getRole() != Roles.ADMIN) {
+        if (extraction.findUserByAuthorization().getRole() != Roles.ADMIN) {
             throw new AuthException("Unauthorized!");
         }
 
         return userList.stream()
                 .map(this::convertToDTO)
                 .collect(Collectors.toList());
-    }
-
-    /**
-     * Finds and retrieves the currently authenticated user based on the email stored in the JSON
-     * Web Token (JWT) obtained from the JwtUtil. It uses the email from the JWT to look up the user
-     * in the repository. If the user is not found, a UserNotFoundException is thrown.
-     *
-     * @return The User object representing the currently authenticated user.
-     * @throws ResumeAppException If the user is not found based on the JWT email.
-     */
-    private User findUser() throws ResumeAppException {
-        return userRepository.findByEmail(jwtUtil
-                .getEmail())
-                .orElseThrow(() -> new UserNotFoundException("User not found!")
-                );
     }
 
     /**
