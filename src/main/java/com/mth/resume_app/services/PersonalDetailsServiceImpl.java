@@ -27,9 +27,10 @@ public class PersonalDetailsServiceImpl implements PersonalDetailsService {
    * @throws ResumeAppException If the user or personal details are not found.
    */
   @Override
-  public PersonalDetailsDTO showPersonalDetails() throws ResumeAppException {
+  public PersonalDetailsDTO showPersonalDetails(String username) throws ResumeAppException {
 
-    User user = extraction.findUserByAuthorization();
+    User user = extraction.findUserByUsername(username);
+
     PersonalDetails personalDetails = detailsRepository
             .findByUser(user)
             .orElseThrow(() -> new DetailsException("Details not found!"));
@@ -45,15 +46,33 @@ public class PersonalDetailsServiceImpl implements PersonalDetailsService {
    * @throws ResumeAppException If the user is not found or an error occurs during personal details creation.
    */
   @Override
-  public PersonalDetailsDTO createUpdatePersonalDetails(PersonalDetailsDTO personalDetailsDTO) throws ResumeAppException {
+  public PersonalDetailsDTO createUpdatePersonalDetails(String username, PersonalDetailsDTO personalDetailsDTO) throws ResumeAppException {
 
-    User user = extraction.findUserByAuthorization();
+    User user = extraction.findUserByUsername(username);
 
     PersonalDetails personalDetails = detailsRepository.findByUser(user).orElse(new PersonalDetails());
 
     personalDetails.setUser(user);
 
     return savePersonalDetailsDTO(personalDetailsDTO, personalDetails);
+  }
+
+  /**
+   * Removes personal details associated with the specified user.
+   * It attempts to find personal details for the provided user in the repository.
+   * If details are found, they are deleted from the repository.
+   * If no details are found, a DetailsException is thrown.
+   *
+   * @param user The User for whom personal details need to be removed.
+   * @throws ResumeAppException If an error occurs during the removal of personal details.
+   *                           Specifically, a DetailsException is thrown if details are not found.
+   */
+  @Override
+  public void removePersonalDetails(User user) throws ResumeAppException {
+
+    PersonalDetails personalDetails = detailsRepository.findByUser(user).orElseThrow(() -> new DetailsException("Details not found!"));
+
+    detailsRepository.delete(personalDetails);
   }
 
   /**

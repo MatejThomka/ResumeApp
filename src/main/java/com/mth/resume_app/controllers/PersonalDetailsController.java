@@ -15,12 +15,12 @@ public class PersonalDetailsController {
 
   private final PersonalDetailsService personalDetailsService;
 
-  @GetMapping("/")
-  public ResponseEntity<?> show() {
+  @GetMapping("/{username}")
+  public ResponseEntity<?> show(@PathVariable String username) {
     PersonalDetailsDTO personalDetailsDTO;
 
     try {
-      personalDetailsDTO = personalDetailsService.showPersonalDetails();
+      personalDetailsDTO = personalDetailsService.showPersonalDetails(username);
     } catch (ResumeAppException e) {
       return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
     }
@@ -28,12 +28,12 @@ public class PersonalDetailsController {
     return new ResponseEntity<>(personalDetailsDTO, HttpStatus.OK);
   }
 
-  @PutMapping("/create-update")
-  public ResponseEntity<?> createUpdate(@RequestBody(required = false) PersonalDetailsDTO personalDetailsDTO) {
+  @PutMapping("/{username}/create-update")
+  public ResponseEntity<?> createUpdate(@PathVariable String username, @RequestBody(required = false) PersonalDetailsDTO personalDetailsDTO) {
     PersonalDetailsDTO createdDetails;
 
     try {
-      createdDetails = personalDetailsService.createUpdatePersonalDetails(personalDetailsDTO);
+      createdDetails = personalDetailsService.createUpdatePersonalDetails(username, personalDetailsDTO);
     } catch (ResumeAppException e) {
       return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
     }

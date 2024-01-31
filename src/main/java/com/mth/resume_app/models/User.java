@@ -28,6 +28,7 @@ public class User {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   Integer id;
+  String username;
   String name;
   String lastname;
   String email;
@@ -38,4 +39,6 @@ public class User {
 
   @OneToOne
   PersonalDetails personalDetails;
+
+
 }

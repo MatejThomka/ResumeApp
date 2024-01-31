@@ -16,6 +16,7 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 public class UserDTO {
 
+  String username;
   String name;
   String lastname;
   String email;

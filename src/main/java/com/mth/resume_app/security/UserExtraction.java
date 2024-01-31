@@ -27,4 +27,8 @@ public class UserExtraction {
                 .getEmail())
                 .orElseThrow(() -> new UserException("User not found!"));
     }
+
+    public User findUserByUsername(String username) throws ResumeAppException {
+        return userRepository.findByUsername(username).orElseThrow(() -> new UserException("User not found!"));
+    }
 }

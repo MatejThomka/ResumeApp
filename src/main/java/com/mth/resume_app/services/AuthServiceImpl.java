@@ -39,16 +39,20 @@ public class AuthServiceImpl implements AuthService {
   public AuthenticationDTO register(RegisterDTO registerDTO) throws ResumeAppException {
 
     if (userRepository.findByEmail(registerDTO.getEmail()).isPresent()) {
-      throw new UserException("User already exists!");
+      throw new UserException("Email already taken!");
     }
 
     User user = userRepository.save(User.builder()
-        .email(registerDTO.getEmail())
-        .password(passwordEncoder.encode(registerDTO.getPassword()))
-        .role(Roles.USER)
-        .build());
+            .email(registerDTO.getEmail())
+            .password(passwordEncoder.encode(registerDTO.getPassword()))
+            .username(registerDTO.getUsername())
+            .role(Roles.USER)
+            .build());
 
-    return AuthenticationDTO.builder().token(jwtUtil.createToken(user)).build();
+    return AuthenticationDTO.builder()
+            .token(jwtUtil.createToken(user))
+            .username(user.getUsername())
+            .build();
   }
 
   /**
@@ -70,7 +74,10 @@ public class AuthServiceImpl implements AuthService {
 
     User user = userRepository.findByEmail(authentication.getName()).orElseThrow(() -> new UserException("User not found!"));
 
-    return AuthenticationDTO.builder().token(jwtUtil.createToken(user)).build();
+    return AuthenticationDTO.builder()
+            .token(jwtUtil.createToken(user))
+            .username(user.getUsername())
+            .build();
   }
 
   /**
