@@ -254,6 +254,7 @@ public class JwtUtil {
         System.out.println(e.getMessage());
       }
     }
+
     blackList.removeAll(tokenToRemove);
   }
 }
