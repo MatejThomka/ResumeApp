@@ -17,5 +17,6 @@ import lombok.experimental.FieldDefaults;
 public class AuthenticationDTO {
 
   String token;
+  String username;
 
 }
