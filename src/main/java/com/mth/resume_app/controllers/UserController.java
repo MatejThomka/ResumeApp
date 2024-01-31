@@ -18,12 +18,12 @@ public class UserController {
 
     private final UserService userService;
 
-    @GetMapping("/")
-    public ResponseEntity<?> credentials() {
+    @GetMapping("/{username}")
+    public ResponseEntity<?> credentials(@PathVariable String username) {
         UserDTO userDTO;
 
         try {
-            userDTO = userService.credentials();
+            userDTO = userService.credentials(username);
         } catch (ResumeAppException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
@@ -31,13 +31,13 @@ public class UserController {
         return new ResponseEntity<>(userDTO, HttpStatus.OK);
     }
 
-    @PatchMapping("/update-credentials")
-    public ResponseEntity<?> updateCredentials(@RequestBody UserDTO userDTO) {
+    @PatchMapping("/{username}/update-credentials")
+    public ResponseEntity<?> updateCredentials(@PathVariable String username ,@RequestBody UserDTO userDTO) {
 
         UserDTO updatedUserDTO;
 
         try {
-            updatedUserDTO = userService.updateCredentials(userDTO);
+            updatedUserDTO = userService.updateCredentials(username ,userDTO);
         } catch (ResumeAppException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
@@ -45,11 +45,11 @@ public class UserController {
         return new ResponseEntity<>(updatedUserDTO, HttpStatus.OK);
     }
 
-    @PatchMapping("/password-change")
-    public ResponseEntity<?> passwordChange(@RequestBody PasswordDTO passwordDTO) {
+    @PatchMapping("/{username}/password-change")
+    public ResponseEntity<?> passwordChange(@PathVariable String username, @RequestBody PasswordDTO passwordDTO) {
 
         try {
-            userService.passwordChange(passwordDTO);
+            userService.passwordChange(username, passwordDTO);
         } catch (ResumeAppException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
@@ -57,11 +57,11 @@ public class UserController {
         return new ResponseEntity<>("Password change successfully!", HttpStatus.OK);
     }
 
-    @PatchMapping("/email-change")
-    public ResponseEntity<?> emailChange(@RequestBody EmailDTO emailDTO) {
+    @PatchMapping("/{username}/email-change")
+    public ResponseEntity<?> emailChange(@PathVariable String username, @RequestBody EmailDTO emailDTO) {
 
         try {
-            userService.emailChange(emailDTO);
+            userService.emailChange(username, emailDTO);
         } catch (ResumeAppException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
@@ -69,11 +69,11 @@ public class UserController {
         return new ResponseEntity<>("Email change successfully! Please login again!", HttpStatus.OK);
     }
 
-    @DeleteMapping("/{email}/delete-account")
-    public ResponseEntity<?> deleteAccount(@PathVariable String email, @RequestBody PasswordDTO passwordDTO) {
+    @DeleteMapping("/{username}/delete-account")
+    public ResponseEntity<?> deleteAccount(@PathVariable String username, @RequestBody PasswordDTO passwordDTO) {
 
         try {
-            userService.deleteAccount(email, passwordDTO);
+            userService.deleteAccount(username, passwordDTO);
         } catch (ResumeAppException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
