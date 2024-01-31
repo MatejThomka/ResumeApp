@@ -10,6 +10,7 @@ import com.mth.resume_app.models.dtos.EmailDTO;
 import com.mth.resume_app.models.dtos.PasswordDTO;
 import com.mth.resume_app.models.dtos.UserDTO;
 import com.mth.resume_app.models.enums.Roles;
+import com.mth.resume_app.repositories.PersonalDetailsRepository;
 import com.mth.resume_app.repositories.UserRepository;
 import com.mth.resume_app.security.UserExtraction;
 import lombok.RequiredArgsConstructor;
@@ -26,20 +27,24 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final UserExtraction extraction;
+    private final PersonalDetailsService detailsService;
+    private final PersonalDetailsRepository detailsRepository;
 
     /**
      * Retrieves and returns user credentials, such as name, lastname, email, phone number, and address,
      * for the currently authenticated user. It calls the findUser method to obtain the user details.
      *
+     * @param username The String of username for extracting user from repository.
      * @return A UserDTO containing the credentials of the authenticated user.
      * @throws ResumeAppException If an error occurs while retrieving user credentials.
      */
     @Override
-    public UserDTO credentials() throws ResumeAppException {
+    public UserDTO credentials(String username) throws ResumeAppException {
 
-        User user = extraction.findUserByAuthorization();
+        User user = extraction.findUserByUsername(username);
 
         return UserDTO.builder()
+                .username(user.getUsername())
                 .name(user.getName())
                 .lastname(user.getLastname())
                 .email(user.getEmail())
@@ -54,14 +59,15 @@ public class UserServiceImpl implements UserService {
      * are provided in the UserDTO, and then saves the updated user to the repository. Finally, it
      * returns a UserDTO containing the updated credentials of the user.
      *
+     * @param username The String of username for extraction user from repository.
      * @param userDTO The UserDTO containing updated user credentials.
      * @return A UserDTO with the updated credentials of the authenticated user.
      * @throws ResumeAppException If an error occurs while updating user credentials.
      */
     @Override
-    public UserDTO updateCredentials(UserDTO userDTO) throws ResumeAppException {
+    public UserDTO updateCredentials(String username, UserDTO userDTO) throws ResumeAppException {
 
-        User updatedUser = extraction.findUserByAuthorization();
+        User updatedUser = extraction.findUserByUsername(username);
 
         if (userDTO.getName() != null) updatedUser.setName(userDTO.getName());
         if (userDTO.getLastname() != null) updatedUser.setLastname(userDTO.getLastname());
@@ -71,6 +77,7 @@ public class UserServiceImpl implements UserService {
         userRepository.save(updatedUser);
 
         return UserDTO.builder()
+                .username(updatedUser.getUsername())
                 .name(updatedUser.getName())
                 .lastname(updatedUser.getLastname())
                 .email(updatedUser.getEmail())
@@ -85,13 +92,14 @@ public class UserServiceImpl implements UserService {
      * checks if the new password matches the confirmation password, and then updates and saves the
      * new password to the repository.
      *
+     * @param username The String of username for extracting user from repository.
      * @param passwordDTO The PasswordDTO containing current and new password information.
      * @throws ResumeAppException If an error occurs during password change, such as incorrect current password or mismatched new password.
      */
     @Override
-    public void passwordChange(PasswordDTO passwordDTO) throws ResumeAppException {
+    public void passwordChange(String username, PasswordDTO passwordDTO) throws ResumeAppException {
 
-        User user = extraction.findUserByAuthorization();
+        User user = extraction.findUserByUsername(username);
 
         if (!passwordEncoder.matches(passwordDTO.getCurrentPassword(),
                 user.getPassword()))
@@ -115,11 +123,12 @@ public class UserServiceImpl implements UserService {
      * the currently authenticated user, checks if the new email matches the confirmation email, and then
      * updates and saves the new email to the repository.
      *
+     * @param username The String of username for extracting user from repository.
      * @param emailDTO The EmailDTO containing the new email and confirmation email.
      * @throws ResumeAppException If an error occurs during email change, such as mismatched emails.
      */
     @Override
-    public void emailChange(EmailDTO emailDTO) throws ResumeAppException {
+    public void emailChange(String username, EmailDTO emailDTO) throws ResumeAppException {
 
         User user = extraction.findUserByAuthorization();
 
@@ -142,22 +151,22 @@ public class UserServiceImpl implements UserService {
      * email matches the user's email, validates the correctness of the provided password, and then
      * deletes the user account from the repository.
      *
-     * @param email       The email of the currently authenticated user for verification.
+     * @param username    The email of the currently authenticated user for verification.
      * @param passwordDTO The PasswordDTO containing the current password for verification.
      * @throws ResumeAppException If an error occurs during account deletion, such as incorrect email or password.
      */
     @Override
-    public void deleteAccount(String email, PasswordDTO passwordDTO) throws ResumeAppException {
+    public void deleteAccount(String username, PasswordDTO passwordDTO) throws ResumeAppException {
 
-        User user = extraction.findUserByAuthorization();
-
-        if (!Objects.equals(email,
-                user.getEmail()))
-            throw new EmailException("Email is incorrect!");
+        User user = userRepository.findByUsername(username).orElseThrow(() -> new UserException("User not found!"));
 
         if (!passwordEncoder.matches(passwordDTO.getCurrentPassword(),
                 user.getPassword()))
             throw new PasswordException("Password is incorrect!");
+
+        if (detailsRepository.findByUser(user).isPresent()) {
+            detailsService.removePersonalDetails(user);
+        }
 
         userRepository.delete(user);
     }
@@ -173,15 +182,14 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public List<UserDTO> showAllUsers() throws ResumeAppException {
-        List<User> userList = userRepository.findAll();
 
-        if (userList.isEmpty()) {
-           throw new UserException("There is not any users!");
-        }
+        User user = extraction.findUserByAuthorization();
 
-        if (extraction.findUserByAuthorization().getRole() != Roles.ADMIN) {
+        if (user.getRole() != Roles.ADMIN && user.getRole() != Roles.COMPANY) {
             throw new AuthException("Unauthorized!");
         }
+
+        List<User> userList = userRepository.findAll();
 
         return userList.stream()
                 .map(this::convertToDTO)
@@ -198,6 +206,7 @@ public class UserServiceImpl implements UserService {
      */
     private UserDTO convertToDTO(User user) {
         return UserDTO.builder()
+                .username(user.getUsername())
                 .name(user.getName())
                 .lastname(user.getLastname())
                 .email(user.getEmail())
