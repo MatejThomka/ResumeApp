@@ -102,8 +102,6 @@ public class PersonalDetailsServiceImpl implements PersonalDetailsService {
 
     detailsRepository.save(details);
 
-    System.out.println(details.isDrivingLicence());
-
     return buildByDrivingLicence(details);
   }
 
