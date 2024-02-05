@@ -152,22 +152,20 @@ public class EducationServiceImpl implements EducationService {
 
         education.setName(educationDTO.getName());
         education.setFieldOfStudy(educationDTO.getFieldOfStudy());
+        education.setCity(educationDTO.getCity());
+        education.setYearFrom(educationDTO.getYearFrom());
+        education.setDescription(educationDTO.getDescription());
 
         if (educationDTO.isSchoolLeavingExam()) {
             education.setStudying(false);
             education.setYearTill(educationDTO.getYearTill());
         }
 
-        education.setCity(educationDTO.getCity());
-
         if (educationDTO.isStudying()) {
             education.setYearTill(null);
         } else {
             education.setYearTill(educationDTO.getYearTill());
         }
-
-        education.setYearFrom(educationDTO.getYearFrom());
-        education.setDescription(educationDTO.getDescription());
 
         educationRepository.save(education);
     }
