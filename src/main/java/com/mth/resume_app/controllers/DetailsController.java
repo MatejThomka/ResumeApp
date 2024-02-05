@@ -29,7 +29,7 @@ public class DetailsController {
   }
 
   @PutMapping("/{username}/create-update")
-  public ResponseEntity<?> createUpdate(@PathVariable String username, @RequestBody(required = false) PersonalDetailsDTO personalDetailsDTO) {
+  public ResponseEntity<?> createOrUpdate(@PathVariable String username, @RequestBody(required = false) PersonalDetailsDTO personalDetailsDTO) {
     PersonalDetailsDTO createdDetails;
 
     try {
