@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/personal-details")
-public class PersonalDetailsController {
+public class DetailsController {
 
   private final PersonalDetailsService personalDetailsService;
 
@@ -29,7 +29,7 @@ public class PersonalDetailsController {
   }
 
   @PutMapping("/{username}/create-update")
-  public ResponseEntity<?> createUpdate(@PathVariable String username, @RequestBody(required = false) PersonalDetailsDTO personalDetailsDTO) {
+  public ResponseEntity<?> createOrUpdate(@PathVariable String username, @RequestBody(required = false) PersonalDetailsDTO personalDetailsDTO) {
     PersonalDetailsDTO createdDetails;
 
     try {

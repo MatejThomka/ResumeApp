@@ -27,6 +27,10 @@ public class PersonalDetails {
   Integer id;
   String dateOfBirth;
   String placeOfBirth;
+  String city;
+  String streetAndNumber;
+  String postalCode;
+  String country;
   Gender gender;
   boolean drivingLicence;
 

@@ -49,7 +49,6 @@ public class UserServiceImpl implements UserService {
                 .lastname(user.getLastname())
                 .email(user.getEmail())
                 .phoneNumber(user.getPhoneNumber())
-                .address(user.getAddress())
                 .build();
     }
 
@@ -71,7 +70,6 @@ public class UserServiceImpl implements UserService {
 
         if (userDTO.getName() != null) updatedUser.setName(userDTO.getName());
         if (userDTO.getLastname() != null) updatedUser.setLastname(userDTO.getLastname());
-        if (userDTO.getAddress() != null) updatedUser.setAddress(userDTO.getAddress());
         if (userDTO.getPhoneNumber() != null) updatedUser.setPhoneNumber(userDTO.getPhoneNumber());
 
         userRepository.save(updatedUser);
@@ -81,7 +79,6 @@ public class UserServiceImpl implements UserService {
                 .name(updatedUser.getName())
                 .lastname(updatedUser.getLastname())
                 .email(updatedUser.getEmail())
-                .address(updatedUser.getAddress())
                 .phoneNumber(updatedUser.getPhoneNumber())
                 .build();
     }
@@ -211,7 +208,6 @@ public class UserServiceImpl implements UserService {
                 .lastname(user.getLastname())
                 .email(user.getEmail())
                 .phoneNumber(user.getPhoneNumber())
-                .address(user.getAddress())
                 .build();
     }
 

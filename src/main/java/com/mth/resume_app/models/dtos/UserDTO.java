@@ -21,5 +21,4 @@ public class UserDTO {
   String lastname;
   String email;
   String phoneNumber;
-  String address;
 }

@@ -91,6 +91,10 @@ public class PersonalDetailsServiceImpl implements PersonalDetailsService {
     details.setDateOfBirth(detailsDTO.getDateOfBirth());
     details.setPlaceOfBirth(detailsDTO.getPlaceOfBirth());
     details.setGender(detailsDTO.getGender());
+    details.setCity(detailsDTO.getCity());
+    details.setStreetAndNumber(detailsDTO.getStreetAndNumber());
+    details.setPostalCode(detailsDTO.getPostalCode());
+    details.setCountry(detailsDTO.getCountry());
 
     if (detailsDTO.isDrivingLicence()) {
       details.setDrivingLicence(true);
@@ -101,8 +105,6 @@ public class PersonalDetailsServiceImpl implements PersonalDetailsService {
     }
 
     detailsRepository.save(details);
-
-    System.out.println(details.isDrivingLicence());
 
     return buildByDrivingLicence(details);
   }
@@ -122,6 +124,10 @@ public class PersonalDetailsServiceImpl implements PersonalDetailsService {
       return PersonalDetailsDTO.builder()
               .dateOfBirth(details.getDateOfBirth())
               .placeOfBirth(details.getPlaceOfBirth())
+              .city(details.getCity())
+              .streetAndNumber(details.getStreetAndNumber())
+              .postalCode(details.getPostalCode())
+              .country(details.getCountry())
               .drivingLicence(details.isDrivingLicence())
               .gender(details.getGender())
               .drivingGroups(details.getDrivingGroups())
@@ -130,6 +136,10 @@ public class PersonalDetailsServiceImpl implements PersonalDetailsService {
       return PersonalDetailsDTO.builder()
               .dateOfBirth(details.getDateOfBirth())
               .placeOfBirth(details.getPlaceOfBirth())
+              .city(details.getCity())
+              .streetAndNumber(details.getStreetAndNumber())
+              .postalCode(details.getPostalCode())
+              .country(details.getCountry())
               .drivingLicence(details.isDrivingLicence())
               .gender(details.getGender())
               .build();
