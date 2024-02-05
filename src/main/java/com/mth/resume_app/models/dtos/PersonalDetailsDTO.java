@@ -21,6 +21,10 @@ public class PersonalDetailsDTO {
 
   String dateOfBirth;
   String placeOfBirth;
+  String city;
+  String streetAndNumber;
+  String postalCode;
+  String country;
   Gender gender;
   boolean drivingLicence;
   List<DrivingGroups> drivingGroups;
