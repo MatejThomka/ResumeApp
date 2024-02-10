@@ -21,35 +21,37 @@ public class EducationController {
     public ResponseEntity<?> createOrUpdate(@PathVariable String username, @RequestBody EducationDTO educationDTO) {
 
         EducationType type = educationDTO.getEducationType();
+        EducationDTO education;
 
         switch (type) {
             case HIGH_SCHOOL -> {
                 try {
-                    educationService.cOUHighSchool(username, educationDTO);
+                    education = educationService.cOUHighSchool(username, educationDTO);
                 } catch (ResumeAppException e) {
                     return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
                 }
             }
             case UNIVERSITY -> {
                 try {
-                    educationService.cOUUniversity(username, educationDTO);
+                    education = educationService.cOUUniversity(username, educationDTO);
                 } catch (ResumeAppException e) {
                     return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
                 }
             }
             case COURSE_OR_CERTIFICATE -> {
                 try {
-                    educationService.cOUCourseOrCertificate(username, educationDTO);
+                    education = educationService.cOUCourseOrCertificate(username, educationDTO);
                 } catch (ResumeAppException e) {
                     return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
                 }
             }
+            default -> throw new IllegalStateException("Unexpected value: " + type);
         }
 
-        return new ResponseEntity<>("Education added successfully! " + type.getValue(), HttpStatus.OK);
+        return new ResponseEntity<>(education, HttpStatus.OK);
     }
 
-    @GetMapping("/{username}/show")
+    @GetMapping("/{username}")
     public ResponseEntity<?> showEducations(@PathVariable String username) {
         List<EducationDTO> educationDTO;
 

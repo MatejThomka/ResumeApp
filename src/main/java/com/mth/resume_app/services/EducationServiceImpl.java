@@ -34,20 +34,25 @@ public class EducationServiceImpl implements EducationService {
      *
      * @param username     The username of the user for whom education details are being updated.
      * @param educationDTO The EducationDTO containing information about the High School education.
+     * @return The EducationDTO representing the created or updated education.
      * @throws ResumeAppException If validation fails or user information is not found.
      */
     @Override
-    public void cOUHighSchool(String username, EducationDTO educationDTO) throws ResumeAppException {
+    public EducationDTO cOUHighSchool(String username,
+                              EducationDTO educationDTO)
+            throws ResumeAppException {
         isYearValid(educationDTO);
 
         User user = extraction.findUserByUsername(username);
 
-        HighSchool highSchool = (HighSchool) educationRepository.findByUserAndName(user, educationDTO.getName()).orElse(new HighSchool());
+        HighSchool highSchool = (HighSchool) educationRepository
+                .findByUserAndId(user, educationDTO.getId())
+                .orElse(new HighSchool());
 
         highSchool.setUser(user);
         highSchool.setSchoolLeavingExam(educationDTO.isSchoolLeavingExam());
 
-        saveEducation(highSchool, educationDTO);
+        return saveEducation(highSchool, educationDTO);
     }
 
     /**
@@ -59,20 +64,25 @@ public class EducationServiceImpl implements EducationService {
      *
      * @param username     The username of the user for whom education details are being updated.
      * @param educationDTO The EducationDTO containing information about the University education.
+     * @return The EducationDTO representing the created or updated education.
      * @throws ResumeAppException If validation fails or user information is not found.
      */
     @Override
-    public void cOUUniversity(String username, EducationDTO educationDTO) throws ResumeAppException {
+    public EducationDTO cOUUniversity(String username,
+                              EducationDTO educationDTO)
+            throws ResumeAppException {
         isYearValid(educationDTO);
 
         User user = extraction.findUserByUsername(username);
 
-        University university = (University) educationRepository.findByUserAndName(user, educationDTO.getName()).orElse(new University());
+        University university = (University) educationRepository
+                .findByUserAndId(user, educationDTO.getId())
+                .orElse(new University());
 
         university.setUser(user);
         university.setFaculty(educationDTO.getFaculty());
 
-        saveEducation(university, educationDTO);
+        return saveEducation(university, educationDTO);
     }
 
     /**
@@ -84,20 +94,26 @@ public class EducationServiceImpl implements EducationService {
      *
      * @param username     The username of the user for whom education details are being updated.
      * @param educationDTO The EducationDTO containing information about the CourseOrCertificate education.
+     * @return The EducationDTO representing the created or updated education.
      * @throws ResumeAppException If validation fails or user information is not found.
      */
     @Override
-    public void cOUCourseOrCertificate(String username, EducationDTO educationDTO) throws ResumeAppException {
+    public EducationDTO cOUCourseOrCertificate(String username,
+                                       EducationDTO educationDTO)
+            throws ResumeAppException {
         isYearValid(educationDTO);
-        educationDTO.setName(educationDTO.getNameOfInstitution());
+
         User user = extraction.findUserByUsername(username);
 
-        CourseOrCertificate courseOrCertificate = (CourseOrCertificate) educationRepository.findByUserAndName(user, educationDTO.getName()).orElse(new CourseOrCertificate());
+        CourseOrCertificate courseOrCertificate = (CourseOrCertificate) educationRepository
+                .findByUserAndId(user, educationDTO.getId())
+                .orElse(new CourseOrCertificate());
 
         courseOrCertificate.setUser(user);
-        courseOrCertificate.setNameOfInstitution(educationDTO.getNameOfInstitution());
+        courseOrCertificate.setNameOfInstitution(educationDTO
+                .getNameOfInstitution());
 
-        saveEducation(courseOrCertificate, educationDTO);
+        return saveEducation(courseOrCertificate, educationDTO);
     }
 
     /**
@@ -113,6 +129,7 @@ public class EducationServiceImpl implements EducationService {
     public List<EducationDTO> show(String username) throws ResumeAppException {
 
         User user = extraction.findUserByUsername(username);
+
         List<Education> educationList = educationRepository.findAllByUser(user);
 
         return educationList.stream()
@@ -130,11 +147,15 @@ public class EducationServiceImpl implements EducationService {
      * @throws ResumeAppException If the education entry is not found.
      */
     @Override
-    public void delete(String username, Integer id) throws ResumeAppException {
+    public void delete(String username,
+                       Integer id)
+            throws ResumeAppException {
 
         User user = extraction.findUserByUsername(username);
 
-        Education education = educationRepository.findByUserAndId(user, id).orElseThrow(() -> new EducationException("Education not found!"));
+        Education education = educationRepository
+                .findByUserAndId(user, id)
+                .orElseThrow(() -> new EducationException("Education not found!"));
 
         educationRepository.delete(education);
     }
@@ -147,14 +168,17 @@ public class EducationServiceImpl implements EducationService {
      *
      * @param education     The existing or new education entity to be updated or created.
      * @param educationDTO  The EducationDTO containing the updated or new education details.
+     * @return EducationDTO representing user education details.
      */
-    private void saveEducation(Education education, EducationDTO educationDTO) {
+    private EducationDTO saveEducation(Education education,
+                               EducationDTO educationDTO) {
 
         education.setName(educationDTO.getName());
         education.setFieldOfStudy(educationDTO.getFieldOfStudy());
         education.setCity(educationDTO.getCity());
         education.setYearFrom(educationDTO.getYearFrom());
         education.setDescription(educationDTO.getDescription());
+        education.setEducationType(educationDTO.getEducationType());
 
         if (educationDTO.isSchoolLeavingExam()) {
             education.setStudying(false);
@@ -168,6 +192,8 @@ public class EducationServiceImpl implements EducationService {
         }
 
         educationRepository.save(education);
+
+        return education.toDTO();
     }
 
     /**
@@ -179,16 +205,11 @@ public class EducationServiceImpl implements EducationService {
      * @throws YearException If the years are not within a valid range or 'yearTill' is earlier than 'yearFrom.'
      */
     private void isYearValid(EducationDTO educationDTO) throws ResumeAppException {
-        if (educationDTO.getYearFrom() < 1950 || educationDTO.getYearTill() < 1950) {
-            throw new YearException("Year is too low!");
-        }
 
-        if (educationDTO.getYearFrom() > LocalDate.now().getYear() || educationDTO.getYearTill() > LocalDate.now().getYear()) {
-            throw new YearException("Year is too high!");
-        }
+        if (educationDTO.getYearFrom() < 1950 || educationDTO.getYearTill() < 1950) throw new YearException("Year is too low!");
 
-        if (educationDTO.getYearTill() < educationDTO.getYearFrom()) {
-            throw new YearException("Wrong year of start and end of your education!");
-        }
+        if (educationDTO.getYearFrom() > LocalDate.now().getYear() || educationDTO.getYearTill() > LocalDate.now().getYear()) throw new YearException("Year is too high!");
+
+        if (educationDTO.getYearTill() < educationDTO.getYearFrom()) throw new YearException("Wrong year of start and end of your education!");
     }
 }

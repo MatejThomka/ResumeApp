@@ -37,7 +37,8 @@ public class User {
   PersonalDetails personalDetails;
 
   @OneToMany
-  List<Education> education;
+  List<Education> educations;
 
-
+  @OneToMany
+  List<Skill> skills;
 }

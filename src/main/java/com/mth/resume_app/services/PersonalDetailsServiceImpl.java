@@ -52,7 +52,7 @@ public class PersonalDetailsServiceImpl implements PersonalDetailsService {
 
     PersonalDetails personalDetails = detailsRepository.findByUser(user).orElse(new PersonalDetails());
 
-    personalDetails.setUser(user);
+    if (personalDetails.getUser() == null) personalDetails.setUser(user);
 
     return savePersonalDetailsDTO(personalDetailsDTO, personalDetails);
   }
