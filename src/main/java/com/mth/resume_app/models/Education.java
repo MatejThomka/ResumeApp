@@ -1,6 +1,7 @@
 package com.mth.resume_app.models;
 
 import com.mth.resume_app.models.dtos.EducationDTO;
+import com.mth.resume_app.models.enums.EducationType;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -25,6 +26,7 @@ public class Education {
     Long yearTill;
     String description;
     boolean isStudying;
+    EducationType educationType;
     String city;
 
     @ManyToOne
@@ -33,6 +35,7 @@ public class Education {
     public EducationDTO toDTO() {
         EducationDTO dto = new EducationDTO();
         dto.setId(this.id);
+        dto.setEducationType(this.educationType);
         dto.setName(this.getName());
         dto.setFieldOfStudy(this.fieldOfStudy);
         dto.setYearFrom(this.yearFrom);
