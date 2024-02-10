@@ -168,6 +168,7 @@ public class EducationServiceImpl implements EducationService {
      *
      * @param education     The existing or new education entity to be updated or created.
      * @param educationDTO  The EducationDTO containing the updated or new education details.
+     * @return EducationDTO representing user education details.
      */
     private EducationDTO saveEducation(Education education,
                                EducationDTO educationDTO) {
