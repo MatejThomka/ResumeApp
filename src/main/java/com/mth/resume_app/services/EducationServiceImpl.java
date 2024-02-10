@@ -34,10 +34,11 @@ public class EducationServiceImpl implements EducationService {
      *
      * @param username     The username of the user for whom education details are being updated.
      * @param educationDTO The EducationDTO containing information about the High School education.
+     * @return The EducationDTO representing the created or updated education.
      * @throws ResumeAppException If validation fails or user information is not found.
      */
     @Override
-    public void cOUHighSchool(String username,
+    public EducationDTO cOUHighSchool(String username,
                               EducationDTO educationDTO)
             throws ResumeAppException {
         isYearValid(educationDTO);
@@ -51,7 +52,7 @@ public class EducationServiceImpl implements EducationService {
         highSchool.setUser(user);
         highSchool.setSchoolLeavingExam(educationDTO.isSchoolLeavingExam());
 
-        saveEducation(highSchool, educationDTO);
+        return saveEducation(highSchool, educationDTO);
     }
 
     /**
@@ -63,10 +64,11 @@ public class EducationServiceImpl implements EducationService {
      *
      * @param username     The username of the user for whom education details are being updated.
      * @param educationDTO The EducationDTO containing information about the University education.
+     * @return The EducationDTO representing the created or updated education.
      * @throws ResumeAppException If validation fails or user information is not found.
      */
     @Override
-    public void cOUUniversity(String username,
+    public EducationDTO cOUUniversity(String username,
                               EducationDTO educationDTO)
             throws ResumeAppException {
         isYearValid(educationDTO);
@@ -80,7 +82,7 @@ public class EducationServiceImpl implements EducationService {
         university.setUser(user);
         university.setFaculty(educationDTO.getFaculty());
 
-        saveEducation(university, educationDTO);
+        return saveEducation(university, educationDTO);
     }
 
     /**
@@ -92,10 +94,11 @@ public class EducationServiceImpl implements EducationService {
      *
      * @param username     The username of the user for whom education details are being updated.
      * @param educationDTO The EducationDTO containing information about the CourseOrCertificate education.
+     * @return The EducationDTO representing the created or updated education.
      * @throws ResumeAppException If validation fails or user information is not found.
      */
     @Override
-    public void cOUCourseOrCertificate(String username,
+    public EducationDTO cOUCourseOrCertificate(String username,
                                        EducationDTO educationDTO)
             throws ResumeAppException {
         isYearValid(educationDTO);
@@ -110,7 +113,7 @@ public class EducationServiceImpl implements EducationService {
         courseOrCertificate.setNameOfInstitution(educationDTO
                 .getNameOfInstitution());
 
-        saveEducation(courseOrCertificate, educationDTO);
+        return saveEducation(courseOrCertificate, educationDTO);
     }
 
     /**
@@ -165,7 +168,7 @@ public class EducationServiceImpl implements EducationService {
      * @param education     The existing or new education entity to be updated or created.
      * @param educationDTO  The EducationDTO containing the updated or new education details.
      */
-    private void saveEducation(Education education,
+    private EducationDTO saveEducation(Education education,
                                EducationDTO educationDTO) {
 
         education.setName(educationDTO.getName());
@@ -186,6 +189,8 @@ public class EducationServiceImpl implements EducationService {
         }
 
         educationRepository.save(education);
+
+        return education.toDTO();
     }
 
     /**
