@@ -102,7 +102,7 @@ public class EducationServiceImpl implements EducationService {
                                        EducationDTO educationDTO)
             throws ResumeAppException {
         isYearValid(educationDTO);
-        educationDTO.setName(educationDTO.getNameOfInstitution());
+
         User user = extraction.findUserByUsername(username);
 
         CourseOrCertificate courseOrCertificate = (CourseOrCertificate) educationRepository
@@ -129,6 +129,7 @@ public class EducationServiceImpl implements EducationService {
     public List<EducationDTO> show(String username) throws ResumeAppException {
 
         User user = extraction.findUserByUsername(username);
+
         List<Education> educationList = educationRepository.findAllByUser(user);
 
         return educationList.stream()
@@ -176,6 +177,7 @@ public class EducationServiceImpl implements EducationService {
         education.setCity(educationDTO.getCity());
         education.setYearFrom(educationDTO.getYearFrom());
         education.setDescription(educationDTO.getDescription());
+        education.setEducationType(educationDTO.getEducationType());
 
         if (educationDTO.isSchoolLeavingExam()) {
             education.setStudying(false);
