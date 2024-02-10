@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Optional;
 
 public interface EducationRepository extends JpaRepository<Education, Integer> {
-    Optional<Education> findByUserAndName(User user, String name);
     Optional<Education> findByUserAndId(User user, Integer id);
     List<Education> findAllByUser(User user);
 }
