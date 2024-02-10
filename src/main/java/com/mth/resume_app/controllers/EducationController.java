@@ -49,7 +49,7 @@ public class EducationController {
         return new ResponseEntity<>("Education added successfully! " + type.getValue(), HttpStatus.OK);
     }
 
-    @GetMapping("/{username}/show")
+    @GetMapping("/{username}/")
     public ResponseEntity<?> showEducations(@PathVariable String username) {
         List<EducationDTO> educationDTO;
 
