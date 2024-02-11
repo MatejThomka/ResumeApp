@@ -41,4 +41,7 @@ public class User {
 
   @OneToMany
   List<Skill> skills;
+
+  @OneToMany
+  List<Experience> experiences;
 }

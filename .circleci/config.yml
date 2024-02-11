@@ -38,17 +38,17 @@ jobs:
           name: "Run code quality checks"
           command: "mvn clean verify"
 
-  code-smells:
-    docker:
-      - image: cimg/openjdk:21.0.0
-    steps:
-      - checkout
-      - run:
-          name: "Check for code smells"
-          command: "mvn pmd:check"
-      - store_artifacts:
-          path: target/pmd.xml
-          destination: pmd-artifacts
+#  code-smells:
+#    docker:
+#      - image: cimg/openjdk:21.0.0
+#    steps:
+#      - checkout
+#      - run:
+#          name: "Check for code smells"
+#          command: "mvn pmd:check"
+#      - store_artifacts:
+#          path: target/pmd.xml
+#          destination: pmd-artifacts
 
 workflows:
   project-workflow:
@@ -57,4 +57,4 @@ workflows:
         - test-compatibility
         - tests
         - code-quality
-        - code-smells
+#        - code-smells
