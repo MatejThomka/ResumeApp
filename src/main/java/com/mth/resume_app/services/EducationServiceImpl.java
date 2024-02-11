@@ -132,6 +132,8 @@ public class EducationServiceImpl implements EducationService {
 
         List<Education> educationList = educationRepository.findAllByUser(user);
 
+        if (educationList.isEmpty()) throw new EducationException("There is nothing!");
+
         return educationList.stream()
                 .map(Education::toDTO)
                 .collect(Collectors.toList());
