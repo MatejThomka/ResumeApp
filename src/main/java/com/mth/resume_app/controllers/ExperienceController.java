@@ -25,8 +25,6 @@ public class ExperienceController {
             experienceDTO = experienceService.show(username);
         } catch (ResumeAppException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
-        } catch (Exception e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
         return new ResponseEntity<>(experienceDTO, HttpStatus.OK);
@@ -41,8 +39,6 @@ public class ExperienceController {
             experience = experienceService.createOrUpdate(username, experienceDTO);
         } catch (ResumeAppException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-        } catch (Exception e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
         return new ResponseEntity<>(experience, HttpStatus.CREATED);
@@ -55,8 +51,6 @@ public class ExperienceController {
             experienceService.delete(username, id);
         } catch (ResumeAppException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
-        } catch (Exception e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
         return new ResponseEntity<>("Deleted!", HttpStatus.OK);
