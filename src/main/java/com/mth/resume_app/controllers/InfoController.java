@@ -1,60 +1,55 @@
 package com.mth.resume_app.controllers;
 
 import com.mth.resume_app.exceptions.ResumeAppException;
-import com.mth.resume_app.models.dtos.SkillDTO;
-import com.mth.resume_app.services.SkillService;
+import com.mth.resume_app.models.dtos.InfoDTO;
+import com.mth.resume_app.services.InfoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/skill")
-public class SkillController {
+@RequestMapping("/api/info")
+public class InfoController {
 
-    private final SkillService skillService;
+    private final InfoService infoService;
 
     @GetMapping("/{username}")
-    public ResponseEntity<?> showSkill(@PathVariable String username) {
-        List<SkillDTO> skillDTO;
+    public ResponseEntity<?> showInfo(@PathVariable String username) {
+        InfoDTO infoDTO;
 
         try {
-            skillDTO = skillService.show(username);
+            infoDTO = infoService.show(username);
         } catch (ResumeAppException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
 
-        return new ResponseEntity<>(skillDTO, HttpStatus.OK);
+        return new ResponseEntity<>(infoDTO, HttpStatus.FOUND);
     }
 
     @PutMapping("/{username}/create-update")
     public ResponseEntity<?> createOrUpdate(@PathVariable String username,
-                                            @RequestBody SkillDTO skillDTO) {
-        SkillDTO skill;
+                                            @RequestBody InfoDTO infoDTO) {
+        InfoDTO info;
 
         try {
-            skill = skillService.createOrUpdate(username, skillDTO);
+            info = infoService.createOrUpdate(username, infoDTO);
         } catch (ResumeAppException e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
         }
 
-        return new ResponseEntity<>(skill, HttpStatus.CREATED);
+        return new ResponseEntity<>(info, HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{username}/delete")
-    public ResponseEntity<?> delete(@PathVariable String username,
-                                    @RequestParam Integer id) {
-
+    public ResponseEntity<?> delete(@PathVariable String username) {
         try {
-            skillService.delete(username, id);
+            infoService.delete(username);
         } catch (ResumeAppException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
 
         return new ResponseEntity<>("Deleted!", HttpStatus.OK);
     }
-
 }
