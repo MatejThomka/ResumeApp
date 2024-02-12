@@ -45,6 +45,7 @@ public class WebSecurityConfig {
                     .requestMatchers("/api/education/{username}/**").hasAnyRole("USER", "ADMIN", "COMPANY")
                     .requestMatchers("/api/skill/{username}/**").hasAnyRole("USER", "ADMIN", "COMPANY")
                     .requestMatchers("/api/experience/{username}/**").hasAnyRole("USER", "ADMIN", "COMPANY")
+                    .requestMatchers("/api/info/{username}/**").hasAnyRole("USER", "ADMIN", "COMPANY")
                     .anyRequest().authenticated()
         )
             .exceptionHandling(handling -> handling.accessDeniedHandler(customAccessDeniedHandler));
