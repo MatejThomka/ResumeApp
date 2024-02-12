@@ -69,7 +69,7 @@ public class ExperienceServiceImpl implements ExperienceService {
 
         Experience experience = experienceRepository.findByUserAndId(user, experienceDTO.getId()).orElse(new Experience());
 
-        experience.setUser(user);
+        if (experience.getUser() == null) experience.setUser(user);
 
         return saveExperience(experience, experienceDTO);
     }
