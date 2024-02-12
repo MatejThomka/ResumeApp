@@ -17,7 +17,7 @@ public class SkillController {
 
     private final SkillService skillService;
 
-    @GetMapping("/{username}/")
+    @GetMapping("/{username}")
     public ResponseEntity<?> showSkill(@PathVariable String username) {
         List<SkillDTO> skillDTO;
 
@@ -25,8 +25,6 @@ public class SkillController {
             skillDTO = skillService.show(username);
         } catch (ResumeAppException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
-        } catch (Exception e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
         return new ResponseEntity<>(skillDTO, HttpStatus.OK);
@@ -41,8 +39,6 @@ public class SkillController {
             skill = skillService.createOrUpdate(username, skillDTO);
         } catch (ResumeAppException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-        } catch (Exception e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
         return new ResponseEntity<>(skill, HttpStatus.CREATED);
@@ -56,8 +52,6 @@ public class SkillController {
             skillService.delete(username, id);
         } catch (ResumeAppException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
-        } catch (Exception e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
         return new ResponseEntity<>("Deleted!", HttpStatus.OK);
