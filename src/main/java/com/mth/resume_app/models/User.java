@@ -44,4 +44,7 @@ public class User {
 
   @OneToMany
   List<Experience> experiences;
+
+  @OneToOne
+  Info info;
 }
