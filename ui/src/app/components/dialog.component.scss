@@ -23,7 +23,7 @@
   background: linear-gradient(20deg, rgba(138, 246, 105, 0.8), rgba(86, 215, 145, 0.8), rgba(12, 213, 231, 0.8));
   display: flex;
   flex-direction: column;
-  height: 300px;
+  height: 350px;
   min-width: 400px;
 
   #header {
@@ -87,5 +87,27 @@
         transform: scale(1);
       }
     }
+  }
+
+  .successMessage {
+    display: flex;
+    justify-content: center;
+    height: 20px;
+    width: auto;
+    gap: 20px;
+    color: #086e08;
+    font-weight: bold;
+    font-size: 20px;
+  }
+
+  .errorMessage {
+    display: flex;
+    justify-content: center;
+    height: 20px;
+    width: auto;
+    gap: 20px;
+    color: #ff0101;
+    font-weight: bold;
+    font-size: 20px;
   }
 }
