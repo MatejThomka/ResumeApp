@@ -4,7 +4,6 @@ import {RegisterDialogComponent} from "./components/register-dialog/register-dia
 import {LoginDialogComponent} from "./components/login-dialog/login-dialog.component";
 import {NgIf} from "@angular/common";
 import {HttpClientModule} from "@angular/common/http";
-import {AuthService} from "./services/auth.service";
 
 @Component({
   selector: 'app-root',
