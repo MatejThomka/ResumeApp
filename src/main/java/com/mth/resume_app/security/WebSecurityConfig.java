@@ -1,6 +1,7 @@
 package com.mth.resume_app.security;
 
 import com.mth.resume_app.services.CustomUserDetailsService;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,6 +13,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 @EnableWebSecurity
@@ -53,6 +56,16 @@ public class WebSecurityConfig {
     httpSecurity.addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class);
 
     return httpSecurity.build();
+  }
+
+  @Bean
+  public WebMvcConfigurer corsConfigurer() {
+    return new WebMvcConfigurer() {
+        @Override
+      public void addCorsMappings(@NonNull CorsRegistry registry) {
+          registry.addMapping("/api/auth/**").allowedOrigins("http://localhost:4200");
+        }
+    };
   }
 
   @Bean
