@@ -7,17 +7,22 @@
 
   <div id="inputs">
     <div>
-      <input placeholder="Email" type="email">
+      <input placeholder="Email" type="email" [(ngModel)]="email">
     </div>
     <div>
-      <input placeholder="Password" type="password">
+      <input placeholder="Password" type="password" [(ngModel)]="password">
     </div>
     <div>
-      <input placeholder="Username" type="text">
+      <input placeholder="Username" type="text" [(ngModel)]="username">
     </div>
   </div>
 
   <div id="actions">
-    <button>Register</button>
+    <button type="submit" (click)="register()">Register</button>
   </div>
+
+  <div *ngIf="message" [class]="messageType === 'success' ? 'successMessage' : 'errorMessage'">
+    {{message}}
+  </div>
+
 </div>
