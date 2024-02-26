@@ -102,5 +102,6 @@ public class AuthServiceImpl implements AuthService {
     if (registerDTO.getEmail().isEmpty()) throw new AuthException("Email is missing!");
     if (registerDTO.getPassword().isEmpty()) throw new AuthException("Password is missing!");
     if (registerDTO.getUsername().isEmpty()) throw new AuthException("Username is missing!");
+    if (!registerDTO.getEmail().contains("@.")) throw new AuthException("Incorrect email!");
   }
 }
