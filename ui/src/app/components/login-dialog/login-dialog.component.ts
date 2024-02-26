@@ -14,7 +14,7 @@ import {NgIf} from "@angular/common";
     HttpClientModule,
     NgIf
   ],
-  styleUrl: '../dialog.component.scss'
+  styleUrl: 'login-dialog.component.scss'
 })
 export class LoginDialogComponent implements OnInit {
 
