@@ -30,6 +30,12 @@ export class RegisterDialogComponent implements OnInit {
   ngOnInit() {
   }
 
+  /**
+   * Method for registering a new user.
+   * Upon calling this method, the authService service is invoked to register the user with provided credentials.
+   * Upon successful registration, the token and username are saved in the local storage, and a success message is displayed.
+   * If an error occurs, an error message is displayed; if the error status code is 409, it indicates a conflict.
+   */
   register() {
     // this.checkCredential();
     this.authService.register(this.email, this.password, this.username).subscribe(

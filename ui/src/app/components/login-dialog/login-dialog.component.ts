@@ -31,6 +31,12 @@ export class LoginDialogComponent implements OnInit {
   ngOnInit() {
   }
 
+  /**
+   * Method for user login.
+   * Invokes the login method of the authService service with provided email and password.
+   * If the login is successful, the token and username are saved in the local storage, and a success message is displayed.
+   * If an error occurs, an error message is displayed; if the error status code is 403, it indicates incorrect credentials.
+   */
   login() {
     this.authService.login(this.email, this.password).subscribe(
       (response) => {
