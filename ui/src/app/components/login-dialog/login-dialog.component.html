@@ -1,0 +1,25 @@
+<div id="overlay" (click)="generalService.showLoginDialog = false"></div>
+
+<div id="container">
+  <div id="header">
+    Login here!
+  </div>
+
+  <div id="inputs">
+    <div>
+      <input placeholder="Email" type="email" [(ngModel)]="email">
+    </div>
+    <div>
+      <input placeholder="Password" type="password" [(ngModel)]="password">
+    </div>
+  </div>
+
+  <div id="actions">
+    <button type="submit" (click)="login()">Login</button>
+  </div>
+
+  <div *ngIf="message" [class]="messageType === 'success' ? 'successMessage' : 'errorMessage'">
+    {{message}}
+  </div>
+
+</div>

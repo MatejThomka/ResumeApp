@@ -1,0 +1,10 @@
+<div class="header">
+  <h2>ResumeApp</h2>
+  <div>
+    <button type="button" (click)="generalService.showLoginDialog = true">Login</button>
+    <button type="button" (click)="generalService.showRegisterDialog = true">Register</button>
+  </div>
+</div>
+
+<app-login-dialog *ngIf="generalService.showLoginDialog"></app-login-dialog>
+<app-register-dialog *ngIf="generalService.showRegisterDialog"></app-register-dialog>

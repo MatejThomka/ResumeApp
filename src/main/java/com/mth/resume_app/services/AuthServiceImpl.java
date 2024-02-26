@@ -1,5 +1,7 @@
 package com.mth.resume_app.services;
 
+import com.mth.resume_app.exceptions.AuthException;
+import com.mth.resume_app.exceptions.DetailsException;
 import com.mth.resume_app.exceptions.ResumeAppException;
 import com.mth.resume_app.exceptions.UserException;
 import com.mth.resume_app.models.User;
@@ -38,8 +40,14 @@ public class AuthServiceImpl implements AuthService {
   @Override
   public AuthenticationDTO register(RegisterDTO registerDTO) throws ResumeAppException {
 
+    checkCredentials(registerDTO);
+
     if (userRepository.findByEmail(registerDTO.getEmail()).isPresent()) {
-      throw new UserException("Email already taken!");
+      throw new UserException("This email is already taken!");
+    }
+
+    if (userRepository.findByUsername(registerDTO.getUsername()).isPresent()) {
+      throw new DetailsException("Username already exists!");
     }
 
     User user = userRepository.save(User.builder()
@@ -90,4 +98,10 @@ public class AuthServiceImpl implements AuthService {
     jwtUtil.jwtBlackList();
   }
 
+  private void checkCredentials(RegisterDTO registerDTO) throws ResumeAppException {
+    if (registerDTO.getEmail().isEmpty()) throw new AuthException("Email is missing!");
+    if (registerDTO.getPassword().isEmpty()) throw new AuthException("Password is missing!");
+    if (registerDTO.getUsername().isEmpty()) throw new AuthException("Username is missing!");
+    if (!registerDTO.getEmail().contains("@.")) throw new AuthException("Incorrect email!");
+  }
 }
