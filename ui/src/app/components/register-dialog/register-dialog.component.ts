@@ -12,7 +12,7 @@ import {NgIf} from "@angular/common";
     FormsModule,
     NgIf
   ],
-  styleUrl: '../dialog.component.scss'
+  styleUrl: './register-dialog.component.scss'
 })
 export class RegisterDialogComponent implements OnInit {
 
