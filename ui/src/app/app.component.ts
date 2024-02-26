@@ -1,9 +1,9 @@
 import {AfterViewInit, Component, ElementRef,} from '@angular/core';
-import {GeneralService} from "./services/general.service";
 import {RegisterDialogComponent} from "./components/register-dialog/register-dialog.component";
 import {LoginDialogComponent} from "./components/login-dialog/login-dialog.component";
 import {NgIf} from "@angular/common";
 import {HttpClientModule} from "@angular/common/http";
+import {HeaderComponent} from "./components/header/header.component";
 
 @Component({
   selector: 'app-root',
@@ -13,17 +13,15 @@ import {HttpClientModule} from "@angular/common/http";
     RegisterDialogComponent,
     LoginDialogComponent,
     NgIf,
-    HttpClientModule
+    HttpClientModule,
+    HeaderComponent
   ],
   styleUrl: './app.component.scss'
 })
 export class AppComponent implements AfterViewInit{
   title = 'ResumeAppUI';
 
-  constructor(
-    public generalService: GeneralService,
-    private elementRef: ElementRef
-  ) {  }
+  constructor(private elementRef: ElementRef) {  }
 
   ngAfterViewInit() {
     this.elementRef.nativeElement.ownerDocument
