@@ -3,6 +3,8 @@ import {GeneralService} from "../../services/general.service";
 import {FormsModule} from "@angular/forms";
 import {AuthService} from "../../services/auth.service";
 import {NgIf} from "@angular/common";
+import {Router, RouterLink, RouterLinkActive, RouterOutlet} from "@angular/router";
+import {HttpClientModule} from "@angular/common/http";
 
 @Component({
   selector: 'app-register-dialog',
@@ -10,7 +12,11 @@ import {NgIf} from "@angular/common";
   standalone: true,
   imports: [
     FormsModule,
-    NgIf
+    HttpClientModule,
+    NgIf,
+    RouterLink,
+    RouterLinkActive,
+    RouterOutlet
   ],
   styleUrl: './register-dialog.component.scss'
 })
@@ -24,7 +30,8 @@ export class RegisterDialogComponent implements OnInit {
 
   constructor(
     public generalService: GeneralService,
-    public authService: AuthService
+    public authService: AuthService,
+    public router: Router
   ) {  }
 
   ngOnInit() {
@@ -37,7 +44,6 @@ export class RegisterDialogComponent implements OnInit {
    * If an error occurs, an error message is displayed; if the error status code is 409, it indicates a conflict.
    */
   register() {
-    // this.checkCredential();
     this.authService.register(this.email, this.password, this.username).subscribe(
       (response) => {
         this.authService.saveToken(response.token);
@@ -47,10 +53,12 @@ export class RegisterDialogComponent implements OnInit {
         setTimeout(() => {
           this.message = '';
           this.generalService.showRegisterDialog = false;
+          this.router.navigateByUrl(`user/${localStorage.getItem('username')}`).then(() => {
+            window.location.reload();
+          })
         }, 2000);
       },
       (error) => {
-        console.error('Login error', error);
         if (error.status === 409) {
           this.message = error.error;
           this.messageType = 'error';
