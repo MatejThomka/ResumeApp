@@ -40,7 +40,7 @@ public class AuthServiceImpl implements AuthService {
   @Override
   public AuthenticationDTO register(RegisterDTO registerDTO) throws ResumeAppException {
 
-    checkCredentials(registerDTO);
+    checkCredentials(registerDTO.getEmail(), registerDTO.getPassword(), registerDTO.getUsername());
 
     if (userRepository.findByEmail(registerDTO.getEmail()).isPresent()) {
       throw new UserException("This email is already taken!");
@@ -78,6 +78,8 @@ public class AuthServiceImpl implements AuthService {
   @Override
   public AuthenticationDTO login(LoginDTO loginDTO) throws ResumeAppException {
 
+    checkCredentials(loginDTO.getEmail(), loginDTO.getPassword(), null);
+
     Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginDTO.getEmail(), loginDTO.getPassword()));
 
     User user = userRepository.findByEmail(authentication.getName()).orElseThrow(() -> new UserException("User not found!"));
@@ -98,10 +100,14 @@ public class AuthServiceImpl implements AuthService {
     jwtUtil.jwtBlackList();
   }
 
-  private void checkCredentials(RegisterDTO registerDTO) throws ResumeAppException {
-    if (registerDTO.getEmail().isEmpty()) throw new AuthException("Email is missing!");
-    if (registerDTO.getPassword().isEmpty()) throw new AuthException("Password is missing!");
-    if (registerDTO.getUsername().isEmpty()) throw new AuthException("Username is missing!");
-    if (!registerDTO.getEmail().contains("@.")) throw new AuthException("Incorrect email!");
+  private void checkCredentials(String email, String password, String username) throws ResumeAppException {
+
+    if (email.isEmpty()) throw new AuthException("Email is missing!");
+    if (password.isEmpty()) throw new AuthException("Password is missing!");
+    if (username != null) {
+      if (username.isEmpty()) throw new AuthException("Username is missing!");
+    }
+    if (email.contains("@.")) throw new AuthException("Incorrect email!");
   }
+
 }
