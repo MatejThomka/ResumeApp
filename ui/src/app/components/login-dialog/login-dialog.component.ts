@@ -4,6 +4,7 @@ import {AuthService} from "../../services/auth.service";
 import {FormsModule} from "@angular/forms";
 import {HttpClientModule} from "@angular/common/http";
 import {NgIf} from "@angular/common";
+import {Router, RouterLink, RouterLinkActive, RouterOutlet} from "@angular/router";
 
 @Component({
   selector: 'app-login-dialog',
@@ -12,7 +13,10 @@ import {NgIf} from "@angular/common";
   imports: [
     FormsModule,
     HttpClientModule,
-    NgIf
+    NgIf,
+    RouterLink,
+    RouterLinkActive,
+    RouterOutlet
   ],
   styleUrl: 'login-dialog.component.scss'
 })
@@ -25,7 +29,8 @@ export class LoginDialogComponent implements OnInit {
 
   constructor(
     public generalService: GeneralService,
-    public authService: AuthService
+    public authService: AuthService,
+    public router: Router
   ) { }
 
   ngOnInit() {
@@ -48,17 +53,19 @@ export class LoginDialogComponent implements OnInit {
           {
             this.message = '';
             this.generalService.showLoginDialog = false;
+            this.router.navigateByUrl(`user/${localStorage.getItem('username')}`).then(() => {
+              window.location.reload();
+            });
           }, 2000);
       },
       (error) => {
-        console.error('Register error', error);
         if (error.status === 403) {
-          this.message = 'Incorrect credentials!';
+          this.message = "Incorrect credentials!";
           this.messageType = 'error';
-          setTimeout(() => {
-            this.message = '';
-          }, 5000);
         }
+        setTimeout(() => {
+          this.message = '';
+          }, 5000);
       }
     )
   }
