@@ -44,7 +44,7 @@ export class LoginDialogComponent implements OnInit {
    */
   login() {
     this.authService.login(this.email, this.password).subscribe(
-      (response) => {
+      response => {
         this.authService.saveToken(response.token);
         this.authService.saveUsername(response.username);
         this.message = 'Login successfully!'
@@ -58,7 +58,7 @@ export class LoginDialogComponent implements OnInit {
             });
           }, 2000);
       },
-      (error) => {
+      error => {
         if (error.status === 403) {
           this.message = "Incorrect credentials!";
           this.messageType = 'error';
