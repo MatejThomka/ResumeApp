@@ -1,14 +1,22 @@
-<h2>User details</h2>
 <div class="details">
-  <label>Username:</label>
-  <input id="username" [(ngModel)]="username">
-  <label>Name:</label>
-  <input id="name" [(ngModel)]="name">
-  <label>Lastname:</label>
-  <input id="lastname" [(ngModel)]="lastname">
-  <label>Email:</label>
-  <input id="email" [(ngModel)]="email">
-  <label>Phone Number:</label>
-  <input id="phoneNumber" [(ngModel)]="phoneNumber">
+  <div class="block">
+    <label for="username">Username:</label>
+    <input id="username" [(ngModel)]="username">
+  </div>
+  <div class="block">
+    <label for="name">Name:</label>
+    <input id="name" [(ngModel)]="name">
+  </div>
+  <div class="block">
+    <label for="lastname">Lastname:</label>
+    <input id="lastname" [(ngModel)]="lastname">
+  </div>
+  <div class="block">
+    <label for="phoneNumber">Phone Number:</label>
+    <input id="phoneNumber" [(ngModel)]="phoneNumber">
+  </div>
+
+
+  <button type="submit" (click)="saveDetails()">Save</button>
 </div>
 
