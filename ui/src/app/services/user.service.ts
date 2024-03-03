@@ -18,4 +18,19 @@ export class UserService {
       }
     })
   }
+
+  updateCredentials(token: string, usernameAuth: string, username: string, name: string, lastname: string, phoneNumber: string): Observable<any> {
+    return this.http.patch<any>(`${this.userApiUrl}/${usernameAuth}/update-credentials`,
+      {
+        username,
+        name,
+        lastname,
+        phoneNumber
+      },
+      {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      })
+  }
 }
