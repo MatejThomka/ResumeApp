@@ -1,15 +1,14 @@
 import {Component, OnInit} from '@angular/core';
-import {AuthService} from "../../services/auth.service";
 import {UserService} from "../../services/user.service";
-import {error} from "@angular/compiler-cli/src/transformers/util";
 import {FormsModule} from "@angular/forms";
-import {NonNullAssert} from "@angular/compiler";
+import {Router} from "@angular/router";
+import {AuthService} from "../../services/auth.service";
 
 @Component({
   selector: 'app-user',
   standalone: true,
   imports: [
-    FormsModule
+    FormsModule,
   ],
   templateUrl: './user.component.html',
   styleUrl: './user.component.scss'
@@ -23,7 +22,9 @@ export class UserComponent implements OnInit{
   phoneNumber = '';
 
   constructor(
-    public userService: UserService
+    public userService: UserService,
+    public router: Router,
+    public authService: AuthService
     ) { }
 
   ngOnInit() {
@@ -42,5 +43,26 @@ export class UserComponent implements OnInit{
       console.error(error);
     }
     )
+  }
+
+  saveDetails() {
+    this.userService.updateCredentials(
+      localStorage.getItem('jwt_token') as string,
+      localStorage.getItem('username') as string,
+      this.username,
+      this.name,
+      this.lastname,
+      this.phoneNumber,
+    ).subscribe(response => {
+      this.username = response.username;
+      this.name = response.name;
+      this.lastname = response.lastname;
+      this.phoneNumber = response.phoneNumber;
+      this.authService.saveUsername(response.username);
+      this.router.navigateByUrl(`user/${localStorage.getItem('username')}`).then(() => {
+        window.location.reload();
+      })
+    })
+
   }
 }
