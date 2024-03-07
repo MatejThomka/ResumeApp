@@ -1,22 +1,23 @@
 <div class="details">
   <div class="block">
     <label for="username">Username:</label>
-    <input id="username" [(ngModel)]="username">
+    <input id="username" [(ngModel)]="username" [readOnly]="!isEditable">
   </div>
   <div class="block">
     <label for="name">Name:</label>
-    <input id="name" [(ngModel)]="name">
+    <input id="name" [(ngModel)]="name" [readOnly]="!isEditable">
   </div>
   <div class="block">
     <label for="lastname">Lastname:</label>
-    <input id="lastname" [(ngModel)]="lastname">
+    <input id="lastname" [(ngModel)]="lastname" [readOnly]="!isEditable">
   </div>
   <div class="block">
     <label for="phoneNumber">Phone Number:</label>
-    <input id="phoneNumber" [(ngModel)]="phoneNumber">
+    <input id="phoneNumber" [(ngModel)]="phoneNumber" [readOnly]="!isEditable">
   </div>
-
-
-  <button type="submit" (click)="saveDetails()">Save</button>
+  <div>
+    <button type="button" (click)="edit()" *ngIf="!isEditable">Edit</button>
+    <button type="submit" (click)="saveDetails()" *ngIf="isEditable">Save</button>
+  </div>
 </div>
 
