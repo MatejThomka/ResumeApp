@@ -47,7 +47,7 @@ export class LoginDialogComponent implements OnInit {
       response => {
         this.authService.saveToken(response.token);
         this.authService.saveUsername(response.username);
-        this.authService.isLoggedIn = true;
+        this.authService.updateLoggedInStatus(true);
         this.message = 'Login successfully!'
         this.messageType = 'success';
         setTimeout(() =>
@@ -61,6 +61,7 @@ export class LoginDialogComponent implements OnInit {
       },
       error => {
         if (error.status === 403) {
+          this.authService.updateLoggedInStatus(false);
           this.message = "Incorrect credentials!";
           this.messageType = 'error';
         }

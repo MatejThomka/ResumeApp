@@ -48,7 +48,7 @@ export class RegisterDialogComponent implements OnInit {
       (response) => {
         this.authService.saveToken(response.token);
         this.authService.saveUsername(response.username);
-        this.authService.isLoggedIn = true;
+        this.authService.updateLoggedInStatus(true);
         this.message = 'Register successfully!';
         this.messageType = 'success';
         setTimeout(() => {
@@ -61,6 +61,7 @@ export class RegisterDialogComponent implements OnInit {
       },
       (error) => {
         if (error.status === 409) {
+          this.authService.updateLoggedInStatus(false);
           this.message = error.error;
           this.messageType = 'error';
           setTimeout(() => {
