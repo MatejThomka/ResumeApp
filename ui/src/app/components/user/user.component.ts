@@ -35,16 +35,18 @@ export class UserComponent implements OnInit{
       localStorage.getItem('jwt_token') as string,
       localStorage.getItem('username') as string,
     ).subscribe(
-      (response) => {
+      response => {
         this.username = response.username;
         this.name = response.name;
         this.lastname = response.lastname;
         this.email = response.email;
         this.phoneNumber = response.phoneNumber;
       },
-    (error) => {
-      console.error(error);
-    }
+      error => {
+        if (error.status === 403) {
+        this.router.navigateByUrl('').then(() => window.location.reload());
+      }
+      }
     )
   }
 
@@ -56,7 +58,7 @@ export class UserComponent implements OnInit{
       this.name,
       this.lastname,
       this.phoneNumber,
-    ).subscribe(response => {
+    ).subscribe((response) => {
       this.username = response.username;
       this.name = response.name;
       this.lastname = response.lastname;
@@ -64,9 +66,8 @@ export class UserComponent implements OnInit{
       this.authService.saveUsername(response.username);
       this.router.navigateByUrl(`user/${this.authService.getUsername()}`).then(() => {
         window.location.reload();
-      })
+        })
     })
-
   }
 
   edit() {
