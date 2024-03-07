@@ -3,12 +3,14 @@ import {UserService} from "../../services/user.service";
 import {FormsModule} from "@angular/forms";
 import {Router} from "@angular/router";
 import {AuthService} from "../../services/auth.service";
+import {NgIf} from "@angular/common";
 
 @Component({
   selector: 'app-user',
   standalone: true,
   imports: [
     FormsModule,
+    NgIf,
   ],
   templateUrl: './user.component.html',
   styleUrl: './user.component.scss'
@@ -20,6 +22,7 @@ export class UserComponent implements OnInit{
   lastname = '';
   email = '';
   phoneNumber = '';
+  isEditable = false;
 
   constructor(
     public userService: UserService,
@@ -47,8 +50,8 @@ export class UserComponent implements OnInit{
 
   saveDetails() {
     this.userService.updateCredentials(
-      localStorage.getItem('jwt_token') as string,
-      localStorage.getItem('username') as string,
+      this.authService.getToken() as string,
+      this.authService.getUsername() as string,
       this.username,
       this.name,
       this.lastname,
@@ -59,10 +62,14 @@ export class UserComponent implements OnInit{
       this.lastname = response.lastname;
       this.phoneNumber = response.phoneNumber;
       this.authService.saveUsername(response.username);
-      this.router.navigateByUrl(`user/${localStorage.getItem('username')}`).then(() => {
+      this.router.navigateByUrl(`user/${this.authService.getUsername()}`).then(() => {
         window.location.reload();
       })
     })
 
+  }
+
+  edit() {
+    this.isEditable = true;
   }
 }
