@@ -1,11 +1,14 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
-import {Observable} from "rxjs";
+import {delay, Observable, tap} from "rxjs";
+import {error} from "@angular/compiler-cli/src/transformers/util";
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
+
+  isLoggedIn = false;
 
   private apiUrl = 'http://localhost:6868/api/auth';
   constructor(
