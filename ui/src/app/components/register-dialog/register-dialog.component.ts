@@ -22,11 +22,11 @@ import {HttpClientModule} from "@angular/common/http";
 })
 export class RegisterDialogComponent implements OnInit {
 
-  email: string = '';
-  password: string = '';
-  username: string = '';
-  message: string = '';
-  messageType: string = '';
+  email= '';
+  password= '';
+  username= '';
+  message= '';
+  messageType= '';
 
   constructor(
     public generalService: GeneralService,
@@ -48,6 +48,7 @@ export class RegisterDialogComponent implements OnInit {
       (response) => {
         this.authService.saveToken(response.token);
         this.authService.saveUsername(response.username);
+        this.authService.isLoggedIn = true;
         this.message = 'Register successfully!';
         this.messageType = 'success';
         setTimeout(() => {
