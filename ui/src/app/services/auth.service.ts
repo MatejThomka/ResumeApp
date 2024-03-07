@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
-import {delay, Observable, tap} from "rxjs";
+import {delay, Observable, ReplaySubject, tap} from "rxjs";
 import {error} from "@angular/compiler-cli/src/transformers/util";
 
 @Injectable({
@@ -8,12 +8,15 @@ import {error} from "@angular/compiler-cli/src/transformers/util";
 })
 export class AuthService {
 
-  isLoggedIn = false;
+  private isLoggedInSource = new ReplaySubject<boolean>(1);
+  public isLoggedIn$: Observable<boolean>;
 
   private apiUrl = 'http://localhost:6868/api/auth';
-  constructor(
-    private http: HttpClient,
-  ) { }
+
+  constructor(private http: HttpClient) {
+    this.isLoggedIn$ = this.isLoggedInSource.asObservable();
+    this.syncLoggedIn();
+  }
 
   /**
    * Logs in the user by sending a POST request to the login endpoint with provided email and password.
@@ -86,5 +89,14 @@ export class AuthService {
    */
   removeToken() {
     localStorage.removeItem('jwt_token');
+  }
+
+  updateLoggedInStatus(isLoggedIn: boolean) {
+    localStorage.setItem('isLoggedIn', isLoggedIn ? 'true' : 'false');
+    this.syncLoggedIn();
+  }
+
+  private syncLoggedIn() {
+    this.isLoggedInSource.next(localStorage.getItem('isLoggedIn') === 'true');
   }
 }
