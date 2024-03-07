@@ -22,10 +22,10 @@ import {Router, RouterLink, RouterLinkActive, RouterOutlet} from "@angular/route
 })
 export class LoginDialogComponent implements OnInit {
 
-  email: string = '';
-  password: string = '';
-  message: string = '';
-  messageType: string = '';
+  email = '';
+  password = '';
+  message= '';
+  messageType = '';
 
   constructor(
     public generalService: GeneralService,
@@ -47,6 +47,7 @@ export class LoginDialogComponent implements OnInit {
       response => {
         this.authService.saveToken(response.token);
         this.authService.saveUsername(response.username);
+        this.authService.isLoggedIn = true;
         this.message = 'Login successfully!'
         this.messageType = 'success';
         setTimeout(() =>
