@@ -20,7 +20,8 @@ export class UserService {
   }
 
   updateCredentials(token: string, usernameAuth: string, username: string, name: string, lastname: string, phoneNumber: string): Observable<any> {
-    return this.http.patch<any>(`${this.userApiUrl}/${usernameAuth}/update-credentials`,
+    return this.http.patch<any>(
+      `${this.userApiUrl}/${usernameAuth}/update-credentials`,
       {
         username,
         name,
@@ -32,5 +33,12 @@ export class UserService {
           'Authorization': `Bearer ${token}`
         }
       })
+  }
+
+  emailChange(token: string, usernameAuth: string, email: string, confirmEmail: string): Observable<any> {
+    return this.http.patch<any>(
+      `${this.userApiUrl}/${usernameAuth}/email-change`,
+      {email, confirmEmail},
+      {headers: {'Authorization': `Bearer ${token}`}})
   }
 }
