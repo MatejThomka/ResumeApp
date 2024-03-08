@@ -15,20 +15,23 @@ import {NgIf} from "@angular/common";
   templateUrl: './user.component.html',
   styleUrl: './user.component.scss'
 })
-export class UserComponent implements OnInit{
+export class UserComponent implements OnInit {
 
   username = '';
   name = '';
   lastname = '';
   email = '';
+  confirmationEmail = '';
   phoneNumber = '';
-  isEditable = false;
+  isEditableCredentials = false;
+  isEditableEmail = false;
 
   constructor(
     public userService: UserService,
     public router: Router,
     public authService: AuthService
-    ) { }
+  ) {
+  }
 
   ngOnInit() {
     this.userService.userDetails(
@@ -44,8 +47,8 @@ export class UserComponent implements OnInit{
       },
       error => {
         if (error.status === 403) {
-        this.router.navigateByUrl('').then(() => window.location.reload());
-      }
+          this.router.navigateByUrl('').then(() => window.location.reload());
+        }
       }
     )
   }
@@ -66,11 +69,24 @@ export class UserComponent implements OnInit{
       this.authService.saveUsername(response.username);
       this.router.navigateByUrl(`user/${this.authService.getUsername()}`).then(() => {
         window.location.reload();
-        })
+      })
     })
   }
 
-  edit() {
-    this.isEditable = true;
+  editCredential() {
+    this.isEditableCredentials = !this.isEditableCredentials;
+  }
+
+  editEmail() {
+    this.isEditableEmail = !this.isEditableEmail;
+  }
+
+  changeEmail() {
+    this.userService.emailChange(
+      this.authService.getToken() as string,
+      this.authService.getUsername() as  string,
+      this.email,
+      this.confirmationEmail
+    )
   }
 }
