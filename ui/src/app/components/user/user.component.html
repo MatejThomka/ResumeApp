@@ -1,23 +1,38 @@
 <div class="details">
   <div class="block">
     <label for="username">Username:</label>
-    <input id="username" [(ngModel)]="username" [readOnly]="!isEditable">
+    <input id="username" [(ngModel)]="username" [readOnly]="!isEditableCredentials">
   </div>
   <div class="block">
     <label for="name">Name:</label>
-    <input id="name" [(ngModel)]="name" [readOnly]="!isEditable">
+    <input id="name" [(ngModel)]="name" [readOnly]="!isEditableCredentials">
   </div>
   <div class="block">
     <label for="lastname">Lastname:</label>
-    <input id="lastname" [(ngModel)]="lastname" [readOnly]="!isEditable">
+    <input id="lastname" [(ngModel)]="lastname" [readOnly]="!isEditableCredentials">
   </div>
   <div class="block">
     <label for="phoneNumber">Phone Number:</label>
-    <input id="phoneNumber" [(ngModel)]="phoneNumber" [readOnly]="!isEditable">
+    <input id="phoneNumber" [(ngModel)]="phoneNumber" [readOnly]="!isEditableCredentials">
   </div>
   <div>
-    <button type="button" (click)="edit()" *ngIf="!isEditable">Edit</button>
-    <button type="submit" (click)="saveDetails()" *ngIf="isEditable">Save</button>
+    <button type="button" (click)="editCredential()" *ngIf="!isEditableCredentials">Edit</button>
+    <button type="submit" (click)="saveDetails()" *ngIf="isEditableCredentials">Save</button>
+  </div>
+</div>
+<div class="details">
+  <div class="block">
+    <label for="email">Email:</label>
+    <input id="email" [(ngModel)]="email" [readOnly]="!isEditableEmail">
+  </div>
+  <div class="block" *ngIf="isEditableEmail">
+    <label for="confirmationEmail">Confirm email:</label>
+    <input id="confirmationEmail" [(ngModel)]="confirmationEmail">
+  </div>
+  <div>
+    <button type="button" (click)="editEmail()" *ngIf="!isEditableEmail">Edit</button>
+    <button type="submit" (click)="changeEmail()" *ngIf="isEditableEmail">Save</button>
+    <button type="button" (click)="editEmail()" *ngIf="isEditableEmail">Cancel</button>
   </div>
 </div>
 
