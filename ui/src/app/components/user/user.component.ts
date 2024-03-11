@@ -13,7 +13,8 @@ import {NgIf} from "@angular/common";
     NgIf,
   ],
   templateUrl: './user.component.html',
-  styleUrl: './user.component.scss'
+  styleUrls: ['./user.component.scss',
+    '../button.styles.scss']
 })
 export class UserComponent implements OnInit {
 
@@ -25,6 +26,13 @@ export class UserComponent implements OnInit {
   phoneNumber = '';
   isEditableCredentials = false;
   isEditableEmail = false;
+  isEditablePassword = false;
+  emailMessage = '';
+  passwordMessage = '';
+  messageType = '';
+  currentPassword = '';
+  newPassword = '';
+  confirmNewPassword = '';
 
   constructor(
     public userService: UserService,
@@ -87,6 +95,51 @@ export class UserComponent implements OnInit {
       this.authService.getUsername() as  string,
       this.email,
       this.confirmationEmail
+    ).subscribe(
+      response => {
+        this.messageType = 'success';
+        this.emailMessage = response.message;
+        setTimeout(() => {
+          this.emailMessage = '';
+        }, 2000);
+      },
+      error => {
+        this.messageType = 'error';
+        this.emailMessage = error.error;
+        setTimeout(() => {
+          this.emailMessage = '';
+        }, 2000);
+      }
     )
+
+  }
+
+  changePassword() {
+    this.userService.passwordChange(
+      this.authService.getToken() as string,
+      this.authService.getUsername() as string,
+      this.currentPassword,
+      this.newPassword,
+      this.confirmNewPassword
+    ).subscribe(
+      response => {
+        this.messageType = 'success';
+        this.passwordMessage = response.message;
+        setTimeout(() => {
+          this.passwordMessage = '';
+        }, 2000);
+      },
+      error => {
+        this.messageType = 'error';
+        this.passwordMessage = error.error;
+        setTimeout(() => {
+          this.passwordMessage = '';
+        }, 2000);
+      }
+    )
+  }
+
+  editPassword() {
+    this.isEditablePassword = !this.isEditablePassword;
   }
 }
