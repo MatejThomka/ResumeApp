@@ -17,7 +17,8 @@ import {Router} from "@angular/router";
     AsyncPipe
   ],
   templateUrl: './header.component.html',
-  styleUrl: './header.component.scss'
+  styleUrls: ['./header.component.scss',
+    '../button.styles.scss']
 })
 export class HeaderComponent {
 
