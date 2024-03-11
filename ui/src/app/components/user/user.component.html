@@ -1,3 +1,4 @@
+<h2>Your personal details settings:</h2>
 <div class="details">
   <div class="block">
     <label for="username">Username:</label>
@@ -11,28 +12,55 @@
     <label for="lastname">Lastname:</label>
     <input id="lastname" [(ngModel)]="lastname" [readOnly]="!isEditableCredentials">
   </div>
-  <div class="block">
+  <div>
     <label for="phoneNumber">Phone Number:</label>
     <input id="phoneNumber" [(ngModel)]="phoneNumber" [readOnly]="!isEditableCredentials">
   </div>
   <div>
     <button type="button" (click)="editCredential()" *ngIf="!isEditableCredentials">Edit</button>
     <button type="submit" (click)="saveDetails()" *ngIf="isEditableCredentials">Save</button>
+    <button type="button" (click)="editCredential()" *ngIf="isEditableCredentials">Cancel</button>
   </div>
 </div>
+
 <div class="details">
-  <div class="block">
+  <div>
     <label for="email">Email:</label>
     <input id="email" [(ngModel)]="email" [readOnly]="!isEditableEmail">
   </div>
-  <div class="block" *ngIf="isEditableEmail">
+  <div>
     <label for="confirmationEmail">Confirm email:</label>
-    <input id="confirmationEmail" [(ngModel)]="confirmationEmail">
+    <input id="confirmationEmail" [(ngModel)]="confirmationEmail" [readOnly]="!isEditableEmail">
   </div>
   <div>
     <button type="button" (click)="editEmail()" *ngIf="!isEditableEmail">Edit</button>
     <button type="submit" (click)="changeEmail()" *ngIf="isEditableEmail">Save</button>
     <button type="button" (click)="editEmail()" *ngIf="isEditableEmail">Cancel</button>
   </div>
+  <div *ngIf="emailMessage" [class]="messageType === 'success' ? 'successMessage' : 'errorMessage'">
+    {{emailMessage}}
+  </div>
 </div>
 
+<div class="details">
+  <div>
+    <label for="currentPassword">Old password:</label>
+    <input id="currentPassword" [(ngModel)]="currentPassword" [readOnly]="!isEditablePassword">
+  </div>
+  <div>
+    <label for="newPassword">New password:</label>
+    <input id="newPassword" [(ngModel)]="newPassword" [readOnly]="!isEditablePassword">
+  </div>
+  <div>
+    <label for="confirmNewPassword">Password again:</label>
+    <input id="confirmNewPassword" [(ngModel)]="confirmNewPassword" [readOnly]="!isEditablePassword">
+  </div>
+  <div>
+    <button type="button" (click)="editPassword()" *ngIf="!isEditablePassword">Edit</button>
+    <button type="submit" (click)="changePassword()" *ngIf="isEditablePassword">Save</button>
+    <button type="button" (click)="editPassword()" *ngIf="isEditablePassword">Cancel</button>
+  </div>
+  <div *ngIf="passwordMessage" [class]="messageType === 'success' ? 'successMessage' : 'errorMessage'">
+    {{passwordMessage}}
+  </div>
+</div>
