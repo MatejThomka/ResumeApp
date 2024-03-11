@@ -18,7 +18,8 @@ import {Router, RouterLink, RouterLinkActive, RouterOutlet} from "@angular/route
     RouterLinkActive,
     RouterOutlet
   ],
-  styleUrl: 'login-dialog.component.scss'
+  styleUrls: ['login-dialog.component.scss',
+    '../button.styles.scss']
 })
 export class LoginDialogComponent implements OnInit {
 
@@ -47,11 +48,11 @@ export class LoginDialogComponent implements OnInit {
       response => {
         this.authService.saveToken(response.token);
         this.authService.saveUsername(response.username);
-        this.authService.updateLoggedInStatus(true);
         this.message = 'Login successfully!'
         this.messageType = 'success';
         setTimeout(() =>
           {
+            this.authService.updateLoggedInStatus(true);
             this.message = '';
             this.generalService.showLoginDialog = false;
             this.router.navigateByUrl(`user/${localStorage.getItem('username')}`).then(() => {

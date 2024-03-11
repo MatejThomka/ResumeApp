@@ -18,7 +18,8 @@ import {HttpClientModule} from "@angular/common/http";
     RouterLinkActive,
     RouterOutlet
   ],
-  styleUrl: './register-dialog.component.scss'
+  styleUrls: ['./register-dialog.component.scss',
+    '../button.styles.scss']
 })
 export class RegisterDialogComponent implements OnInit {
 
@@ -48,10 +49,10 @@ export class RegisterDialogComponent implements OnInit {
       (response) => {
         this.authService.saveToken(response.token);
         this.authService.saveUsername(response.username);
-        this.authService.updateLoggedInStatus(true);
         this.message = 'Register successfully!';
         this.messageType = 'success';
         setTimeout(() => {
+          this.authService.updateLoggedInStatus(true);
           this.message = '';
           this.generalService.showRegisterDialog = false;
           this.router.navigateByUrl(`user/${localStorage.getItem('username')}`).then(() => {
