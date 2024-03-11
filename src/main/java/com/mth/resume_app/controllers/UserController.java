@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -67,7 +68,7 @@ public class UserController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
 
-        return new ResponseEntity<>("Email change successfully! Please login again!", HttpStatus.OK);
+        return new ResponseEntity<>(Map.of("message", "Email change successfully! Please login again!"), HttpStatus.OK);
     }
 
     @DeleteMapping("/{username}/delete-account")
