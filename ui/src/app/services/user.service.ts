@@ -39,6 +39,15 @@ export class UserService {
     return this.http.patch<any>(
       `${this.userApiUrl}/${usernameAuth}/email-change`,
       {email, confirmEmail},
-      {headers: {'Authorization': `Bearer ${token}`}})
+      {headers: {'Authorization': `Bearer ${token}`}}
+    )
+  }
+
+  passwordChange(token: string, usernameAuth: string, currentPassword: string, newPassword: string, confirmNewPassword: string): Observable<any> {
+    return this.http.patch<any>(
+      `${this.userApiUrl}/${usernameAuth}/password-change`,
+      {currentPassword, newPassword, confirmNewPassword},
+      {headers: {'Authorization': `Bearer ${token}`}}
+    )
   }
 }
