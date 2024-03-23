@@ -6,6 +6,7 @@ import {HttpClientModule} from "@angular/common/http";
 import {HeaderComponent} from "./components/header/header.component";
 import {RouterOutlet} from "@angular/router";
 import {UserComponent} from "./components/user/user.component";
+import {FooterComponent} from "./components/footer/footer.component";
 
 
 
@@ -21,6 +22,7 @@ import {UserComponent} from "./components/user/user.component";
     HeaderComponent,
     RouterOutlet,
     UserComponent,
+    FooterComponent,
   ],
   styleUrl: './app.component.scss'
 })
