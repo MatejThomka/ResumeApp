@@ -68,9 +68,14 @@ public class UserServiceImpl implements UserService {
 
         User updatedUser = extraction.findUserByUsername(username);
 
-        if (userDTO.getName() != null) updatedUser.setName(userDTO.getName());
-        if (userDTO.getLastname() != null) updatedUser.setLastname(userDTO.getLastname());
-        if (userDTO.getPhoneNumber() != null) updatedUser.setPhoneNumber(userDTO.getPhoneNumber());
+        if (!Objects.equals(userDTO.getUsername(), updatedUser.getUsername()) ||
+                userDTO.getUsername() != null) updatedUser.setUsername(userDTO.getUsername());
+        if (!Objects.equals(userDTO.getName(), updatedUser.getName()) ||
+                userDTO.getName() != null) updatedUser.setName(userDTO.getName());
+        if (!Objects.equals(userDTO.getLastname(), updatedUser.getLastname()) ||
+                userDTO.getLastname() != null) updatedUser.setLastname(userDTO.getLastname());
+        if (!Objects.equals(userDTO.getPhoneNumber(), updatedUser.getPhoneNumber()) ||
+                userDTO.getPhoneNumber() != null) updatedUser.setPhoneNumber(userDTO.getPhoneNumber());
 
         userRepository.save(updatedUser);
 

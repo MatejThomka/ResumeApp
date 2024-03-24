@@ -10,10 +10,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/user")
+@CrossOrigin(origins = "http://localhost:4200/")
 public class UserController {
 
     private final UserService userService;
@@ -66,7 +68,7 @@ public class UserController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
 
-        return new ResponseEntity<>("Email change successfully! Please login again!", HttpStatus.OK);
+        return new ResponseEntity<>(Map.of("message", "Email change successfully! Please login again!"), HttpStatus.OK);
     }
 
     @DeleteMapping("/{username}/delete-account")

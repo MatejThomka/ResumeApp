@@ -4,6 +4,7 @@ import {AuthService} from "../../services/auth.service";
 import {FormsModule} from "@angular/forms";
 import {HttpClientModule} from "@angular/common/http";
 import {NgIf} from "@angular/common";
+import {Router, RouterLink, RouterLinkActive, RouterOutlet} from "@angular/router";
 
 @Component({
   selector: 'app-login-dialog',
@@ -12,20 +13,25 @@ import {NgIf} from "@angular/common";
   imports: [
     FormsModule,
     HttpClientModule,
-    NgIf
+    NgIf,
+    RouterLink,
+    RouterLinkActive,
+    RouterOutlet
   ],
-  styleUrl: 'login-dialog.component.scss'
+  styleUrls: ['login-dialog.component.scss',
+    '../button.styles.scss']
 })
 export class LoginDialogComponent implements OnInit {
 
-  email: string = '';
-  password: string = '';
-  message: string = '';
-  messageType: string = '';
+  email = '';
+  password = '';
+  message= '';
+  messageType = '';
 
   constructor(
     public generalService: GeneralService,
-    public authService: AuthService
+    public authService: AuthService,
+    public router: Router
   ) { }
 
   ngOnInit() {
@@ -39,26 +45,30 @@ export class LoginDialogComponent implements OnInit {
    */
   login() {
     this.authService.login(this.email, this.password).subscribe(
-      (response) => {
+      response => {
         this.authService.saveToken(response.token);
         this.authService.saveUsername(response.username);
         this.message = 'Login successfully!'
         this.messageType = 'success';
         setTimeout(() =>
           {
+            this.authService.updateLoggedInStatus(true);
             this.message = '';
             this.generalService.showLoginDialog = false;
+            this.router.navigateByUrl(`home/${localStorage.getItem('username')}`).then(() => {
+              window.location.reload();
+            });
           }, 2000);
       },
-      (error) => {
-        console.error('Register error', error);
+      error => {
         if (error.status === 403) {
-          this.message = 'Incorrect credentials!';
+          this.authService.updateLoggedInStatus(false);
+          this.message = "Incorrect credentials!";
           this.messageType = 'error';
-          setTimeout(() => {
-            this.message = '';
-          }, 5000);
         }
+        setTimeout(() => {
+          this.message = '';
+          }, 5000);
       }
     )
   }
