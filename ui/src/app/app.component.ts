@@ -7,6 +7,7 @@ import {HeaderComponent} from "./components/header/header.component";
 import {RouterOutlet} from "@angular/router";
 import {UserComponent} from "./components/user/user.component";
 import {FooterComponent} from "./components/footer/footer.component";
+import {DashboardComponent} from "./components/dashboard/dashboard.component";
 
 
 
@@ -23,6 +24,7 @@ import {FooterComponent} from "./components/footer/footer.component";
     RouterOutlet,
     UserComponent,
     FooterComponent,
+    DashboardComponent,
   ],
   styleUrl: './app.component.scss'
 })
