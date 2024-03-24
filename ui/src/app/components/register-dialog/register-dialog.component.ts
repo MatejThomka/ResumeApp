@@ -55,7 +55,7 @@ export class RegisterDialogComponent implements OnInit {
           this.authService.updateLoggedInStatus(true);
           this.message = '';
           this.generalService.showRegisterDialog = false;
-          this.router.navigateByUrl(`user/${localStorage.getItem('username')}`).then(() => {
+          this.router.navigateByUrl(`home/${localStorage.getItem('username')}`).then(() => {
             window.location.reload();
           })
         }, 2000);
