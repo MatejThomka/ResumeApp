@@ -59,3 +59,9 @@ h2 {
   border-radius: 8px;
   box-shadow: rgba(17, 17, 112, 0.9) 2px 2px 2px;
 }
+
+.navigation {
+  display: flex;
+  margin: 30px;
+  place-content: center;
+}
