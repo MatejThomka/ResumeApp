@@ -55,7 +55,7 @@ export class UserComponent implements OnInit {
       },
       error => {
         if (error.status === 403) {
-          this.router.navigateByUrl('').then(() => window.location.reload());
+          this.router.navigateByUrl('home').then(() => window.location.reload());
         }
       }
     )
@@ -141,5 +141,11 @@ export class UserComponent implements OnInit {
 
   editPassword() {
     this.isEditablePassword = !this.isEditablePassword;
+  }
+
+  goBack() {
+    this.router.navigateByUrl(`home/${this.authService.getUsername()}`).then(() => {
+      window.location.reload()
+    });
   }
 }
