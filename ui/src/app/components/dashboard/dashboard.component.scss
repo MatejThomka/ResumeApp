@@ -1,0 +1,13 @@
+.dashboard {
+  max-width: 100%;
+  height: 100%;
+  border-right: solid 2px black;
+  box-shadow: 3px 0 5px black;
+  background-color: cadetblue;
+  align-content: center;
+  display: grid;
+
+  button {
+    margin: 5px 15px 5px 15px;
+  }
+}
