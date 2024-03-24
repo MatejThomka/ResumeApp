@@ -36,7 +36,7 @@ export class HeaderComponent {
     this.authService.updateLoggedInStatus(false);
     this.authService.logout(this.authService.getToken() as string);
     this.authService.removeToken();
-    this.router.navigateByUrl('').then(() => {
+    this.router.navigateByUrl('home').then(() => {
       window.location.reload()
     });
   }
