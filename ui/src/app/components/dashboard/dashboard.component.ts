@@ -22,4 +22,11 @@ export class DashboardComponent {
     });
   }
 
+  details() {
+    this.router.navigateByUrl(`details/${this.authService.getUsername()}`)
+      .then(() => {
+        window.location.reload()
+      });
+  }
+
 }
