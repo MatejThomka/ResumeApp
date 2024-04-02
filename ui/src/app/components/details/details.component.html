@@ -1,0 +1,16 @@
+<h2>Your personal details settings</h2>
+<div class="details">
+  <div class="block">
+    <label for="birthday">Birthdate:</label>
+    <input type="date" id="birthday" [(ngModel)]="dateOfBirth" [readOnly]="!isEditableBirth">
+  </div>
+  <div class="block">
+    <label for="birthplace">Place of birth:</label>
+    <input id="birthplace" [(ngModel)]="placeOfBirth" [readOnly]="!isEditableBirth">
+  </div>
+  <div>
+    <button type="button" (click)="isBirthEditable()" *ngIf="!isEditableBirth">Edit</button>
+    <button type="submit" (click)="updateDetails()" *ngIf="isEditableBirth">Save</button>
+    <button type="button" (click)="isBirthEditable()" *ngIf="isEditableBirth">Cancel</button>
+  </div>
+</div>
