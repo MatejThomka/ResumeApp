@@ -1,4 +1,9 @@
 <h2>Your personal details settings</h2>
+
+<div *ngIf="message" [class]="messageType === 'success' ? 'successMessage' : 'errorMessage'">
+  {{message}}
+</div>
+
 <div class="details">
   <div class="block">
     <label for="birthday">Birthdate:</label>
@@ -12,5 +17,43 @@
     <button type="button" (click)="isBirthEditable()" *ngIf="!isEditableBirth">Edit</button>
     <button type="submit" (click)="updateDetails()" *ngIf="isEditableBirth">Save</button>
     <button type="button" (click)="isBirthEditable()" *ngIf="isEditableBirth">Cancel</button>
+  </div>
+</div>
+
+<div class="details">
+  <div class="block">
+    <label for="city">City:</label>
+    <input id="city" [(ngModel)]="city" [readOnly]="!isEditableAddress">
+  </div>
+  <div class="block">
+    <label for="streetAndNumber">Street/Number:</label>
+    <input id="streetAndNumber" [(ngModel)]="streetAndNumber" [readOnly]="!isEditableAddress">
+  </div>
+  <div class="block">
+    <label for="postalCode">Postal code:</label>
+    <input id="postalCode" [(ngModel)]="postalCode" [readOnly]="!isEditableAddress">
+  </div>
+  <div class="block">
+    <label for="country">Country:</label>
+    <input id="country" [(ngModel)]="country" [readOnly]="!isEditableAddress">
+  </div>
+  <div>
+    <button type="button" (click)="isAddressEditable()" *ngIf="!isEditableAddress">Edit</button>
+    <button type="submit" (click)="updateDetails()" *ngIf="isEditableAddress">Save</button>
+    <button type="button" (click)="isAddressEditable()" *ngIf="isEditableAddress">Cancel</button>
+  </div>
+</div>
+
+<div class="details">
+  <div class="block">
+    <label for="gender">Gender:</label>
+    <select id="gender" [(ngModel)]="gender">
+      <option value="MALE">Male</option>
+      <option value="FEMALE">Female</option>
+      <option value="OTHER">Other/Undefined</option>
+    </select>
+  </div>
+  <div>
+    <button type="submit" (click)="updateDetails()">Save</button>
   </div>
 </div>
