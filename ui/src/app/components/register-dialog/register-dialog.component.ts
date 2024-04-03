@@ -19,7 +19,8 @@ import {HttpClientModule} from "@angular/common/http";
     RouterOutlet
   ],
   styleUrls: ['./register-dialog.component.scss',
-    '../button.styles.scss']
+              '../button.styles.scss',
+              '../message.style.scss']
 })
 export class RegisterDialogComponent implements OnInit {
 
