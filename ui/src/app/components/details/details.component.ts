@@ -14,7 +14,8 @@ import {NgIf} from "@angular/common";
   ],
   templateUrl: './details.component.html',
   styleUrls: ['../settings-pages.styles.scss',
-              '../button.styles.scss'
+              '../button.styles.scss',
+              '../message.style.scss'
   ]
 })
 export class DetailsComponent implements OnInit {
@@ -30,6 +31,10 @@ export class DetailsComponent implements OnInit {
   drivingGroups = [''];
 
   isEditableBirth = false;
+  isEditableAddress = false;
+
+  message = '';
+  messageType = '';
 
   constructor(
     public detailsService: DetailsService,
@@ -43,19 +48,28 @@ export class DetailsComponent implements OnInit {
       this.authService.getUsername() as string,
     ).subscribe(
       response => {
-        this.dateOfBirth = response.dateOfBirth;
-        this.placeOfBirth = response.placeOfBirth;
-        this.city = response.city;
-        this.streetAndNumber = response.streetAndNumber;
-        this.postalCode = response.postalCode;
-        this.country = response.country;
-        this.gender = response.gender;
-        this.drivingLicence = response.drivingLicence;
-        this.drivingGroups = response.drivingGroups;
+        this.dateOfBirth = response?.dateOfBirth;
+        this.placeOfBirth = response?.placeOfBirth;
+        this.city = response?.city;
+        this.streetAndNumber = response?.streetAndNumber;
+        this.postalCode = response?.postalCode;
+        this.country = response?.country;
+        this.gender = response?.gender;
+        this.drivingLicence = response?.drivingLicence;
+        this.drivingGroups = response?.drivingGroups;
+        this.messageType = 'success';
+        this.message = 'Update of your personal details was successfully!'
+        setTimeout(() => {
+          this.message = '';
+          window.location.reload();
+        }, 2000);
       },
       error => {
         if (error.status === 403) {
           this.router.navigateByUrl('home').then(() => window.location.reload());
+        } else if (error.status === 404) {
+          this.message = 'You do not have any details yet!';
+          this.messageType = 'error';
         }
       }
     )
@@ -80,6 +94,10 @@ export class DetailsComponent implements OnInit {
   }
 
   isBirthEditable() {
-    this.isEditableBirth = !this.isEditableBirth
+    this.isEditableBirth = !this.isEditableBirth;
+  }
+
+  isAddressEditable() {
+    this.isEditableAddress = !this.isEditableAddress;
   }
 }
