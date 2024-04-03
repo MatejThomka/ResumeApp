@@ -20,7 +20,7 @@
   }
 
   input[type="date"] {
-    width: 100%;
+    width: 250px;
     height: 25px;
   }
 
@@ -52,6 +52,21 @@
     font-weight: bolder;
     font-size: 14px;
   }
+
+  select {
+    align-items: end;
+    font-family: "Lucida Handwriting", cursive;
+    font-weight: bold;
+    font-size: 14px;
+    width: 200px;
+    height: 27px;
+    border: solid 1px rgba(2, 12, 138, 0.9);
+    border-radius: 5px;
+    box-shadow: #000002 1px 1px 1px;
+    outline: none;
+    cursor: pointer;
+    text-align: center;
+  }
 }
 
 h2 {
@@ -70,3 +85,5 @@ h2 {
   margin: 30px;
   place-content: center;
 }
+
+
