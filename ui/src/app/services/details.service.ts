@@ -31,7 +31,7 @@ export class DetailsService {
                 drivingLicence: boolean,
                 drivingGroups: string[])
   {
-    return this.http.patch<any>(
+    return this.http.put<any>(
       `${this.detailsApiUrl}/${username}/create-update`,
       {
         dateOfBirth,
