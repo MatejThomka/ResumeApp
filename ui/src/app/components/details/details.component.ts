@@ -32,6 +32,7 @@ export class DetailsComponent implements OnInit {
 
   isEditableBirth = false;
   isEditableAddress = false;
+  isEditableDriving = false;
 
   message = '';
   messageType = '';
@@ -99,5 +100,9 @@ export class DetailsComponent implements OnInit {
 
   isAddressEditable() {
     this.isEditableAddress = !this.isEditableAddress;
+  }
+
+  isDrivingEditable() {
+    this.isEditableDriving = !this.isEditableDriving;
   }
 }
