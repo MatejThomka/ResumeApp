@@ -63,8 +63,12 @@
     <label for="drivingLicence">Driving licence:</label>
     <input id="drivingLicence" type="checkbox" [(ngModel)]="drivingLicence">
   </div>
-  <div class="block">
+  <div class="block" *ngFor="let option of drivingGroupsOptions">
     <label for="drivingGroups">Driving groups:</label>
-    <input id="drivingGroups" type="checkbox">
+    <input id="drivingGroups" type="checkbox"
+            [value]="option"
+            (change)="onCheckboxChange($event, option)"
+            [checked]="drivingGroups.includes(option)">
+    {{ option }}
   </div>
 </div>
