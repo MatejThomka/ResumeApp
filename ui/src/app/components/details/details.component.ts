@@ -3,14 +3,15 @@ import {AuthService} from "../../services/auth.service";
 import {Router} from "@angular/router";
 import {DetailsService} from "../../services/details.service";
 import {FormsModule} from "@angular/forms";
-import {NgIf} from "@angular/common";
+import {NgForOf, NgIf} from "@angular/common";
 
 @Component({
   selector: 'app-details',
   standalone: true,
   imports: [
     FormsModule,
-    NgIf
+    NgIf,
+    NgForOf
   ],
   templateUrl: './details.component.html',
   styleUrls: ['../settings-pages.styles.scss',
@@ -29,6 +30,10 @@ export class DetailsComponent implements OnInit {
   gender = '';
   drivingLicence = false;
   drivingGroups = [''];
+  drivingGroupsOptions = ['AM', 'A1', 'A2', 'A',
+                                   'B1', 'B', 'C1', 'C',
+                                   'D1', 'D', 'BE', 'C1E',
+                                   'CE', 'D1E', 'DE', 'T'];
 
   isEditableBirth = false;
   isEditableAddress = false;
@@ -59,11 +64,6 @@ export class DetailsComponent implements OnInit {
         this.drivingLicence = response?.drivingLicence;
         this.drivingGroups = response?.drivingGroups;
         this.messageType = 'success';
-        this.message = 'Update of your personal details was successfully!'
-        setTimeout(() => {
-          this.message = '';
-          window.location.reload();
-        }, 2000);
       },
       error => {
         if (error.status === 403) {
@@ -90,8 +90,26 @@ export class DetailsComponent implements OnInit {
       this.drivingLicence,
       this.drivingGroups
     ).subscribe( () => {
-      window.location.reload();
+      this.message = 'Update of your personal details was successfully!'
+      setTimeout(() => {
+        this.message = '';
+        window.location.reload();
+      }, 2000);
     })
+  }
+
+  onCheckboxChange(event: Event, option: string) {
+    const checkbox = event.target as HTMLInputElement;
+    if (checkbox.checked) {
+      this.drivingGroups.push(option);
+    } else {
+      this.drivingGroups = this.drivingGroups.filter(item => item !== option);
+    }
+    // if (this.drivingGroups.includes(option)) {
+    //   this.drivingGroups = this.drivingGroups.filter(item => item !== option);
+    // } else {
+    //   this.drivingGroups.push(option);
+    // }
   }
 
   isBirthEditable() {
