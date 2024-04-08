@@ -30,6 +30,7 @@ export class DetailsComponent implements OnInit {
   gender = '';
   drivingLicence = false;
   drivingGroups = [''];
+
   drivingGroupsOptions = ['AM', 'A1', 'A2', 'A',
                                    'B1', 'B', 'C1', 'C',
                                    'D1', 'D', 'BE', 'C1E',
@@ -37,7 +38,7 @@ export class DetailsComponent implements OnInit {
 
   isEditableBirth = false;
   isEditableAddress = false;
-  isEditableDriving = false;
+  isEditableGender = false;
 
   message = '';
   messageType = '';
@@ -93,7 +94,7 @@ export class DetailsComponent implements OnInit {
       this.message = 'Update of your personal details was successfully!'
       setTimeout(() => {
         this.message = '';
-        window.location.reload();
+        window.location.reload()
       }, 2000);
     })
   }
@@ -105,11 +106,6 @@ export class DetailsComponent implements OnInit {
     } else {
       this.drivingGroups = this.drivingGroups.filter(item => item !== option);
     }
-    // if (this.drivingGroups.includes(option)) {
-    //   this.drivingGroups = this.drivingGroups.filter(item => item !== option);
-    // } else {
-    //   this.drivingGroups.push(option);
-    // }
   }
 
   isBirthEditable() {
@@ -120,7 +116,13 @@ export class DetailsComponent implements OnInit {
     this.isEditableAddress = !this.isEditableAddress;
   }
 
-  isDrivingEditable() {
-    this.isEditableDriving = !this.isEditableDriving;
+  isGenderEditable() {
+    this.isEditableGender = !this.isEditableGender;
+  }
+
+  goBack() {
+    this.router.navigateByUrl(`home/${this.authService.getUsername()}`).then(() => {
+      window.location.reload()
+    })
   }
 }
