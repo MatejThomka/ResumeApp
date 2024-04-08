@@ -54,21 +54,33 @@
     </select>
   </div>
   <div>
-    <button type="submit" (click)="updateDetails()">Save</button>
+    <button type="button" (click)="isGenderEditable()" *ngIf="!isEditableGender">Edit</button>
+    <button type="submit" (click)="updateDetails()" *ngIf="isEditableGender">Save</button>
+    <button type="button" (click)="isGenderEditable()" *ngIf="isEditableGender">Cancel</button>
   </div>
 </div>
 
 <div class="details">
-  <div class="block">
+  <div class="checkbox-options">
     <label for="drivingLicence">Driving licence:</label>
-    <input id="drivingLicence" type="checkbox" [(ngModel)]="drivingLicence">
+    <input id="drivingLicence" type="checkbox" [(ngModel)]="drivingLicence" (change)="updateDetails()">
   </div>
-  <div class="block" *ngFor="let option of drivingGroupsOptions">
-    <label for="drivingGroups">Driving groups:</label>
-    <input id="drivingGroups" type="checkbox"
-            [value]="option"
-            (change)="onCheckboxChange($event, option)"
-            [checked]="drivingGroups.includes(option)">
-    {{ option }}
+    <div class="checkbox-options" *ngIf="drivingLicence">
+      <div *ngFor="let option of drivingGroupsOptions">
+        <label>
+          <input type="checkbox"
+                 [value]="option"
+                 (change)="onCheckboxChange($event, option)"
+                 [checked]="drivingGroups.includes(option)">
+          {{ option }}
+        </label>
+      </div>
+    </div>
+  <div>
+    <button type="submit" (click)="updateDetails()">Save</button>
   </div>
+</div>
+
+<div class="navigation">
+  <button id="back" (click)="goBack()">Back</button>
 </div>
