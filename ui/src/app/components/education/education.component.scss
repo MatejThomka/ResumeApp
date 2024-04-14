@@ -1,0 +1,65 @@
+.content {
+  max-height: max-content;
+  display: grid;
+  grid-template-columns: 50% 50%;
+  grid-template-rows: 90% 10%;
+  border-bottom: solid 1px black;
+
+  .labels {
+    justify-items: right;
+    display: grid;
+    align-items: center;
+    font-weight: bolder;
+    font-size: 17px;
+    font-family: "Lucida Handwriting", cursive;
+    padding-right: 30px;
+  }
+
+  .values {
+    justify-items: left;
+    display: grid;
+    align-items: center;
+    font-weight: bold;
+    font-size: 17px;
+    font-family: "Lucida Handwriting", cursive;
+    padding-left: 30px;
+    gap: 15px;
+  }
+
+  input {
+    max-width: 50%;
+    height: 25px;
+    font-family: "Lucida Handwriting", cursive;
+    font-weight: bolder;
+    border: solid 1px rgba(2, 12, 138, 0.9);
+    border-radius: 5px;
+    box-shadow: #000002 1px 1px 1px;
+  }
+
+  .description {
+    width: 40rem;
+    height: 10rem;
+    resize: none;
+    font-family: "Lucida Handwriting", cursive;
+    font-size: 15px;
+    font-weight: bold;
+    border: solid 1px rgba(2, 12, 138, 0.9);
+    border-radius: 5px;
+    box-shadow: #000002 1px 1px 1px;
+  }
+
+  .education-type {
+    width: 40%;
+    height: 25px;
+    font-family: "Lucida Handwriting", cursive;
+    font-weight: bolder;
+    border: solid 1px rgba(2, 12, 138, 0.9);
+    border-radius: 5px;
+    box-shadow: #000002 1px 1px 1px;
+    text-align: center;
+  }
+}
+
+.education-boxes {
+  min-height: 80vh;
+}
