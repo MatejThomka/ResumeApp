@@ -15,18 +15,52 @@ export class DashboardComponent {
   constructor(public router: Router,
               public authService: AuthService) {  }
 
-  profile() {
+  profilePage() {
     this.router.navigateByUrl(`user/${this.authService.getUsername()}`)
       .then(() => {
       window.location.reload()
     });
   }
 
-  details() {
+  detailsPage() {
     this.router.navigateByUrl(`details/${this.authService.getUsername()}`)
       .then(() => {
         window.location.reload()
       });
   }
 
+  educationPage() {
+    this.router.navigateByUrl(`education/${this.authService.getUsername()}`)
+      .then(() => {
+        window.location.reload()
+      });
+  }
+
+  skillsPage() {
+    this.router.navigateByUrl(`skills/${this.authService.getUsername()}`)
+      .then(() => {
+        window.location.reload()
+      });
+  }
+
+  experiencesPage() {
+    this.router.navigateByUrl(`experiences/${this.authService.getUsername()}`)
+      .then(() => {
+        window.location.reload()
+      });
+  }
+
+  additionalInfoPage() {
+    this.router.navigateByUrl(`additional-info/${this.authService.getUsername()}`)
+      .then(() => {
+        window.location.reload()
+      });
+  }
+
+  resumePage() {
+    this.router.navigateByUrl(`resume/${this.authService.getUsername()}`)
+      .then(() => {
+        window.location.reload()
+      });
+  }
 }
