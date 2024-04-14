@@ -4,10 +4,15 @@
   border-right: solid 2px black;
   box-shadow: 3px 0 5px black;
   background-color: cadetblue;
-  align-content: center;
+  align-content: start;
   display: grid;
+
 
   button {
     margin: 5px 15px 5px 15px;
+  }
+
+  .user {
+    margin-top: 1.3rem;
   }
 }
