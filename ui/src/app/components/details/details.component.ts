@@ -16,7 +16,8 @@ import {NgForOf, NgIf} from "@angular/common";
   templateUrl: './details.component.html',
   styleUrls: ['../settings-pages.styles.scss',
               '../button.styles.scss',
-              '../message.style.scss'
+              '../message.style.scss',
+              '../checkbox.styles.scss'
   ]
 })
 export class DetailsComponent implements OnInit {
