@@ -16,9 +16,10 @@ import {FormsModule} from "@angular/forms";
   ],
   templateUrl: './education.component.html',
   styleUrls: ['./education.component.scss',
-              '../settings-pages.styles.scss',
               '../button.styles.scss',
-              '../message.style.scss']
+              '../message.style.scss',
+              '../checkbox.styles.scss'
+  ]
 })
 export class EducationComponent implements OnInit {
 
