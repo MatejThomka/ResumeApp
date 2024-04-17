@@ -39,14 +39,15 @@ public class EducationServiceImpl implements EducationService {
      */
     @Override
     public EducationDTO cOUHighSchool(String username,
-                              EducationDTO educationDTO)
+                                      EducationDTO educationDTO,
+                                      Integer id)
             throws ResumeAppException {
         isYearValid(educationDTO);
 
         User user = extraction.findUserByUsername(username);
 
         HighSchool highSchool = (HighSchool) educationRepository
-                .findByUserAndId(user, educationDTO.getId())
+                .findByUserAndId(user, id)
                 .orElse(new HighSchool());
 
         highSchool.setUser(user);
@@ -69,14 +70,15 @@ public class EducationServiceImpl implements EducationService {
      */
     @Override
     public EducationDTO cOUUniversity(String username,
-                              EducationDTO educationDTO)
+                                      EducationDTO educationDTO,
+                                      Integer id)
             throws ResumeAppException {
         isYearValid(educationDTO);
 
         User user = extraction.findUserByUsername(username);
 
         University university = (University) educationRepository
-                .findByUserAndId(user, educationDTO.getId())
+                .findByUserAndId(user, id)
                 .orElse(new University());
 
         university.setUser(user);
@@ -99,14 +101,15 @@ public class EducationServiceImpl implements EducationService {
      */
     @Override
     public EducationDTO cOUCourseOrCertificate(String username,
-                                       EducationDTO educationDTO)
+                                               EducationDTO educationDTO,
+                                               Integer id)
             throws ResumeAppException {
         isYearValid(educationDTO);
 
         User user = extraction.findUserByUsername(username);
 
         CourseOrCertificate courseOrCertificate = (CourseOrCertificate) educationRepository
-                .findByUserAndId(user, educationDTO.getId())
+                .findByUserAndId(user, id)
                 .orElse(new CourseOrCertificate());
 
         courseOrCertificate.setUser(user);

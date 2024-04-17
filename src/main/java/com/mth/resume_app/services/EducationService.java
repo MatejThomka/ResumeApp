@@ -7,9 +7,9 @@ import java.util.List;
 
 public interface EducationService {
 
-    EducationDTO cOUHighSchool(String username, EducationDTO educationDTO) throws ResumeAppException;
-    EducationDTO cOUUniversity(String username, EducationDTO educationDTO) throws ResumeAppException;
-    EducationDTO cOUCourseOrCertificate(String username, EducationDTO educationDTO) throws ResumeAppException;
+    EducationDTO cOUHighSchool(String username, EducationDTO educationDTO, Integer id) throws ResumeAppException;
+    EducationDTO cOUUniversity(String username, EducationDTO educationDTO, Integer id) throws ResumeAppException;
+    EducationDTO cOUCourseOrCertificate(String username, EducationDTO educationDTO, Integer id) throws ResumeAppException;
     List<EducationDTO> show(String username) throws ResumeAppException;
     void delete(String username, Integer id) throws ResumeAppException;
 }
