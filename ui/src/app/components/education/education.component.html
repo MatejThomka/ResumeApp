@@ -1,47 +1,118 @@
 <div class="education-boxes">
+
   <h2>Place for your Education</h2>
-  <div class="content" *ngFor="let education of educations">
+
+  <div *ngFor="let education of educations" class="education-container">
+    <div class="content" >
+      <div class="labels">
+        <label>EducationType:</label>
+        <label *ngIf="education.educationType === 'COURSE_OR_CERTIFICATE'">Name of Institution:</label>
+        <label *ngIf="education.educationType === 'UNIVERSITY'">Faculty:</label>
+        <label *ngIf="education.educationType === 'HIGH_SCHOOL'">Name:</label>
+        <label>Field of study:</label>
+        <label *ngIf="education.educationType !== 'COURSE_OR_CERTIFICATE'">City:</label>
+        <label *ngIf="education.educationType === 'HIGH_SCHOOL'">Leaving exam:</label>
+        <label>Year from:</label>
+        <label *ngIf="isEditable">Still studying:</label>
+        <label *ngIf="!education.isStudying">Year till:</label>
+        <label>Description:</label>
+      </div>
+
+      <div class="values" *ngIf="isEditable">
+        <select id="education-type" class="education-type" [(ngModel)]="education.educationType">
+          <option value="COURSE_OR_CERTIFICATE">Course or Certificate</option>
+          <option value="UNIVERSITY">University</option>
+          <option value="HIGH_SCHOOL">High school</option>
+        </select>
+        <input type="text" [(ngModel)]="education.nameOfInstitution" *ngIf="education.educationType === 'COURSE_OR_CERTIFICATE'">
+        <input type="text" [(ngModel)]="education.faculty" *ngIf="education.educationType === 'UNIVERSITY'">
+        <input type="text" [(ngModel)]="education.name" *ngIf="education.educationType === 'HIGH_SCHOOL'">
+        <input type="text" [(ngModel)]="education.fieldOfStudy">
+        <input type="text" [(ngModel)]="education.city" *ngIf="education.educationType !== 'COURSE_OR_CERTIFICATE'">
+        <div class="checkbox-options">
+          <input  type="checkbox" [(ngModel)]="education.schoolLeavingExam" *ngIf="education.educationType === 'HIGH_SCHOOL'">
+        </div>
+        <input type="number" [(ngModel)]="education.yearFrom">
+        <div class="checkbox-options">
+          <input class="checkbox-options" type="checkbox" [(ngModel)]="education.isStudying">
+        </div>
+        <input type="number" [(ngModel)]="education.yearTill" *ngIf="!education.isStudying">
+        <textarea [(ngModel)]="education.description" class="description"></textarea>
+      </div>
+
+      <div class="notEditableValues" *ngIf="!isEditable">
+        <li *ngIf="education.educationType === 'COURSE_OR_CERTIFICATE'">Course or Certificate</li>
+        <li *ngIf="education.educationType === 'UNIVERSITY'">University</li>
+        <li *ngIf="education.educationType === 'HIGH_SCHOOL'">High school</li>
+        <li *ngIf="education.educationType === 'COURSE_OR_CERTIFICATE'">{{education.nameOfInstitution}}</li>
+        <li *ngIf="education.educationType === 'UNIVERSITY'">{{education.faculty}}</li>
+        <li *ngIf="education.educationType === 'HIGH_SCHOOL'">{{education.name}}</li>
+        <li>{{education.fieldOfStudy}}</li>
+        <li *ngIf="education.educationType !== 'COURSE_OR_CERTIFICATE'">{{education.city}}</li>
+        <li *ngIf="education.educationType === 'HIGH_SCHOOL'">{{education.schoolLeavingExam}}</li>
+        <li>{{education.yearFrom}}</li>
+        <li *ngIf="!education.isStudying">{{education.yearTill}}</li>
+        <li *ngIf="education.isStudying">Still studying</li>
+        <li>{{education.description}}</li>
+      </div>
+
+      <div class="buttons">
+        <button type="button" (click)="edit(education)" *ngIf="!isEditable">Edit</button>
+        <button type="submit" (click)="save()" *ngIf="isEditable">Save</button>
+        <button type="button" (click)="cancel()" *ngIf="isEditable">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="content" *ngIf="isCreatable">
+
     <div class="labels">
       <label>EducationType:</label>
-      <label *ngIf="education.educationType === 'COURSE_OR_CERTIFICATE'">Name of Institution:</label>
-      <label *ngIf="education.educationType === 'UNIVERSITY'">Faculty:</label>
-      <label *ngIf="education.educationType === 'HIGH_SCHOOL'">Name:</label>
+      <label *ngIf="newEducation.educationType === 'COURSE_OR_CERTIFICATE'">Name of Institution:</label>
+      <label *ngIf="newEducation.educationType === 'UNIVERSITY'">Faculty:</label>
+      <label *ngIf="newEducation.educationType === 'HIGH_SCHOOL'">Name:</label>
       <label>Field of study:</label>
-      <label *ngIf="education.educationType !== 'COURSE_OR_CERTIFICATE'">City:</label>
-      <label *ngIf="education.educationType === 'HIGH_SCHOOL'">Leaving exam:</label>
+      <label *ngIf="newEducation.educationType !== 'COURSE_OR_CERTIFICATE'">City:</label>
+      <label *ngIf="newEducation.educationType === 'HIGH_SCHOOL'">Leaving exam:</label>
       <label>Year from:</label>
       <label>Still studying:</label>
-      <label *ngIf="!education.isStudying">Year till:</label>
+      <label *ngIf="!newEducation.isStudying">Year till:</label>
       <label>Description:</label>
     </div>
 
     <div class="values">
-      <select id="education-type" class="education-type" [(ngModel)]="education.educationType">
+      <select class="education-type" [(ngModel)]="newEducation.educationType">
         <option value="COURSE_OR_CERTIFICATE">Course or Certificate</option>
         <option value="UNIVERSITY">University</option>
         <option value="HIGH_SCHOOL">High school</option>
       </select>
-      <input type="text" [(ngModel)]="education.nameOfInstitution" *ngIf="education.educationType === 'COURSE_OR_CERTIFICATE'">
-      <input type="text" [(ngModel)]="education.faculty" *ngIf="education.educationType === 'UNIVERSITY'">
-      <input type="text" [(ngModel)]="education.name" *ngIf="education.educationType === 'HIGH_SCHOOL'">
-      <input type="text" [(ngModel)]="education.fieldOfStudy">
-      <input type="text" [(ngModel)]="education.city" *ngIf="education.educationType !== 'COURSE_OR_CERTIFICATE'">
+      <input type="text" [(ngModel)]="newEducation.nameOfInstitution" *ngIf="newEducation.educationType === 'COURSE_OR_CERTIFICATE'">
+      <input type="text" [(ngModel)]="newEducation.faculty" *ngIf="newEducation.educationType === 'UNIVERSITY'">
+      <input type="text" [(ngModel)]="newEducation.name" *ngIf="newEducation.educationType === 'HIGH_SCHOOL'">
+      <input type="text" [(ngModel)]="newEducation.fieldOfStudy">
+      <input type="text" [(ngModel)]="newEducation.city" *ngIf="newEducation.educationType !== 'COURSE_OR_CERTIFICATE'">
       <div class="checkbox-options">
-        <input  type="checkbox" [(ngModel)]="education.schoolLeavingExam" *ngIf="education.educationType === 'HIGH_SCHOOL'">
+        <input  type="checkbox" [(ngModel)]="newEducation.schoolLeavingExam" *ngIf="newEducation.educationType === 'HIGH_SCHOOL'">
       </div>
-      <input type="number" [(ngModel)]="education.yearFrom">
+      <input type="number" [(ngModel)]="newEducation.yearFrom">
       <div class="checkbox-options">
-        <input class="checkbox-options" type="checkbox" [(ngModel)]="education.isStudying">
+        <input type="checkbox" [(ngModel)]="newEducation.isStudying">
       </div>
-      <input type="number" [(ngModel)]="education.yearTill" *ngIf="!education.isStudying">
-      <textarea [(ngModel)]="education.description" class="description"></textarea>
+      <input type="number" [(ngModel)]="newEducation.yearTill" *ngIf="!newEducation.isStudying">
+      <textarea class="description" [(ngModel)]="newEducation.description"></textarea>
     </div>
 
     <div class="buttons">
-      <button type="button" (click)="edit()" *ngIf="!isEditable">Edit</button>
-      <button type="submit" (click)="save()" *ngIf="isEditable">Save</button>
-      <button type="button" (click)="edit()" *ngIf="isEditable">Cancel</button>
+      <button type="submit" (click)="save()" *ngIf="isCreatable">Save</button>
+      <button type="button" (click)="create()" *ngIf="isCreatable">Cancel</button>
     </div>
   </div>
+
+  <div class="content" *ngIf="!isCreatable">
+    <div class="buttons">
+      <button type="button" (click)="create()" *ngIf="!isCreatable">Add</button>
+    </div>
+  </div>
+
 </div>
 
