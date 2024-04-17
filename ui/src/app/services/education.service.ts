@@ -9,10 +9,11 @@ import {Education} from "../interfaces/education";
 export class EducationService {
 
   private educationUrl = 'http://localhost:6868/api/education'
+  education: Education | undefined;
   constructor(private http: HttpClient) { }
 
-  education(token: string,
-            username:string): Observable<Education[]> {
+  getEducation(token: string,
+               username:string): Observable<Education[]> {
     return this.http.get<Education[]>(`${this.educationUrl}/${username}`, {
       headers: {
         'Authorization': `Bearer ${token}`
@@ -20,32 +21,31 @@ export class EducationService {
     })
   }
 
-  updateEducation(token: string,
-                  username: string,
-                  id: number,
-                  nameOfInstitution: string,
-                  educationType: string,
-                  fieldOfStudy: string,
-                  yearFrom: string,
-                  yearTill: string,
-                  description: string): Observable<any> {
-    return this.http.put<any>(
-      `${this.educationUrl}/${username}/create-update`,
-      {
-        id,
-        nameOfInstitution,
-        educationType,
-        fieldOfStudy,
-        yearFrom,
-        yearTill,
-        description,
-      },
-      {
-        headers: {
-          'Authorization': `Bearer ${token}`
+  putEducation(token: string,
+               username: string,
+               education: Education
+                  ): Observable<Education> {
+    if (education.id) {
+      return this.http.put<Education>(
+        `${this.educationUrl}/${username}/create-update?id=${education.id}`,
+        {education},
+        {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
         }
-      }
-    )
+      )
+    } else {
+      return this.http.put<Education>(
+        `${this.educationUrl}/${username}/create-update`,
+        {education},
+        {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        }
+      )
+    }
   }
 
   deleteEducation(token: string,
