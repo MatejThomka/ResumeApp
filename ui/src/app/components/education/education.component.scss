@@ -5,6 +5,7 @@
   grid-template-rows: 90% 10%;
   border-bottom: solid 1px black;
   padding-bottom: 20px;
+  margin-bottom: 50px;
 
 
 
@@ -12,13 +13,14 @@
     display: flex;
     flex-direction: column;
     font-weight: bolder;
-    font-size: 17px;
+    font-size: 18px;
     font-family: "Lucida Handwriting", cursive;
     padding-right: 30px;
     padding-top: 5px;
-    place-items: end;
-    gap: 15px;
+    gap: 14px;
     grid-column: 1 / span 2;
+    align-items: center;
+    place-items: end;
   }
 
   .values {
@@ -28,8 +30,23 @@
     font-size: 17px;
     font-family: "Lucida Handwriting", cursive;
     padding-left: 30px;
+    gap: 14px;
+    grid-column: 3 / span 4;
+    align-items: center;
     place-items: start;
-    gap: 9px;
+  }
+
+
+  .notEditableValues {
+    padding-top: 4px;
+    display: flex;
+    flex-direction: column;
+    font-weight: bold;
+    font-size: 17px;
+    font-family: "Lucida Handwriting", cursive;
+    padding-left: 30px;
+    place-items: start;
+    gap: 15px;
     grid-column: 3 / span 4;
   }
 
@@ -70,6 +87,7 @@
 
   .checkbox-options input[type="checkbox"] {
     width: 30px;
+    margin: 5px;
   }
 
   .buttons {
@@ -79,6 +97,7 @@
     place-self: end;
     justify-self: center;
   }
+
 }
 
 .education-boxes {
