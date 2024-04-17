@@ -1,15 +1,15 @@
 export interface Education {
 
-  id: number;
+  id?: number;
+  educationType: string | null;
   nameOfInstitution: string;
   faculty: string;
   name: string;
-  educationType: string;
   fieldOfStudy: string;
   city: string;
   schoolLeavingExam: boolean;
-  yearFrom: number;
+  yearFrom: number | null;
   isStudying: boolean;
-  yearTill: number;
+  yearTill: number | null;
   description: string;
 }
