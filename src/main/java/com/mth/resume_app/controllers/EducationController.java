@@ -18,7 +18,7 @@ public class EducationController {
 
     private final EducationService educationService;
     @PutMapping("/{username}/create-update")
-    public ResponseEntity<?> createOrUpdate(@PathVariable String username, @RequestBody EducationDTO educationDTO) {
+    public ResponseEntity<?> createOrUpdate(@PathVariable String username, @RequestBody EducationDTO educationDTO, @RequestParam (required = false) Integer id) {
 
         EducationType type = educationDTO.getEducationType();
         EducationDTO education;
@@ -26,21 +26,21 @@ public class EducationController {
         switch (type) {
             case HIGH_SCHOOL -> {
                 try {
-                    education = educationService.cOUHighSchool(username, educationDTO);
+                    education = educationService.cOUHighSchool(username, educationDTO, id);
                 } catch (ResumeAppException e) {
                     return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
                 }
             }
             case UNIVERSITY -> {
                 try {
-                    education = educationService.cOUUniversity(username, educationDTO);
+                    education = educationService.cOUUniversity(username, educationDTO, id);
                 } catch (ResumeAppException e) {
                     return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
                 }
             }
             case COURSE_OR_CERTIFICATE -> {
                 try {
-                    education = educationService.cOUCourseOrCertificate(username, educationDTO);
+                    education = educationService.cOUCourseOrCertificate(username, educationDTO, id);
                 } catch (ResumeAppException e) {
                     return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
                 }
