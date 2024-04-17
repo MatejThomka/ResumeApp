@@ -24,11 +24,14 @@ import {FormsModule} from "@angular/forms";
 export class EducationComponent implements OnInit {
 
   educations: Education[] = [];
+  editedEducation: Education = {} as Education;
+  newEducation: Education = {educationType: 'HIGH_SCHOOL'} as Education;
 
   messageType = '';
   message = '';
 
   isEditable = false;
+  isCreatable = false;
 
   constructor(
     public educationService: EducationService,
@@ -41,7 +44,7 @@ export class EducationComponent implements OnInit {
   }
 
   fetchEducation() {
-    this.educationService.education(
+    this.educationService.getEducation(
       this.authService.getToken() as string,
       this.authService.getUsername() as string,
     ).subscribe(
@@ -59,11 +62,25 @@ export class EducationComponent implements OnInit {
     )
   }
 
-  edit() {
+  edit(education?: Education) {
+    this.isEditable = !this.isEditable;
+    this.editedEducation = <Education>{...education};
+  }
+
+  cancel() {
     this.isEditable = !this.isEditable;
   }
 
-  save() {
-
+  create() {
+    this.isCreatable = !this.isCreatable;
   }
+
+  save() {
+    this.educationService.putEducation(
+      this.authService.getToken() as string,
+      this.authService.getUsername() as string,
+      this.editedEducation
+    )
+  }
+
 }
