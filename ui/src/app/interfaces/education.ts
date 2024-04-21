@@ -12,4 +12,8 @@ export interface Education {
   isStudying?: boolean;
   yearTill?: number | null;
   description?: string;
+
+  university?: University;
+  highSchool?: HighSchool;
+  courseOrCertificate?: CourseOrCertificate;
 }
