@@ -27,7 +27,7 @@ export class EducationService {
     if (EducationDTO.id) {
       return this.http.put<Education>(
         `${this.educationUrl}/${username}/create-update?id=${EducationDTO.id}`,
-        {EducationDTO},
+        EducationDTO,
         {
           headers: {
             'Authorization': `Bearer ${token}`
@@ -37,7 +37,7 @@ export class EducationService {
     } else {
       return this.http.put<Education>(
         `${this.educationUrl}/${username}/create-update`,
-        {EducationDTO},
+        EducationDTO,
         {
           headers: {
             'Authorization': `Bearer ${token}`
