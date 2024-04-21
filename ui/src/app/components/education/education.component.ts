@@ -70,7 +70,7 @@ export class EducationComponent implements OnInit {
     this.editedEducation = <Education>{...education};
   }
 
-  cancel() {
+  cancelEdit() {
     this.isEditable = !this.isEditable;
 
     this.editedEducation = {...this.initialEducation};
