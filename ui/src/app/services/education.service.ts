@@ -9,7 +9,6 @@ import {Education} from "../interfaces/education";
 export class EducationService {
 
   private educationUrl = 'http://localhost:6868/api/education'
-  education: Education | undefined;
   constructor(private http: HttpClient) { }
 
   getEducation(token: string,
@@ -23,12 +22,12 @@ export class EducationService {
 
   putEducation(token: string,
                username: string,
-               education: Education
+               EducationDTO: Education
                   ): Observable<Education> {
-    if (education.id) {
+    if (EducationDTO.id) {
       return this.http.put<Education>(
-        `${this.educationUrl}/${username}/create-update?id=${education.id}`,
-        {education},
+        `${this.educationUrl}/${username}/create-update?id=${EducationDTO.id}`,
+        {EducationDTO},
         {
           headers: {
             'Authorization': `Bearer ${token}`
@@ -38,7 +37,7 @@ export class EducationService {
     } else {
       return this.http.put<Education>(
         `${this.educationUrl}/${username}/create-update`,
-        {education},
+        {EducationDTO},
         {
           headers: {
             'Authorization': `Bearer ${token}`
