@@ -4,33 +4,47 @@
   grid-template-columns: minmax(35%, 1fr) 100px 100px 1fr;
   grid-template-rows: 90% 10%;
   border-bottom: solid 1px black;
+  box-shadow: #000002 1px 1px 1px;
   padding-bottom: 20px;
   margin-bottom: 50px;
 
 
 
-  .labels {
+  .labels-before, .labels-after {
     display: flex;
     flex-direction: column;
     font-weight: bolder;
     font-size: 18px;
     font-family: "Lucida Handwriting", cursive;
     padding-right: 30px;
-    padding-top: 5px;
-    gap: 14px;
+    gap: 0;
     grid-column: 1 / span 2;
     align-items: center;
     place-items: end;
   }
 
+  .labels-before {
+    label {
+      padding-top: 4px;
+      padding-bottom: 10px;
+    }
+  }
+
+  .labels-after {
+    label {
+      padding-top: 4px;
+      padding-bottom: 10px;
+    }
+  }
+
   .values {
     display: flex;
     flex-direction: column;
-    font-weight: bold;
-    font-size: 17px;
+    font-weight: bolder;
+    font-size: 18px;
     font-family: "Lucida Handwriting", cursive;
     padding-left: 30px;
-    gap: 14px;
+    gap: 10px;
     grid-column: 3 / span 4;
     align-items: center;
     place-items: start;
@@ -48,6 +62,11 @@
     place-items: start;
     gap: 15px;
     grid-column: 3 / span 4;
+  }
+
+  input[type="number"] {
+    padding: 0;
+    margin: 0;
   }
 
   input {
