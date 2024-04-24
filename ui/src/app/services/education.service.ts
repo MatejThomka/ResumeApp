@@ -49,8 +49,8 @@ export class EducationService {
 
   deleteEducation(token: string,
                   username: string,
-                  id: number): Observable<any> {
-    return this.http.delete(`${this.educationUrl}/${username}/delete?=${id}`, {
+                  id?: number): Observable<any> {
+    return this.http.delete(`${this.educationUrl}/${username}/delete?id=${id}`, {
       headers: {
         'Authorization': `Bearer ${token}`
       }
