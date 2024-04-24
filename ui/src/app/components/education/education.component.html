@@ -34,7 +34,7 @@
         </div>
         <input type="number" [(ngModel)]="editedEducation.yearFrom">
         <div class="checkbox-options" *ngIf="!editedEducation.schoolLeavingExam">
-          <input class="checkbox-options" type="checkbox" [(ngModel)]="editedEducation.studying">
+          <input class="checkbox-options" type="checkbox" (click)="yearTillDelete()" [(ngModel)]="editedEducation.studying">
         </div>
         <input type="number" [(ngModel)]="editedEducation.yearTill" *ngIf="!editedEducation.studying">
         <textarea [(ngModel)]="editedEducation.description" class="description"></textarea>
@@ -56,7 +56,7 @@
         <li>{{education.description}}</li>
       </div>
 
-      <div class="messages">
+      <div class="messages" *ngIf="isEditable[i]">
         <p *ngIf="message" [class]="messageType === 'success' ? 'successMessage' : 'errorMessage'">{{message}}</p>
       </div>
 
@@ -123,4 +123,6 @@
   </div>
 
 </div>
+
+<app-delete-confirmation *ngIf="generalService.showDeleteConfirmationDialog"></app-delete-confirmation>
 
