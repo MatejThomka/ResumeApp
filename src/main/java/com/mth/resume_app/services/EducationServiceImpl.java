@@ -192,6 +192,7 @@ public class EducationServiceImpl implements EducationService {
 
         if (educationDTO.isStudying()) {
             education.setYearTill(null);
+            education.setStudying(true);
         } else {
             education.setYearTill(educationDTO.getYearTill());
         }
@@ -211,10 +212,20 @@ public class EducationServiceImpl implements EducationService {
      */
     private void isYearValid(EducationDTO educationDTO) throws ResumeAppException {
 
-        if (educationDTO.getYearFrom() < 1950 || educationDTO.getYearTill() < 1950) throw new YearException("Year is too low!");
+        if (educationDTO.getYearTill() != null) {
 
-        if (educationDTO.getYearFrom() > LocalDate.now().getYear() || educationDTO.getYearTill() > LocalDate.now().getYear()) throw new YearException("Year is too high!");
+            if (educationDTO.getYearFrom() < 1950 || educationDTO.getYearTill() < 1950) throw new YearException("You can't choose this dates!");
 
-        if (educationDTO.getYearTill() < educationDTO.getYearFrom()) throw new YearException("Wrong year of start and end of your education!");
+            if (educationDTO.getYearFrom() > LocalDate.now().getYear() || educationDTO.getYearTill() > LocalDate.now().getYear()) throw new YearException("You can't choose this dates!");
+
+            if (educationDTO.getYearTill() < educationDTO.getYearFrom()) throw new YearException("Wrong year of start and end of your education!");
+
+        } else {
+
+            if (educationDTO.getYearFrom() < 1950) throw new YearException("Year from is too low");
+
+            if (educationDTO.getYearFrom() > LocalDate.now().getYear()) throw new YearException("Year from is too high!");
+        }
+
     }
 }
