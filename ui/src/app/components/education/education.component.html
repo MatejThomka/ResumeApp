@@ -2,9 +2,9 @@
 
   <h2>Place for your Education</h2>
 
-  <div *ngFor="let education of educations" class="education-container">
+  <div *ngFor="let education of educations; let i = index" class="education-container">
     <div class="content" >
-      <div [class.labels-before]="!isEditable" [class.labels-after]="isEditable">
+      <div [class.labels-before]="!isEditable[i]" [class.labels-after]="isEditable[i]">
         <label>EducationType:</label>
         <label *ngIf="education.educationType === 'COURSE_OR_CERTIFICATE'">Name of Institution:</label>
         <label *ngIf="education.educationType === 'UNIVERSITY'">Faculty:</label>
@@ -13,12 +13,12 @@
         <label *ngIf="education.educationType !== 'COURSE_OR_CERTIFICATE'">City:</label>
         <label *ngIf="education.educationType === 'HIGH_SCHOOL'">Leaving exam:</label>
         <label>Year from:</label>
-        <label *ngIf="isEditable">Still studying:</label>
-        <label>Year till:</label>
+        <label *ngIf="(isEditable[i] && !education.schoolLeavingExam)">Still studying:</label>
+        <label *ngIf="(!isEditable[i] && education.studying)">Year till:</label>
         <label>Description:</label>
       </div>
 
-      <div class="values" *ngIf="isEditable">
+      <div class="values" *ngIf="isEditable[i]">
         <select id="education-type" class="education-type" [(ngModel)]="editedEducation.educationType">
           <option value="COURSE_OR_CERTIFICATE">Course or Certificate</option>
           <option value="UNIVERSITY">University</option>
@@ -33,14 +33,14 @@
           <input  type="checkbox" [(ngModel)]="editedEducation.schoolLeavingExam">
         </div>
         <input type="number" [(ngModel)]="editedEducation.yearFrom">
-        <div class="checkbox-options">
-          <input class="checkbox-options" type="checkbox" [(ngModel)]="editedEducation.isStudying">
+        <div class="checkbox-options" *ngIf="!editedEducation.schoolLeavingExam">
+          <input class="checkbox-options" type="checkbox" [(ngModel)]="editedEducation.studying">
         </div>
-        <input type="number" [(ngModel)]="editedEducation.yearTill" *ngIf="!editedEducation.isStudying">
+        <input type="number" [(ngModel)]="editedEducation.yearTill" *ngIf="!editedEducation.studying">
         <textarea [(ngModel)]="editedEducation.description" class="description"></textarea>
       </div>
 
-      <div class="notEditableValues" *ngIf="!isEditable">
+      <div class="notEditableValues" *ngIf="!isEditable[i]">
         <li *ngIf="education.educationType === 'COURSE_OR_CERTIFICATE'">Course or Certificate</li>
         <li *ngIf="education.educationType === 'UNIVERSITY'">University</li>
         <li *ngIf="education.educationType === 'HIGH_SCHOOL'">High school</li>
@@ -51,21 +51,25 @@
         <li *ngIf="education.educationType !== 'COURSE_OR_CERTIFICATE'">{{education.city}}</li>
         <li *ngIf="education.educationType === 'HIGH_SCHOOL'">{{education.schoolLeavingExam}}</li>
         <li>{{education.yearFrom}}</li>
-        <li *ngIf="!education.isStudying">{{education.yearTill}}</li>
-        <li *ngIf="education.isStudying">Still studying</li>
+        <li *ngIf="!education.studying">{{education.yearTill}}</li>
+        <li *ngIf="education.studying">Still studying</li>
         <li>{{education.description}}</li>
       </div>
 
+      <div class="messages">
+        <p *ngIf="message" [class]="messageType === 'success' ? 'successMessage' : 'errorMessage'">{{message}}</p>
+      </div>
+
       <div class="buttons">
-        <button type="button" (click)="edit(education)" *ngIf="!isEditable">Edit</button>
-        <button type="submit" (click)="saveEdited()" *ngIf="isEditable">Save</button>
-        <button class="cancel" type="button" (click)="cancelEdit()" *ngIf="isEditable">Cancel</button>
+        <button type="button" (click)="edit(education.id)" *ngIf="!isEditable[i]">Edit</button>
+        <button class="save" type="submit" (click)="saveEdited()" *ngIf="isEditable[i]">Save</button>
+        <button class="cancel" type="button" (click)="cancelEdit(education.id)" *ngIf="isEditable[i]">Cancel</button>
+        <button class="delete" type="submit" (click)="delete(education.id)" *ngIf="!isEditable[i]">Delete</button>
       </div>
     </div>
   </div>
 
   <div class="content" *ngIf="isCreatable">
-
     <div [class.labels-before]="!isEditable" [class.labels-after]="isEditable">
       <label>EducationType:</label>
       <label *ngIf="newEducation.educationType === 'COURSE_OR_CERTIFICATE'">Name of Institution:</label>
@@ -75,8 +79,8 @@
       <label *ngIf="newEducation.educationType !== 'COURSE_OR_CERTIFICATE'">City:</label>
       <label *ngIf="newEducation.educationType === 'HIGH_SCHOOL'">Leaving exam:</label>
       <label>Year from:</label>
-      <label>Still studying:</label>
-      <label *ngIf="!newEducation.isStudying">Year till:</label>
+      <label *ngIf="!newEducation.schoolLeavingExam">Still studying:</label>
+      <label *ngIf="!newEducation.studying">Year till:</label>
       <label>Description:</label>
     </div>
 
@@ -95,11 +99,15 @@
         <input  type="checkbox" [(ngModel)]="newEducation.schoolLeavingExam">
       </div>
       <input type="number" [(ngModel)]="newEducation.yearFrom">
-      <div class="checkbox-options">
-        <input type="checkbox" [(ngModel)]="newEducation.isStudying">
+      <div class="checkbox-options" *ngIf="!newEducation.schoolLeavingExam">
+        <input type="checkbox" [(ngModel)]="newEducation.studying">
       </div>
-      <input type="number" [(ngModel)]="newEducation.yearTill" *ngIf="!newEducation.isStudying">
+      <input type="number" [(ngModel)]="newEducation.yearTill" *ngIf="!newEducation.studying">
       <textarea class="description" [(ngModel)]="newEducation.description"></textarea>
+    </div>
+
+    <div class="messages">
+      <p *ngIf="message" [class]="messageType === 'success' ? 'successMessage' : 'errorMessage'">{{message}}</p>
     </div>
 
     <div class="buttons">
