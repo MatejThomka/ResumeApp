@@ -6,5 +6,6 @@ import { Injectable } from '@angular/core';
 export class GeneralService {
   showLoginDialog = false;
   showRegisterDialog = false;
+  showDeleteConfirmationDialog = false;
   constructor() { }
 }
