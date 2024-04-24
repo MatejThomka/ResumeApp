@@ -5,6 +5,8 @@ import {AuthService} from "../../services/auth.service";
 import {Education} from "../../interfaces/education";
 import {NgForOf, NgIf} from "@angular/common";
 import {FormsModule} from "@angular/forms";
+import {GeneralService} from "../../services/general.service";
+import {DeleteConfirmationComponent} from "../delete-confirmation/delete-confirmation.component";
 
 @Component({
   selector: 'app-education',
@@ -12,7 +14,8 @@ import {FormsModule} from "@angular/forms";
   imports: [
     NgForOf,
     FormsModule,
-    NgIf
+    NgIf,
+    DeleteConfirmationComponent
   ],
   templateUrl: './education.component.html',
   styleUrls: ['./education.component.scss',
@@ -39,7 +42,8 @@ export class EducationComponent implements OnInit {
   constructor(
     public educationService: EducationService,
     public router: Router,
-    public authService: AuthService
+    public authService: AuthService,
+    public generalService: GeneralService
   ) { }
 
   ngOnInit() {
@@ -129,13 +133,11 @@ export class EducationComponent implements OnInit {
   }
 
   delete(id: number | undefined) {
-    this.educationService.deleteEducation(
-      this.authService.getToken() as string,
-      this.authService.getUsername() as string,
-      id
-    ).subscribe(() => {
-      this.reload()
-    })
+    this.editedEducation.id = id;
+    this.generalService.showDeleteConfirmationDialog = true;
   }
 
+  yearTillDelete() {
+    this.editedEducation.yearTill = null;
+  }
 }
