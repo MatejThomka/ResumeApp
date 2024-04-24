@@ -5,7 +5,7 @@ export interface Education {
   educationType: string;
   fieldOfStudy: string;
   yearFrom: number;
-  yearTill?: number;
+  yearTill: number | null;
   description: string;
   studying: boolean;
   city: string;
