@@ -19,7 +19,9 @@ public class EducationController {
 
     private final EducationService educationService;
     @PutMapping("/{username}/create-update")
-    public ResponseEntity<?> createOrUpdate(@PathVariable String username, @RequestBody EducationDTO educationDTO, @RequestParam (required = false) Integer id) {
+    public ResponseEntity<?> createOrUpdate(@PathVariable String username,
+                                            @RequestBody EducationDTO educationDTO,
+                                            @RequestParam (required = false) Integer id) {
 
         EducationType type = educationDTO.getEducationType();
         EducationDTO education;
@@ -74,6 +76,6 @@ public class EducationController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
 
-        return new ResponseEntity<>("Delete of education ID: " + id + " successfully!", HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }
