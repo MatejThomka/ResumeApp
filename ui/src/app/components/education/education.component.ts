@@ -31,8 +31,10 @@ export class EducationComponent implements OnInit {
   messageType = '';
   message = '';
 
-  isEditable = false;
+  isEditable: boolean[] = [];
   isCreatable = false;
+
+  index: number = -1;
 
   constructor(
     public educationService: EducationService,
@@ -42,6 +44,10 @@ export class EducationComponent implements OnInit {
 
   ngOnInit() {
     this.fetchEducation();
+  }
+
+  reload() {
+    window.location.reload()
   }
 
   fetchEducation() {
@@ -63,17 +69,29 @@ export class EducationComponent implements OnInit {
     )
   }
 
-  edit(education?: Education) {
-    this.isEditable = !this.isEditable;
+  edit(id?: number) {
+    const index = this.educations.findIndex(education => education.id === id);
 
-    this.initialEducation = <Education>{...education};
-    this.editedEducation = <Education>{...education};
+    if (index !== -1) {
+      this.isEditable[index] = !this.isEditable[index];
+
+      if (this.isEditable[index]) {
+        this.initialEducation = { ...this.educations[index]};
+        this.editedEducation = { ...this.educations[index]};
+      }
+    }
   }
 
-  cancelEdit() {
-    this.isEditable = !this.isEditable;
+  cancelEdit(id?: number) {
+    this.index = this.educations.findIndex(education => education.id === id);
 
-    this.editedEducation = {...this.initialEducation};
+    if (this.index !== -1) {
+      this.isEditable[this.index] = !this.isEditable[this.index];
+
+      if (!this.isEditable[this.index]) {
+        this.editedEducation = { ...this.initialEducation};
+      }
+    }
   }
 
   create() {
@@ -85,8 +103,17 @@ export class EducationComponent implements OnInit {
       this.authService.getToken() as string,
       this.authService.getUsername() as string,
       this.editedEducation
-  ).subscribe(
-      this.fetchEducation
+  ).subscribe(() => {
+        this.reload()
+      }, error => {
+        if (error.status === 400) {
+          this.message = error.error;
+          this.messageType = 'error';
+          setTimeout(() => {
+            this.message = '';
+          }, 2000);
+        }
+      }
     )
   }
 
@@ -94,10 +121,21 @@ export class EducationComponent implements OnInit {
     this.educationService.putEducation(
       this.authService.getToken() as string,
       this.authService.getUsername() as string,
-      this.newEducation
-    ).subscribe(
-      this.fetchEducation
+      this.newEducation,
+    ).subscribe(() => {
+        this.reload()
+      }
     )
+  }
+
+  delete(id: number | undefined) {
+    this.educationService.deleteEducation(
+      this.authService.getToken() as string,
+      this.authService.getUsername() as string,
+      id
+    ).subscribe(() => {
+      this.reload()
+    })
   }
 
 }
