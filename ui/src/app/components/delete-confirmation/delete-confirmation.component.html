@@ -1,0 +1,12 @@
+<div id="overlay" (click)="generalService.showDeleteConfirmationDialog = false"></div>
+
+<div id="container">
+  <div id="header">
+    Are you sure!
+  </div>
+
+  <div id="actions">
+    <button class="delete" type="submit" (click)="delete(education.editedEducation.id)">Delete</button>
+  </div>
+
+</div>

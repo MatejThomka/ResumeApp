@@ -39,14 +39,15 @@ public class EducationServiceImpl implements EducationService {
      */
     @Override
     public EducationDTO cOUHighSchool(String username,
-                              EducationDTO educationDTO)
+                                      EducationDTO educationDTO,
+                                      Integer id)
             throws ResumeAppException {
         isYearValid(educationDTO);
 
         User user = extraction.findUserByUsername(username);
 
         HighSchool highSchool = (HighSchool) educationRepository
-                .findByUserAndId(user, educationDTO.getId())
+                .findByUserAndId(user, id)
                 .orElse(new HighSchool());
 
         highSchool.setUser(user);
@@ -69,14 +70,15 @@ public class EducationServiceImpl implements EducationService {
      */
     @Override
     public EducationDTO cOUUniversity(String username,
-                              EducationDTO educationDTO)
+                                      EducationDTO educationDTO,
+                                      Integer id)
             throws ResumeAppException {
         isYearValid(educationDTO);
 
         User user = extraction.findUserByUsername(username);
 
         University university = (University) educationRepository
-                .findByUserAndId(user, educationDTO.getId())
+                .findByUserAndId(user, id)
                 .orElse(new University());
 
         university.setUser(user);
@@ -99,14 +101,15 @@ public class EducationServiceImpl implements EducationService {
      */
     @Override
     public EducationDTO cOUCourseOrCertificate(String username,
-                                       EducationDTO educationDTO)
+                                               EducationDTO educationDTO,
+                                               Integer id)
             throws ResumeAppException {
         isYearValid(educationDTO);
 
         User user = extraction.findUserByUsername(username);
 
         CourseOrCertificate courseOrCertificate = (CourseOrCertificate) educationRepository
-                .findByUserAndId(user, educationDTO.getId())
+                .findByUserAndId(user, id)
                 .orElse(new CourseOrCertificate());
 
         courseOrCertificate.setUser(user);
@@ -189,6 +192,7 @@ public class EducationServiceImpl implements EducationService {
 
         if (educationDTO.isStudying()) {
             education.setYearTill(null);
+            education.setStudying(true);
         } else {
             education.setYearTill(educationDTO.getYearTill());
         }
@@ -208,10 +212,20 @@ public class EducationServiceImpl implements EducationService {
      */
     private void isYearValid(EducationDTO educationDTO) throws ResumeAppException {
 
-        if (educationDTO.getYearFrom() < 1950 || educationDTO.getYearTill() < 1950) throw new YearException("Year is too low!");
+        if (educationDTO.getYearTill() != null) {
 
-        if (educationDTO.getYearFrom() > LocalDate.now().getYear() || educationDTO.getYearTill() > LocalDate.now().getYear()) throw new YearException("Year is too high!");
+            if (educationDTO.getYearFrom() < 1950 || educationDTO.getYearTill() < 1950) throw new YearException("You can't choose this dates!");
 
-        if (educationDTO.getYearTill() < educationDTO.getYearFrom()) throw new YearException("Wrong year of start and end of your education!");
+            if (educationDTO.getYearFrom() > LocalDate.now().getYear() || educationDTO.getYearTill() > LocalDate.now().getYear()) throw new YearException("You can't choose this dates!");
+
+            if (educationDTO.getYearTill() < educationDTO.getYearFrom()) throw new YearException("Wrong year of start and end of your education!");
+
+        } else {
+
+            if (educationDTO.getYearFrom() < 1950) throw new YearException("Year from is too low");
+
+            if (educationDTO.getYearFrom() > LocalDate.now().getYear()) throw new YearException("Year from is too high!");
+        }
+
     }
 }

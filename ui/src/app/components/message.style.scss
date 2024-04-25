@@ -1,0 +1,23 @@
+.successMessage {
+  display: flex;
+  justify-content: center;
+  height: 20px;
+  width: auto;
+  gap: 20px;
+  color: #000002;
+  font-family: "Lucida Handwriting", cursive;
+  font-weight: bolder;
+  font-size: 20px;
+}
+
+.errorMessage {
+  display: flex;
+  justify-content: center;
+  height: 20px;
+  width: auto;
+  gap: 20px;
+  color: #f10707;
+  font-family: "Lucida Handwriting", cursive;
+  font-weight: bolder;
+  font-size: 20px;
+}

@@ -19,7 +19,8 @@ import {Router, RouterLink, RouterLinkActive, RouterOutlet} from "@angular/route
     RouterOutlet
   ],
   styleUrls: ['login-dialog.component.scss',
-    '../button.styles.scss']
+              '../button.styles.scss',
+              '../message.style.scss']
 })
 export class LoginDialogComponent implements OnInit {
 

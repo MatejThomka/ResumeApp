@@ -13,7 +13,7 @@ import {NgIf} from "@angular/common";
     NgIf,
   ],
   templateUrl: './user.component.html',
-  styleUrls: ['./user.component.scss',
+  styleUrls: ['../settings-pages.styles.scss',
     '../button.styles.scss']
 })
 export class UserComponent implements OnInit {

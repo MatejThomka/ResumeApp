@@ -16,7 +16,7 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 public class University extends Education {
 
-    String Faculty;
+    String faculty;
 
     @Override
     public EducationDTO toDTO() {
