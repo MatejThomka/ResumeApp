@@ -128,6 +128,14 @@ export class EducationComponent implements OnInit {
       this.newEducation,
     ).subscribe(() => {
         this.reload()
+      }, error => {
+        if (error.status === 400) {
+          this.message = error.error;
+          this.messageType = 'error';
+          setTimeout(() => {
+            this.message = '';
+          }, 2000);
+        }
       }
     )
   }
