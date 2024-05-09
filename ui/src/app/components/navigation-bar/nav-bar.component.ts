@@ -6,11 +6,11 @@ import {AuthService} from "../../services/auth.service";
   selector: 'app-dashboard',
   standalone: true,
   imports: [],
-  templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.scss',
+  templateUrl: './nav-bar.component.html',
+  styleUrls: ['./nav-bar.component.scss',
     '../button.styles.scss']
 })
-export class DashboardComponent {
+export class NavBarComponent {
 
   constructor(public router: Router,
               public authService: AuthService) {  }
@@ -37,7 +37,7 @@ export class DashboardComponent {
   }
 
   skillsPage() {
-    this.router.navigateByUrl(`skills/${this.authService.getUsername()}`)
+    this.router.navigateByUrl(`skill/${this.authService.getUsername()}`)
       .then(() => {
         window.location.reload()
       });
