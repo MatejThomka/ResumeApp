@@ -1,0 +1,77 @@
+<div class="education-boxes">
+
+  <h2>Place for your Skills</h2>
+
+  <div *ngFor="let skill of skills; let i = index" class="education-container">
+    <div class="content" >
+      <div [class.labels-before]="!isEditable[i]" [class.labels-after]="isEditable[i]">
+        <label>Name:</label>
+        <label>Show skill level?</label>
+        <label>Skill level:</label>
+      </div>
+
+      <div class="values" *ngIf="isEditable[i]">
+        <input type="text" [(ngModel)]="editedSkill.name">
+        <input type="checkbox" [(ngModel)]="editedSkill.isSkillLevel">
+        <input type="range" [(ngModel)]="editedSkill.level">
+      </div>
+
+      <div class="notEditableValues" *ngIf="!isEditable[i]">
+        <li>{{skill.name}}</li>
+        <li>{{skill.isSkillLevel}}</li>
+        <li>{{skill.level}}</li>
+      </div>
+
+      <div class="messages" *ngIf="isEditable[i]">
+        <p *ngIf="message" [class]="messageType === 'success' ? 'successMessage' : 'errorMessage'">{{message}}</p>
+      </div>
+
+      <div class="buttons">
+        <button type="button"  *ngIf="!isEditable[i]">Edit</button>
+        <button class="save" type="submit"  *ngIf="isEditable[i]">Save</button>
+        <button class="cancel" type="button"  *ngIf="isEditable[i]">Cancel</button>
+        <button class="delete" type="submit"  *ngIf="!isEditable[i]">Delete</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="content" *ngIf="isCreating">
+    <div [class.labels-before]="!isEditable" [class.labels-after]="isEditable">
+      <label>Name:</label>
+      <label>Show skill level?</label>
+      <label>Skill level:</label>
+    </div>
+
+    <div class="values">
+      <input type="text" [(ngModel)]="newSkill.name">
+      <input type="checkbox" [(ngModel)]="newSkill.isSkillLevel">
+      <input type="range" min="0" max="4" list="markers" [(ngModel)]="newSkill.level">
+      <datalist id="markers">
+        <option value="0"></option>
+        <option value="25"></option>
+        <option value="50"></option>
+        <option value="75"></option>
+        <option value="100"></option>
+      </datalist>
+    </div>
+
+    <div class="messages">
+      <p *ngIf="message" [class]="messageType === 'success' ? 'successMessage' : 'errorMessage'">{{message}}</p>
+    </div>
+
+    <div class="buttons">
+      <button class="save" type="submit"  *ngIf="isCreating">Save</button>
+      <button class="cancel" type="button"  *ngIf="isCreating">Cancel</button>
+    </div>
+  </div>
+
+  <div class="content" *ngIf="!isCreating">
+    <div class="buttons">
+      <button type="button" (click)="create()" *ngIf="!isCreating">Add</button>
+    </div>
+  </div>
+
+</div>
+
+<app-delete-confirmation *ngIf="generalService.showDeleteConfirmationDialog"></app-delete-confirmation>
+
